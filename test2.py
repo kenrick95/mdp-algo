@@ -63,7 +63,7 @@ def x():
         print(key)
         clients[key]['object'].write_message("Something")
     print("---------")
-    x()
+    # x()
 
 x()
 

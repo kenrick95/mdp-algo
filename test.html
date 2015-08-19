@@ -4,31 +4,51 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <a href="javascript:WebSocketTest()">Run WebSocket</a>
-        <div id="messages" style="height:200px;background:black;color:white;"></div>
-
-
+        <canvas id="canvas" width="450" height="600" style="background: #eee">
+            
+        </canvas>
+        <div id="messages"></div>
     <script type="text/javascript">
         var ws;
-        var messageContainer = document.getElementById("messages");
-        function WebSocketTest() {
-            if ("WebSocket" in window) {
-                messageContainer.innerHTML = "WebSocket is supported by your Browser!";
-                ws = new WebSocket("ws://localhost:8888/ws?Id=" + Math.floor(Math.random() * 1000000));
-                ws.onopen = function() {
-                    ws.send("Message to send");
-                };
-                ws.onmessage = function (evt) { 
-                    var received_msg = evt.data;
-                    messageContainer.innerHTML += "<br>Message is received: " + received_msg;
-                };
-                ws.onclose = function() { 
-                    messageContainer.innerHTML += "<br>Connection is closed...";
-                };
-            } else {
-                messageContainer.innerHTML = "WebSocket NOT supported by your Browser!";
+        document.addEventListener('DOMContentLoaded', function(e) {
+            var messageContainer = document.getElementById('messages');
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d');
+            var ROW_COUNT = 20, COL_COUNT = 15;
+
+            function drawBlankMap() {
+
+                context.save();
+                context.fillStyle = "#ddd";
+                context.strokeStyle = "#333";
+                context.beginPath();
+                for (var y = 0; y < ROW_COUNT; y++) {
+                    for (var x = 0; x < COL_COUNT; x++) {
+                        context.rect(30 * x, 30 * y, 30, 30);
+                    }
+                }
+                context.fill();
+                context.stroke();
+                context.restore();
             }
-        }
+            drawBlankMap();
+
+            messageContainer.innerHTML = "WebSocket is supported by your Browser!";
+            ws = new WebSocket("ws://localhost:8888/ws?Id=" + Math.floor(Math.random() * 1000000));
+            ws.onopen = function() {
+                ws.send("Message to send");
+            };
+            ws.onmessage = function (evt) { 
+                var received_msg = evt.data;
+                messageContainer.innerHTML += "<br>Message is received: " + received_msg;
+            };
+            ws.onclose = function() { 
+                messageContainer.innerHTML += "<br>Connection is closed...";
+            };
+
+            // 20 x 15
+            // goal and end always at corner, but may be different corners
+        });
         </script>
     </body>
 </html>
