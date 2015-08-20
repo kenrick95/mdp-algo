@@ -9,21 +9,39 @@
         </canvas>
         <div id="messages"></div>
     <script type="text/javascript">
-        var ws;
         document.addEventListener('DOMContentLoaded', function(e) {
+            var ws;
             var messageContainer = document.getElementById('messages');
             var canvas = document.getElementById('canvas'),
                 context = canvas.getContext('2d');
             var ROW_COUNT = 20, COL_COUNT = 15;
+            var map = [];
+            for (var y = 0; y < ROW_COUNT; y++) {
+                map[y] = [];
+                for (var x = 0; x < COL_COUNT; x++) {
+                    map[y][x] = 0;
+                }
+            }
 
-            function drawBlankMap() {
+            function getStyle(cell) {
+                switch(cell) {
+                    case "OBSTACLE": return "#000";
+                    case "OBSERVED": return "#fff";
+                    case "ROBOT_BODY": return "#0f0";
+                    case "ROBOT_HEAD": return "#0f0";
+                    case "GOAL": return "#ff0";
+                    case "START": return "#ff0";
+                    default: return "#ddd";
+                }
+            }
+            function draw(map) {
 
                 context.save();
-                context.fillStyle = "#ddd";
                 context.strokeStyle = "#333";
                 context.beginPath();
                 for (var y = 0; y < ROW_COUNT; y++) {
                     for (var x = 0; x < COL_COUNT; x++) {
+                        context.fillStyle = getStyle(map[y][x]);
                         context.rect(30 * x, 30 * y, 30, 30);
                     }
                 }
@@ -31,12 +49,13 @@
                 context.stroke();
                 context.restore();
             }
-            drawBlankMap();
+            draw(map);
 
-            messageContainer.innerHTML = "WebSocket is supported by your Browser!";
+            messageContainer.innerHTML = "";
             ws = new WebSocket("ws://localhost:8888/ws?Id=" + Math.floor(Math.random() * 1000000));
             ws.onopen = function() {
-                ws.send("Message to send");
+                ws.send("Initializing connection");
+                messageContainer.innerHTML += "<br>Connection is opened...";
             };
             ws.onmessage = function (evt) { 
                 var received_msg = evt.data;

@@ -4,7 +4,10 @@ import tornado.websocket
 
 import threading
 from functools import wraps
+from tornado.options import define, options, parse_command_line
 
+import datetime
+import json
 def delay(delay=0.):
     """
     Decorator delaying the execution of a function for a while.
@@ -17,7 +20,6 @@ def delay(delay=0.):
         return delayed
     return wrap
 
-from tornado.options import define, options, parse_command_line
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -60,8 +62,11 @@ app = tornado.web.Application([
 @delay(10.0)
 def x():
     for key in clients:
-        print(key)
-        clients[key]['object'].write_message("Something")
+        message = dict()
+        message['time'] = str(datetime.datetime.utcnow())
+        message['map'] = dict()
+        print(key, ': ', message)
+        clients[key]['object'].write_message(json.dumps(message))
     print("---------")
     # x()
 
