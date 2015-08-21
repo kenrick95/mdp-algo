@@ -59,13 +59,19 @@ app = tornado.web.Application([
     (r'/ws', WebSocketHandler),
 ])
 
-@delay(10.0)
+@delay(3.0)
 def x():
     for key in clients:
         message = dict()
         message['time'] = str(datetime.datetime.utcnow())
-        message['map'] = dict()
-        print(key, ': ', message)
+        message['map'] = []
+        for i in range(20):
+            message['map'].append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        message['map'][5][5] = "OBSTACLE"
+        message['map'][0][0] = "START"
+        message['map'][19][14] = "GOAL"
+        message['map'][10][10] = "EXPLORED"
+        # print(key, ': ', message)
         clients[key]['object'].write_message(json.dumps(message))
     print("---------")
     # x()
