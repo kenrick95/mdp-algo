@@ -40,7 +40,8 @@ Ctrl + Pause/break.
 
 
 
-get_sensors()
+get_sensors(LOCATION)
+- LOCATION: coordinate of center of robot
 - 6 sensors
     + 1: Front left
     + 2: Front mid
