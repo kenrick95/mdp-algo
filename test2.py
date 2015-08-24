@@ -67,10 +67,10 @@ def x():
         message['map'] = []
         for i in range(20):
             message['map'].append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        message['map'][5][5] = "OBSTACLE"
-        message['map'][0][0] = "START"
-        message['map'][19][14] = "GOAL"
-        message['map'][10][10] = "EXPLORED"
+        message['map'][5][5] = 2
+        message['map'][0][0] = 6
+        message['map'][19][14] = 7
+        message['map'][10][10] = 8
         # print(key, ': ', message)
         clients[key]['object'].write_message(json.dumps(message))
     print("---------")
