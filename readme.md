@@ -2,6 +2,8 @@
 ## Dependencies
 ```
 pip install tornado
+pip install zope.event
+pip install apscheduler
 ```
 
 ## Running

@@ -8,6 +8,12 @@ from tornado.options import define, options, parse_command_line
 
 import datetime
 import json
+import zope.event
+
+from constants import *
+import sim
+
+
 def delay(delay=0.):
     """
     Decorator delaying the execution of a function for a while.
@@ -59,26 +65,27 @@ app = tornado.web.Application([
     (r'/ws', WebSocketHandler),
 ])
 
-@delay(3.0)
-def x():
+def tick(action):
     for key in clients:
         message = dict()
         message['time'] = str(datetime.datetime.utcnow())
-        message['map'] = []
-        for i in range(20):
-            message['map'].append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        message['map'][5][5] = 2
-        message['map'][0][0] = 6
-        message['map'][19][14] = 7
-        message['map'][10][10] = 8
-        # print(key, ': ', message)
+        message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
-    print("---------")
-    # x()
 
-x()
+@delay(10.0)
+def test():
+    robot.get_sensors()
+    robot.action(FORWARD)
+    test()
 
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
+
+    robot = sim.Robot()
+    old_subscribers = zope.event.subscribers[:]
+    del zope.event.subscribers[:]
+    zope.event.subscribers.append(tick)
+    test()
+    
     tornado.ioloop.IOLoop.instance().start()

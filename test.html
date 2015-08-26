@@ -4,7 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <div id="messages" style="float:right; width: 300px;"></div>
+        <div id="messages" style="float:right; width: 300px; height: 600px; overflow: auto;"></div>
         <canvas id="canvas" width="450" height="600" style="background: #eee">
             
         </canvas>
@@ -24,14 +24,29 @@
             }
 
             function getStyle(cell) {
+                /**
+                - 0: unexplored
+                - 1: explored
+                - 2: obstacle
+                - 3: robot body
+                - 4: robot head
+                - 5: robot center
+                - 6: start
+                - 7: goal
+                - 8: explored path
+                - 9: optimum path
+                 */
                 switch(cell) {
-                    case "OBSTACLE": return "#000";
-                    case "EXPLORED": return "#fff";
-                    case "ROBOT_BODY": return "#0f0";
-                    case "ROBOT_HEAD": return "#0f0";
-                    case "GOAL": return "#ff0";
-                    case "START": return "#ff0";
-                    default: return "#ddd";
+                    case 1: return "#fff";
+                    case 2: return "#000";
+                    case 3: return "#0f0";
+                    case 4: return "#0f0";
+                    case 5: return "#0f0";
+                    case 6: return "#ff0";
+                    case 7: return "#ff0";
+                    case 8: return "#ff0";
+                    case 9: return "#ff0";
+                    default: return "#ddd"; // 0
                 }
             }
             function draw(map) {
