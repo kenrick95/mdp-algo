@@ -11,6 +11,7 @@
 - 9: optimum path
 """
 from queue import PriorityQueue
+from constants import *
 
 class PqNode(object):
     def __init__(self, _dict):
@@ -32,7 +33,6 @@ class PqNode(object):
 
 class ShortestPath(object):
     """docstring for ShortestPath"""
-    INF = 2 << 64
 
     def __init__(self, map, direction):
         super(ShortestPath, self).__init__()
@@ -50,8 +50,8 @@ class ShortestPath(object):
             avg_coord[1] += coord[1]
         avg_coord[0] = int(avg_coord[0] / len(coords))
         avg_coord[1] = int(avg_coord[1] / len(coords))
-
         return avg_coord
+
     def is_okay(self, coord):
         return self.map[coord[0]][coord[1]] != 0 and self.map[coord[0]][coord[1]] != 2
 
@@ -64,49 +64,49 @@ class ShortestPath(object):
         return ret
     def direction(self, _from, _to):
         if _to[0] - _from[0] > 0:
-            return "S"
+            return SOUTH
         elif _to[0] - _from[0] < 0:
-            return "N"
+            return NORTH
         else:
             if _to[1] - _from[1] > 0:
-                return "E"
+                return EAST
             else:
-                return "W"
+                return WEST
     def action(self, _from, _to, _current_direction):
         # actions are: L (left), R (right), F (forward)
-        if _current_direction == "S":
+        if _current_direction == SOUTH:
             if _to[0] - _from[0] < 0:
-                return ["L", "L", "F"]
+                return [LEFT, LEFT, FORWARD]
             elif _to[0] - _from[0] == 0:
                 if _to[1] - _from[1] > 0:
-                    return ["L", "F"]
+                    return [LEFT, FORWARD]
                 else:
-                    return ["R", "F"]
-        elif _current_direction == "E":
+                    return [RIGHT, FORWARD]
+        elif _current_direction == EAST:
             if _to[1] - _from[1] < 0:
-                return ["L", "L", "F"]
+                return [LEFT, LEFT, FORWARD]
             elif _to[1] - _from[1] == 0:
                 if _to[0] - _from[0] > 0:
-                    return ["L", "F"]
+                    return [LEFT, FORWARD]
                 else:
-                    return ["R", "F"]
-        elif _current_direction == "N":
+                    return [RIGHT, FORWARD]
+        elif _current_direction == NORTH:
             if _to[0] - _from[0] > 0:
-                return ["L", "L", "F"]
+                return [LEFT, LEFT, FORWARD]
             elif _to[0] - _from[0] == 0:
                 if _to[1] - _from[1] > 0:
-                    return ["R", "F"]
+                    return [RIGHT, FORWARD]
                 else:
-                    return ["L", "F"]
-        elif _current_direction == "W":
+                    return [LEFT, FORWARD]
+        elif _current_direction == WEST:
             if _to[1] - _from[1] > 0:
-                return ["L", "L", "F"]
+                return [LEFT, LEFT, FORWARD]
             elif _to[1] - _from[1] == 0:
                 if _to[0] - _from[0] > 0:
-                    return ["L", "F"]
+                    return [LEFT, FORWARD]
                 else:
-                    return ["R", "F"]
-        return ["F"]
+                    return [RIGHT, FORWARD]
+        return [FORWARD]
     def cost(self, _from, _to, _current_direction):
         # can be the heuristic function
         # if going backward of current direction, cost = 3
@@ -130,7 +130,7 @@ class ShortestPath(object):
                     start.append([i, j])
                 elif self.map[i][j] == 7:
                     goal.append([i, j])
-                dist[i].append(self.INF)
+                dist[i].append(INF)
                 prev[i].append([-1, -1])
                 next_post[i].append([-1, -1])
         avg_start = self.find_centre(start)
@@ -185,6 +185,6 @@ class ShortestPath(object):
             "map": ret_map
         }
 
-
-x = ShortestPath([[6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7]], "N")
-print(x.shortest_path())
+if __name__ == '__main__':
+    x = ShortestPath([[6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7]], NORTH)
+    print(x.shortest_path())
