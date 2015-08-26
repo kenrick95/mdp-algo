@@ -31,31 +31,29 @@ class Robot(object):
         self.goal = [1, 13] # find_centre(goal)
 
         # mark starting area
-        self.explored_map[self.start[0]][self.start[1]] = 6
-        self.explored_map[self.start[0] - 1][self.start[1]] = 6
-        self.explored_map[self.start[0] + 1][self.start[1]] = 6
-        self.explored_map[self.start[0]][self.start[1] - 1] = 6
-        self.explored_map[self.start[0] - 1][self.start[1] - 1] = 6
-        self.explored_map[self.start[0] + 1][self.start[1] - 1] = 6
-        self.explored_map[self.start[0]][self.start[1] + 1] = 6
-        self.explored_map[self.start[0] - 1][self.start[1] + 1] = 6
-        self.explored_map[self.start[0] + 1][self.start[1] + 1] = 6
+        self.__mark_surroundings(self.start, 6)
         # mark goal area
-        self.explored_map[self.goal[0]][self.goal[1]] = 7
-        self.explored_map[self.goal[0] - 1][self.goal[1]] = 7
-        self.explored_map[self.goal[0] + 1][self.goal[1]] = 7
-        self.explored_map[self.goal[0]][self.goal[1] - 1] = 7
-        self.explored_map[self.goal[0] - 1][self.goal[1] - 1] = 7
-        self.explored_map[self.goal[0] + 1][self.goal[1] - 1] = 7
-        self.explored_map[self.goal[0]][self.goal[1] + 1] = 7
-        self.explored_map[self.goal[0] - 1][self.goal[1] + 1] = 7
-        self.explored_map[self.goal[0] + 1][self.goal[1] + 1] = 7
+        self.__mark_surroundings(self.goal, 7)
 
         self.current = [18, 1] # find_centre(start)
-        # TODO:
-        # mark and update the current Robot area
-        # do not let Robot go through obstacles
+        self.__mark_robot()
+
         self.direction = NORTH
+    def __mark_surroundings(self, _center, _value):
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]] = _value
+    
+    def __mark_robot(self):
+        self.__mark_surroundings(self.current, 3)
+        self.explored_map[self.current[0]][self.current[1]] = 4
+        self.explored_map[self.current[0] - 1][self.current[1]] = 5
+    def __clear_marks(self):
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            value = 1
+            self.explored_map[self.current[0] + direction[0]][self.current[1] + direction[1]] = value
+
     def __get_map(self):
         start = []
         goal = []
@@ -79,6 +77,10 @@ class Robot(object):
             self.rotate(action)
 
     def forward(self):
+        # TODO, do proper "trailing" path
+        # TODO, don't let robot pass if got obstacle
+        self.__clear_marks()
+        self.explored_map[self.current[0]][self.current[1]] = 8
         if self.direction == NORTH:
             self.current[0] += -1
         elif self.direction == EAST:
@@ -87,6 +89,7 @@ class Robot(object):
             self.current[1] += -1
         else: # self.direction == SOUTH
             self.current[0] += 1
+        self.__mark_robot()
 
     def rotate(self, direction):
         if direction == RIGHT: # clockwise
