@@ -54,6 +54,13 @@ class Robot(object):
             value = 1
             self.explored_map[self.current[0] + direction[0]][self.current[1] + direction[1]] = value
 
+    def __is_safe(self, _center):
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            if self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
+                return False
+        return True
+
     def __get_map(self):
         start = []
         goal = []
@@ -78,17 +85,23 @@ class Robot(object):
 
     def forward(self):
         # TODO, do proper "trailing" path
-        # TODO, don't let robot pass if got obstacle
         self.__clear_marks()
         self.explored_map[self.current[0]][self.current[1]] = 8
+
+        next_coords = []
+        next_coords.append(self.current[0])
+        next_coords.append(self.current[1])
         if self.direction == NORTH:
-            self.current[0] += -1
+            next_coords[0] += -1
         elif self.direction == EAST:
-            self.current[1] += 1
+            next_coords[1] += 1
         elif self.direction == WEST:
-            self.current[1] += -1
+            next_coords[1] += -1
         else: # self.direction == SOUTH
-            self.current[0] += 1
+            next_coords[0] += 1
+        if 0 <= next_coords[0] < self.MAX_ROW and 0 <= next_coords[1] < self.MAX_COL and __is_safe(next_coords):
+            self.current[0] = next_coords[0]
+            self.current[1] = next_coords[1]
         self.__mark_robot()
 
     def rotate(self, direction):
@@ -124,18 +137,36 @@ class Robot(object):
         return 2
 
     def get_sensors(self):
-        # BUGS:
-        # can "see through" obstacles
         sensors = []
         for i in range(6):
             sensors.append([])
+            for j in range(4):
+                sensors[i].append([])
+
         for i in range(4):
-            sensors[0].append(self.__get_value(self.current[0] - i - 2, self.current[1] - 1))
-            sensors[1].append(self.__get_value(self.current[0] - i - 2, self.current[1]))
-            sensors[2].append(self.__get_value(self.current[0] - i - 2, self.current[1] + 1))
-            sensors[3].append(self.__get_value(self.current[0] - 1, self.current[1] + i + 2))
-            sensors[4].append(self.__get_value(self.current[0] - 1, self.current[1] - i - 2))
-            sensors[5].append(self.__get_value(self.current[0] + 1, self.current[1] - i - 2))
+            sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+            if sensors[0][i] == 2:
+                break
+        for i in range(4):
+            sensors[1][i] = self.__get_value(self.current[0] - i - 2, self.current[1])
+            if sensors[1][i] == 2:
+                break
+        for i in range(4):
+            sensors[2][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+            if sensors[2][i] == 2:
+                break
+        for i in range(4):
+            sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+            if sensors[3][i] == 2:
+                break
+        for i in range(4):
+            sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+            if sensors[4][i] == 2:
+                break
+        for i in range(4):
+            sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+            if sensors[5][i] == 2:
+                break
         return sensors
 
 if __name__ == '__main__':
