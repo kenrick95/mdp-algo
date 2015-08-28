@@ -35,8 +35,9 @@ class Robot(object):
         self.__mark_surroundings(self.goal, 7)
 
         self.current = [18, 1] # find_centre(start)
-        self.__mark_robot()
+        
         self.direction = NORTH
+        self.__mark_robot()
 
 
         zope.event.notify("INIT")
@@ -49,7 +50,14 @@ class Robot(object):
     def __mark_robot(self):
         self.__mark_surroundings(self.current, 3)
         self.explored_map[self.current[0]][self.current[1]] = 5
-        self.explored_map[self.current[0] - 1][self.current[1]] = 4
+        if self.direction == NORTH:
+            self.explored_map[self.current[0] - 1][self.current[1]] = 4
+        elif self.direction == EAST:
+            self.explored_map[self.current[0]][self.current[1] + 1] = 4
+        elif self.direction == WEST:
+            self.explored_map[self.current[0]][self.current[1] - 1] = 4
+        else: # self.direction == SOUTH
+            self.explored_map[self.current[0] + 1][self.current[1]] = 4
     def __clear_marks(self):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
@@ -59,7 +67,9 @@ class Robot(object):
     def __is_safe(self, _center):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
-            if self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
+            if  _center[0] + direction[0] < 0 or _center[0] + direction[0] >= self.MAX_ROW or \
+                _center[1] + direction[1] < 0 or _center[1] + direction[1] >= self.MAX_COL or \
+                self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
                 return False
         return True
 
@@ -79,11 +89,11 @@ class Robot(object):
                 self.explored_map.append(temp0)
 
     def action(self, action):
-        zope.event.notify(action)
         if action == FORWARD:
             self.forward()
         else:
             self.rotate(action)
+        zope.event.notify(action)
 
     def forward(self):
         # TODO, do proper "trailing" path
@@ -127,6 +137,7 @@ class Robot(object):
                 self.direction = EAST
             elif self.direction == WEST:
                 self.direction = SOUTH
+        self.__mark_robot()
 
     def __get_value(self, y, x):
         if 0 <= y < self.MAX_ROW and 0 <= x < self.MAX_COL:
@@ -146,29 +157,81 @@ class Robot(object):
             sensors.append([])
             for j in range(4):
                 sensors[i].append([])
-
+        # only NORTH
         for i in range(4):
-            sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+            if self.direction == NORTH:
+                sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+            elif self.direction == EAST:
+                sensors[0][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
+            elif self.direction == WEST:
+                sensors[0][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+            else: # self.direction == SOUTH:
+                sensors[0][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+
             if sensors[0][i] == 2:
                 break
         for i in range(4):
-            sensors[1][i] = self.__get_value(self.current[0] - i - 2, self.current[1])
+            if self.direction == NORTH:
+                sensors[1][i] = self.__get_value(self.current[0] - i - 2, self.current[1])
+            elif self.direction == EAST:
+                sensors[1][i] = self.__get_value(self.current[0], self.current[1] + i + 2)
+            elif self.direction == WEST:
+                sensors[1][i] = self.__get_value(self.current[0], self.current[1] - i - 2)
+            else: # self.direction == SOUTH:
+                sensors[1][i] = self.__get_value(self.current[0] + i + 2, self.current[1])
+
             if sensors[1][i] == 2:
                 break
         for i in range(4):
-            sensors[2][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+            
+            if self.direction == NORTH:
+                sensors[2][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+            elif self.direction == EAST:
+                sensors[2][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+            elif self.direction == WEST:
+                sensors[2][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+            else: # self.direction == SOUTH:
+                sensors[2][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+
             if sensors[2][i] == 2:
                 break
         for i in range(4):
-            sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+            if self.direction == NORTH:
+                sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+            elif self.direction == EAST:
+                sensors[3][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+            elif self.direction == WEST:
+                sensors[3][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+            else: # self.direction == SOUTH:
+                sensors[3][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+
+            # sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
             if sensors[3][i] == 2:
                 break
         for i in range(4):
-            sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+            if self.direction == NORTH:
+                sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+            elif self.direction == EAST:
+                sensors[4][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+            elif self.direction == WEST:
+                sensors[4][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+            else: # self.direction == SOUTH:
+                sensors[4][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
+
+            # sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
             if sensors[4][i] == 2:
                 break
         for i in range(4):
-            sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+            if self.direction == NORTH:
+                sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+            elif self.direction == EAST:
+                sensors[5][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+            elif self.direction == WEST:
+                sensors[5][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+            else: # self.direction == SOUTH:
+                sensors[5][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+
+            #sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
             if sensors[5][i] == 2:
                 break
         return sensors

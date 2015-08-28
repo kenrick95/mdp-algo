@@ -9,6 +9,8 @@ from tornado.options import define, options, parse_command_line
 import datetime
 import json
 import zope.event
+import random
+
 
 from constants import *
 import sim
@@ -73,10 +75,12 @@ def tick(action):
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
 
-@delay(10.0)
+@delay(5.0)
 def test():
     robot.get_sensors()
-    robot.action(FORWARD)
+    choice = random.choice([FORWARD, LEFT, RIGHT])
+    robot.action(choice)
+    print(choice, ': ', robot.direction)
     test()
 
 if __name__ == '__main__':
