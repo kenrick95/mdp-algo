@@ -162,9 +162,9 @@ class Robot(object):
             if self.direction == NORTH:
                 sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
             elif self.direction == EAST:
-                sensors[0][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
+                sensors[0][i] = self.__get_value(self.current[0] - 1 , self.current[1] + i + 2)
             elif self.direction == WEST:
-                sensors[0][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+                sensors[0][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
             else: # self.direction == SOUTH:
                 sensors[0][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
 
@@ -183,25 +183,25 @@ class Robot(object):
             if sensors[1][i] == 2:
                 break
         for i in range(4):
-            
             if self.direction == NORTH:
                 sensors[2][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
             elif self.direction == EAST:
-                sensors[2][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+                sensors[2][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
             elif self.direction == WEST:
-                sensors[2][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+                sensors[2][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
             else: # self.direction == SOUTH:
                 sensors[2][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
 
             if sensors[2][i] == 2:
                 break
+        
         for i in range(4):
             if self.direction == NORTH:
                 sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
             elif self.direction == EAST:
-                sensors[3][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+                sensors[3][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
             elif self.direction == WEST:
-                sensors[3][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+                sensors[3][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
             else: # self.direction == SOUTH:
                 sensors[3][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
 
@@ -212,9 +212,9 @@ class Robot(object):
             if self.direction == NORTH:
                 sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
             elif self.direction == EAST:
-                sensors[4][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+                sensors[4][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
             elif self.direction == WEST:
-                sensors[4][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+                sensors[4][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
             else: # self.direction == SOUTH:
                 sensors[4][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
 
@@ -225,15 +225,16 @@ class Robot(object):
             if self.direction == NORTH:
                 sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
             elif self.direction == EAST:
-                sensors[5][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+                sensors[5][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
             elif self.direction == WEST:
-                sensors[5][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+                sensors[5][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
             else: # self.direction == SOUTH:
                 sensors[5][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
 
             #sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
             if sensors[5][i] == 2:
                 break
+        zope.event.notify("SENSOR")
         return sensors
 
 if __name__ == '__main__':

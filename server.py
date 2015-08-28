@@ -75,7 +75,7 @@ def tick(action):
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
 
-@delay(5.0)
+@delay(1.0)
 def test():
     robot.get_sensors()
     choice = random.choice([FORWARD, LEFT, RIGHT])
