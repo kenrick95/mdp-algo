@@ -30,15 +30,17 @@ class Robot(object):
         self.start = [18, 1] # find_centre(start)
         self.goal = [1, 13] # find_centre(goal)
 
-        # mark starting area
+        # mark start & goal area
         self.__mark_surroundings(self.start, 6)
-        # mark goal area
         self.__mark_surroundings(self.goal, 7)
 
         self.current = [18, 1] # find_centre(start)
         self.__mark_robot()
-
         self.direction = NORTH
+
+
+        zope.event.notify("INIT")
+
     def __mark_surroundings(self, _center, _value):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
@@ -86,6 +88,8 @@ class Robot(object):
     def forward(self):
         # TODO, do proper "trailing" path
         self.__clear_marks()
+        self.__mark_surroundings(self.start, 6)
+        self.__mark_surroundings(self.goal, 7)
         self.explored_map[self.current[0]][self.current[1]] = 8
 
         next_coords = []
