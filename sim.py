@@ -99,7 +99,7 @@ class Robot(object):
             next_coords[1] += -1
         else: # self.direction == SOUTH
             next_coords[0] += 1
-        if 0 <= next_coords[0] < self.MAX_ROW and 0 <= next_coords[1] < self.MAX_COL and __is_safe(next_coords):
+        if 0 <= next_coords[0] < self.MAX_ROW and 0 <= next_coords[1] < self.MAX_COL and self.__is_safe(next_coords):
             self.current[0] = next_coords[0]
             self.current[1] = next_coords[1]
         self.__mark_robot()
