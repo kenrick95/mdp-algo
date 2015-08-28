@@ -38,7 +38,7 @@ def main():
 	
 	robotCenterX = 6
 	robotCenterY = 18
-	robotDirectionX = 7
+	robotDirectionX = 5
 	robotDirectionY = 18
 
 	realTimeMap.append(Row0)
@@ -157,19 +157,19 @@ def getSensor(simMap, centerX, centerY, directionX, directionY):
 		returnValue.append([simMap[centerY-1][centerX+2], simMap[centerY-1][centerX+3], simMap[centerY-1][centerX+4], simMap[centerY-1][centerX+5]])
 		returnValue.append([simMap[centerY+1][centerX-2], simMap[centerY+1][centerX-3], simMap[centerY+1][centerX-4], simMap[centerY+1][centerX-5]])
 	elif returnValue[0][0] == "S":
-		returnValue.append([simMap[centerY+2][centerX+1], simMap[centerY+3][centerX+1], simMap[centerY+4][centerX+1], simMap[centerY+5][centerX+1]])
-		returnValue.append([simMap[centerY+2][centerX], simMap[centerY+3][centerX], simMap[centerY+4][centerX], simMap[centerY+5][centerX]])
-		returnValue.append([simMap[centerY+2][centerX-1], simMap[centerY+3][centerX-1], simMap[centerY+4][centerX-1], simMap[centerY+5][centerX-1]])
-		returnValue.append([simMap[centerY+1][centerX+2], simMap[centerY+1][centerX+3], simMap[centerY+1][centerX+4], simMap[centerY+1][centerX+5]])
-		returnValue.append([simMap[centerY+1][centerX-2], simMap[centerY+1][centerX-3], simMap[centerY+1][centerX-4], simMap[centerY+1][centerX-5]])
-		returnValue.append([simMap[centerY-1][centerX+2], simMap[centerY-1][centerX+3], simMap[centerY-1][centerX+4], simMap[centerY-1][centerX+5]])
+		returnValue.append([2 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 2 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 2 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 2 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
+		returnValue.append([2 if outOfBoundDown>=4 else simMap[centerY+2][centerX], 2 if outOfBoundDown>=3 else simMap[centerY+3][centerX], 2 if outOfBoundDown>=2 else simMap[centerY+4][centerX], 2 if outOfBoundDown>=1 else simMap[centerY+5][centerX]])
+		returnValue.append([2 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 2 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 2 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 2 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
+		returnValue.append([2 if outOfBoundRight>=4 else simMap[centerY+1][centerX+2], 2 if outOfBoundRight>=3 else simMap[centerY+1][centerX+3], 2 if outOfBoundRight>=2 else simMap[centerY+1][centerX+4], 2 if outOfBoundRight>=1 else simMap[centerY+1][centerX+5]])
+		returnValue.append([2 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 2 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 2 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 2 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
+		returnValue.append([2 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 2 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 2 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 2 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
 	elif returnValue[0][0] == "A":
-		returnValue.append([simMap[centerY-1][centerX-2], simMap[centerY-1][centerX-3], simMap[centerY-1][centerX-4], simMap[centerY-1][centerX-5]])
-		returnValue.append([simMap[centerY][centerX-2], simMap[centerY][centerX-3], simMap[centerY][centerX-4], simMap[centerY][centerX-5]])
-		returnValue.append([simMap[centerY+1][centerX-2], simMap[centerY+1][centerX-3], simMap[centerY+1][centerX-4], simMap[centerY+1][centerX-5]])
-		returnValue.append([simMap[centerY+2][centerX-1], simMap[centerY+3][centerX-1], simMap[centerY+4][centerX-1], simMap[centerY+5][centerX-1]])
-		returnValue.append([simMap[centerY-2][centerX-1], simMap[centerY-3][centerX-1], simMap[centerY-4][centerX-1], simMap[centerY-5][centerX-1]])
-		returnValue.append([simMap[centerY+2][centerX+1], simMap[centerY+3][centerX+1], simMap[centerY+4][centerX+1], simMap[centerY+5][centerX+1]])
+		returnValue.append([2 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 2 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 2 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 2 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
+		returnValue.append([2 if outOfBoundLeft>=4 else simMap[centerY][centerX-2], 2 if outOfBoundLeft>=3 else simMap[centerY][centerX-3], 2 if outOfBoundLeft>=2 else simMap[centerY][centerX-4], 2 if outOfBoundLeft>=1 else simMap[centerY][centerX-5]])
+		returnValue.append([2 if outOfBoundLeft>=4 else simMap[centerY-1][centerX-2], 2 if outOfBoundLeft>=3 else simMap[centerY-1][centerX-3], 2 if outOfBoundLeft>=2 else simMap[centerY-1][centerX-4], 2 if outOfBoundLeft>=1 else simMap[centerY-1][centerX-5]])
+		returnValue.append([2 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 2 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 2 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 2 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
+		returnValue.append([2 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 2 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 2 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 2 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
+		returnValue.append([2 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 2 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 2 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 2 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
 	elif returnValue[0][0] == "D":
 		returnValue.append([2 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 2 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 2 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 2 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
 		returnValue.append([2 if outOfBoundRight>=4 else simMap[centerY][centerX+2], 2 if outOfBoundRight>=3 else simMap[centerY][centerX+3], 2 if outOfBoundRight>=2 else simMap[centerY][centerX+4], 2 if outOfBoundRight>=1 else simMap[centerY][centerX+5]])
@@ -187,9 +187,10 @@ def updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX
 	
 def simulatorReadMap():
 	simulatorMap = []
-	for line in reversed(list(open("Simulator Real Map.txt","r"))):
+	for line in list(open("Simulator Real Map.txt","r")):
 		oneRow = []
 		count = 1
+		print(line)
 		for num in line:
 			if count > 15:
 				break
