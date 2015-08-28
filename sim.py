@@ -48,8 +48,8 @@ class Robot(object):
     
     def __mark_robot(self):
         self.__mark_surroundings(self.current, 3)
-        self.explored_map[self.current[0]][self.current[1]] = 4
-        self.explored_map[self.current[0] - 1][self.current[1]] = 5
+        self.explored_map[self.current[0]][self.current[1]] = 5
+        self.explored_map[self.current[0] - 1][self.current[1]] = 4
     def __clear_marks(self):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:

@@ -37,6 +37,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         self.id = self.get_argument("Id")
         self.stream.set_nodelay(True)
         clients[self.id] = {"id": self.id, "object": self}
+        tick("INIT")
 
     def on_message(self, message):        
         """
