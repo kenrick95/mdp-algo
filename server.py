@@ -71,6 +71,7 @@ app = tornado.web.Application([
 def tick(action):
     for key in clients:
         message = dict()
+        message['action'] = action
         message['time'] = str(datetime.datetime.utcnow())
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))

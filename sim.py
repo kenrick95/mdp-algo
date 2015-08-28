@@ -235,6 +235,7 @@ class Robot(object):
             if sensors[5][i] == 2:
                 break
         zope.event.notify("SENSOR")
+        # bug: seen robot move to SOUTH while facing WEST
         return sensors
 
 if __name__ == '__main__':
