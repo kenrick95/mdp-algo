@@ -198,3 +198,5 @@ def simulatorReadMap():
 		simulatorMap.append(oneRow)
 	print("Done")
 	return simulatorMap
+
+main()

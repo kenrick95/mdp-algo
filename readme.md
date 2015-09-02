@@ -7,7 +7,7 @@ pip install zope.event
 
 ## Running
 ```
-python test2.py
+python server.py
 ```
 
 and then open browser and navigate to `localhost:8888`
