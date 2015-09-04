@@ -86,15 +86,17 @@ def test():
     test()
 
 
-@delay(1.0)
+@delay(.1)
 def test_sp(sequence):
     if len(sequence) == 0:
         print("DONE")
         return False
     choice = sequence.pop()
-    robot.action(choice)
+    robot.action(choice, 9)
     print(choice, ': ', robot.direction)
     test_sp(sequence)
+
+# every 1 s, call Nelson's exploration function --> get sth to print
 
 if __name__ == '__main__':
     parse_command_line()

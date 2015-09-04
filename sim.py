@@ -19,6 +19,7 @@ class Robot(object):
         
         self.MAX_ROW = len(self.__map)
         self.MAX_COL = len(self.__map[0])
+        self.__recolor_later = []
 
         # for i in range(self.MAX_ROW):
         #     for j in range(self.MAX_COL):
@@ -45,6 +46,13 @@ class Robot(object):
     def __mark_surroundings(self, _center, _value):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
+            current_value = self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]]
+            if current_value == 1 or 6 <= current_value <= 9:
+                self.__recolor_later.append({
+                    "coord": [_center[0] + direction[0], _center[1] + direction[1]],
+                    "value": current_value
+                })
+
             self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]] = _value
     
     def __mark_robot(self):
@@ -59,10 +67,15 @@ class Robot(object):
         else: # self.direction == SOUTH
             self.explored_map[self.current[0] + 1][self.current[1]] = 4
     def __clear_marks(self):
-        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
-        for direction in directions:
-            value = 1
-            self.explored_map[self.current[0] + direction[0]][self.current[1] + direction[1]] = value
+        # need to save original marks (e.g. 1, 6, 7, 8, 9)
+        for o in self.__recolor_later:
+            self.explored_map[o['coord'][0]][o['coord'][1]] = o['value']
+        self.__recolor_later = []
+
+        # directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        # for direction in directions:
+        #     value = 1
+        #     self.explored_map[self.current[0] + direction[0]][self.current[1] + direction[1]] = value
 
     def __is_safe(self, _center):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
@@ -90,19 +103,19 @@ class Robot(object):
                 self.explored_map.append(temp)
                 # self.explored_map.append(temp0)
 
-    def action(self, action):
+    def action(self, action, mark_value = 8):
         if action == FORWARD:
-            self.forward()
+            self.forward(mark_value)
         else:
             self.rotate(action)
         zope.event.notify(action)
 
-    def forward(self):
+    def forward(self, mark_value = 8):
         # TODO, do proper "trailing" path
         self.__clear_marks()
         self.__mark_surroundings(self.start, 6)
         self.__mark_surroundings(self.goal, 7)
-        self.explored_map[self.current[0]][self.current[1]] = 8
+        self.explored_map[self.current[0]][self.current[1]] = mark_value
 
         next_coords = []
         next_coords.append(self.current[0])
