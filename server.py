@@ -88,7 +88,7 @@ def test():
 
 @delay(1.0)
 def test_sp(sequence):
-    if (len(sequence) == 0)
+    if len(sequence) == 0:
         print("DONE")
         return False
     choice = sequence.pop()
