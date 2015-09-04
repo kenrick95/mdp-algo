@@ -69,14 +69,15 @@ class Robot(object):
         for direction in directions:
             if  _center[0] + direction[0] < 0 or _center[0] + direction[0] >= self.MAX_ROW or \
                 _center[1] + direction[1] < 0 or _center[1] + direction[1] >= self.MAX_COL or \
-                self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
+                self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 2:
+                # self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
                 return False
         return True
 
     def __get_map(self):
         start = []
         goal = []
-        with open("map.txt") as f:
+        with open("sample map.txt") as f:
             content = f.readlines()
             for line in content:
                 temp = []
@@ -86,7 +87,8 @@ class Robot(object):
                         temp.append(int(char))
                         temp0.append(0)
                 self.__map.append(temp)
-                self.explored_map.append(temp0)
+                self.explored_map.append(temp)
+                # self.explored_map.append(temp0)
 
     def action(self, action):
         if action == FORWARD:

@@ -14,7 +14,8 @@ import random
 
 from constants import *
 import sim
-
+from exploration import Exploration
+from shortest_path import ShortestPath
 
 def delay(delay=0.):
     """
@@ -78,11 +79,22 @@ def tick(action):
 
 @delay(1.0)
 def test():
-    robot.get_sensors()
+    sensors = robot.get_sensors()
     choice = random.choice([FORWARD, LEFT, RIGHT])
     robot.action(choice)
     print(choice, ': ', robot.direction)
     test()
+
+
+@delay(1.0)
+def test_sp(sequence):
+    if (len(sequence) == 0)
+        print("DONE")
+        return False
+    choice = sequence.pop()
+    robot.action(choice)
+    print(choice, ': ', robot.direction)
+    test_sp(sequence)
 
 if __name__ == '__main__':
     parse_command_line()
@@ -92,6 +104,12 @@ if __name__ == '__main__':
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
-    test()
-    
+    # test()
+    sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
+    sp_list = sp.shortest_path()
+    sp_sequence = sp_list['sequence']
+    sp_sequence.reverse()
+    test_sp(sp_sequence)
+
+
     tornado.ioloop.IOLoop.instance().start()

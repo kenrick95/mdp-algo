@@ -34,26 +34,29 @@ class PqNode(object):
 class ShortestPath(object):
     """docstring for ShortestPath"""
 
-    def __init__(self, map, direction):
+    def __init__(self, map, direction, start, goal):
         super(ShortestPath, self).__init__()
         self.map = map
+        self.MAX_ROW = len(self.map)
+        self.MAX_COL = len(self.map[0])
         # direction: N, E, W, S
         self.directon = direction
+        self.start = start
+        self.goal = goal
         # note: positive x --> E; positive y --> S
         # coord[0] is y
         # coord[1] is x
 
-    def find_centre(self, coords):
-        avg_coord = [0, 0]
-        for coord in coords:
-            avg_coord[0] += coord[0]
-            avg_coord[1] += coord[1]
-        avg_coord[0] = int(avg_coord[0] / len(coords))
-        avg_coord[1] = int(avg_coord[1] / len(coords))
-        return avg_coord
-
     def is_okay(self, coord):
-        return self.map[coord[0]][coord[1]] != 0 and self.map[coord[0]][coord[1]] != 2
+        # return self.map[coord[0]][coord[1]] != 0 and self.map[coord[0]][coord[1]] != 2
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            if  coord[0] + direction[0] < 0 or coord[0] + direction[0] >= self.MAX_ROW or \
+                coord[1] + direction[1] < 0 or coord[1] + direction[1] >= self.MAX_COL or \
+                self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 0 or \
+                self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 2:
+                return False
+        return True
 
     def expand(self, head):
         directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]
@@ -87,9 +90,9 @@ class ShortestPath(object):
                 return [LEFT, LEFT, FORWARD]
             elif _to[1] - _from[1] == 0:
                 if _to[0] - _from[0] > 0:
-                    return [LEFT, FORWARD]
-                else:
                     return [RIGHT, FORWARD]
+                else:
+                    return [LEFT, FORWARD]
         elif _current_direction == NORTH:
             if _to[0] - _from[0] > 0:
                 return [LEFT, LEFT, FORWARD]
@@ -114,10 +117,7 @@ class ShortestPath(object):
         # else cost = 1
         return len(self.action(_from, _to, _current_direction))
 
-    def shortest_path(self):
-        # determine start and goal
-        start = []
-        goal = []
+    def shortest_path(self, mark_value = 9):
         dist = [] # for each cell, how far is it from the start?
         prev = [] # for each cell, what is its parent?
         next_post = [] # for each cell in optimized path, what is the next position?
@@ -126,21 +126,15 @@ class ShortestPath(object):
             prev.append([])
             next_post.append([])
             for j in range(len(self.map[i])):
-                if self.map[i][j] == 6:
-                    start.append([i, j])
-                elif self.map[i][j] == 7:
-                    goal.append([i, j])
                 dist[i].append(INF)
                 prev[i].append([-1, -1])
                 next_post[i].append([-1, -1])
-        avg_start = self.find_centre(start)
-        avg_goal = self.find_centre(goal)
         # note that it will be (y, x)
 
         # do Dijkstra/UCS or A*
         pq = PriorityQueue() 
-        pq.put(PqNode({"position": avg_start, "direction": self.direction, "weight": 0}))
-        dist[avg_start[0]][avg_start[1]] = 0
+        pq.put(PqNode({"position": self.start, "direction": self.direction, "weight": 0}))
+        dist[self.start[0]][self.start[1]] = 0
 
         while not pq.empty():
             head = pq.get()
@@ -157,11 +151,11 @@ class ShortestPath(object):
                     pq.put(PqNode({"position": neighbor, "direction": self.direction(head["position"], neighbor), "weight": dist[neighbor[0]][neighbor[1]]}))
 
         # construct path from goal
-        cur = avg_goal
+        cur = self.goal
         ret_map = self.map
-        while cur[0] != avg_start[0] or cur[1] != avg_start[1]:
+        while cur[0] != self.start[0] or cur[1] != self.start[1]:
             # print('a', ret_map)
-            ret_map[cur[0]][cur[1]] = 9
+            ret_map[cur[0]][cur[1]] = mark_value
             prev_post = prev[cur[0]][cur[1]]
             next_post[prev_post[0]][prev_post[1]] = [cur[0], cur[1]]
             cur = prev_post
@@ -169,10 +163,10 @@ class ShortestPath(object):
                 break # no path possible
         
         # consruct direction from start
-        cur = avg_start
+        cur = self.start
         cur_dir = self.directon
         ret_seq = []
-        while cur[0] != avg_goal[0] or cur[1] != avg_goal[1]:
+        while cur[0] != self.goal[0] or cur[1] != self.goal[1]:
             next_coord = next_post[cur[0]][cur[1]]
             for x in self.action(cur, next_coord, cur_dir):
                 ret_seq.append(x)
@@ -184,7 +178,3 @@ class ShortestPath(object):
             "sequence": ret_seq,
             "map": ret_map
         }
-
-if __name__ == '__main__':
-    x = ShortestPath([[6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7], [6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7]], NORTH)
-    print(x.shortest_path())
