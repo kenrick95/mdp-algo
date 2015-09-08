@@ -32,12 +32,8 @@ Ctrl + Pause/break.
 
 
 ## TODO
-- Real map
-- simulator of sensors
-- simlator of map
-    - exploration implementation
-    - shortest path implementation
-
+- Integrate exploration.py with sim.py
+- Use the map descriptor format -_-
 
 
 

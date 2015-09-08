@@ -5,14 +5,6 @@ class Robot(object):
     """docstring for Robot"""
     def __init__(self):
         super(Robot, self).__init__()
-        # def find_centre(coords):
-        #     avg_coord = [0, 0]
-        #     for coord in coords:
-        #         avg_coord[0] += coord[0]
-        #         avg_coord[1] += coord[1]
-        #     avg_coord[0] = int(avg_coord[0] / len(coords))
-        #     avg_coord[1] = int(avg_coord[1] / len(coords))
-        #     return avg_coord
         self.__map = []
         self.explored_map = []
         self.__get_map()
@@ -20,13 +12,6 @@ class Robot(object):
         self.MAX_ROW = len(self.__map)
         self.MAX_COL = len(self.__map[0])
         self.__recolor_later = []
-
-        # for i in range(self.MAX_ROW):
-        #     for j in range(self.MAX_COL):
-        #         if self.__map[i][j] == 6:
-        #             start.append([i, j])
-        #         elif self.__map[i][j] == 7:
-        #             goal.append([i, j])
 
         self.start = [18, 1] # find_centre(start)
         self.goal = [1, 13] # find_centre(goal)
@@ -72,11 +57,6 @@ class Robot(object):
             self.explored_map[o['coord'][0]][o['coord'][1]] = o['value']
         self.__recolor_later = []
 
-        # directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
-        # for direction in directions:
-        #     value = 1
-        #     self.explored_map[self.current[0] + direction[0]][self.current[1] + direction[1]] = value
-
     def __is_safe(self, _center):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
@@ -111,7 +91,6 @@ class Robot(object):
         zope.event.notify(action)
 
     def forward(self, mark_value = 8):
-        # TODO, do proper "trailing" path
         self.__clear_marks()
         self.__mark_surroundings(self.start, 6)
         self.__mark_surroundings(self.goal, 7)
@@ -172,7 +151,7 @@ class Robot(object):
             sensors.append([])
             for j in range(4):
                 sensors[i].append([])
-        # only NORTH
+
         for i in range(4):
             if self.direction == NORTH:
                 sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
