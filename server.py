@@ -126,7 +126,8 @@ def test(exp):
     cur = exp.getRealTimeMap()
     robot.action(translate(cur[1]))
     sensors = robot.get_sensors()
-    test(exp)
+    if not cur[2]:
+        test(exp)
 
 @delay(delay_time)
 def test_sp(sequence):
