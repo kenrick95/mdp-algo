@@ -14,6 +14,7 @@ class Exploration(object):
 	robotCenterY = 18
 	robotDirectionX = 2
 	robotDirectionY = 18
+	cnt = 0
 
 	def __init__(self):
 		super(Exploration, self).__init__()
@@ -29,6 +30,8 @@ class Exploration(object):
 		global robotCenterY
 		global robotDirectionX
 		global robotDirectionY
+		global cnt
+		cnt = 0
 		
 		Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -98,7 +101,7 @@ class Exploration(object):
 		realTimeMap.append(Row18)
 		realTimeMap.append(Row19)
 
-		
+
 		simulatorMap = self.simulatorReadMap()
 
 
@@ -126,15 +129,15 @@ class Exploration(object):
 		#			print (realTimeMap[i][j],end="")
 		#		print()
 		self.callAllMethods()
-		print("-----------------------------------------------------------------")
+		# print("-----------------------------------------------------------------")
 		
 		for tup in pathTaken:
 			if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
 				realTimeMap[tup[0]][tup[1]] = 8
-		for i in range(0,20):
-			for j in range(0,15):
-				print (realTimeMap[i][j],end="")
-			print()
+		# for i in range(0,20):
+		# 	for j in range(0,15):
+		# 		print (realTimeMap[i][j],end="")
+		# 	print()
 
 	def callAllMethods(self):
 		global realTimeMap
@@ -530,8 +533,13 @@ class Exploration(object):
 				realTimeMap[CenterY-1][CenterX] = 4
 				realTimeMap[CenterY][CenterX+1] = 1
 		return realTimeMap
-		
+	
+
 	def getRealTimeMap(self):
+		global cnt
 		global realTimeMap
+		global robotCurMovement
 		self.main()
-		return realTimeMap
+		print(cnt + 1, robotCurMovement)
+		cnt += 1
+		return (realTimeMap, robotCurMovement)

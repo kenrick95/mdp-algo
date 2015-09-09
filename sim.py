@@ -22,7 +22,7 @@ class Robot(object):
 
         self.current = [18, 1] # find_centre(start)
         
-        self.direction = NORTH
+        self.direction = EAST
         self.__mark_robot()
 
 
@@ -70,7 +70,7 @@ class Robot(object):
     def __get_map(self):
         start = []
         goal = []
-        with open("sample map.txt") as f:
+        with open("Simulator Real Map.txt") as f:
             content = f.readlines()
             for line in content:
                 temp = []
@@ -80,8 +80,8 @@ class Robot(object):
                         temp.append(int(char))
                         temp0.append(0)
                 self.__map.append(temp)
-                self.explored_map.append(temp)
-                # self.explored_map.append(temp0)
+                # self.explored_map.append(temp)
+                self.explored_map.append(temp0)
 
     def action(self, action, mark_value = 8):
         if action == FORWARD:
@@ -135,7 +135,7 @@ class Robot(object):
 
     def __get_value(self, y, x):
         if 0 <= y < self.MAX_ROW and 0 <= x < self.MAX_COL:
-            if self.__map[y][x] == 1:
+            if self.__map[y][x] == 2:
                 if self.explored_map[y][x] == 0:
                     self.explored_map[y][x] = 2
                 return 2
@@ -143,7 +143,7 @@ class Robot(object):
                 if self.explored_map[y][x] == 0:
                     self.explored_map[y][x] = 1
                 return 1
-        return 2
+        return 0
 
     def get_sensors(self):
         sensors = []

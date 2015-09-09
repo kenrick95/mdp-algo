@@ -77,16 +77,24 @@ def tick(action):
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
 
+def translate(action):
+    if action == "W":
+        return FORWARD
+    elif action == "A":
+        return LEFT
+    elif action == "D":
+        return RIGHT
+
 @delay(.1)
 def test(exp):
-    # sensors = robot.get_sensors()
+    sensors = robot.get_sensors()
     # choice = random.choice([FORWARD, LEFT, RIGHT])
     # robot.action(choice)
     # print(choice, ': ', robot.direction)
     # test()
-    exp.getRealTimeMap()
+    cur = exp.getRealTimeMap()
+    robot.action(translate(cur[1]))
     test(exp)
-
 
 @delay(.1)
 def test_sp(sequence):
@@ -111,6 +119,11 @@ if __name__ == '__main__':
     # test()
     exp = Exploration()
     test(exp)
+
+
+    # After Exploration is done
+    # Shortest_path from CURRENT_POSITION to START
+    # Shortest_path from START to GOAL
 
     # sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
     # sp_list = sp.shortest_path()
