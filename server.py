@@ -64,9 +64,37 @@ class IndexHandler(tornado.web.RequestHandler):
         #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
         #self.finish()
 
+class StartHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self, delay):
+        self.write("Starting...")
+        global started
+        global delay_time
+        if started:
+            return
+        started = True
+        delay_time = float(delay)
+
+        # test()
+        exp = Exploration()
+        test(exp)
+
+
+        # After Exploration is done
+        # Shortest_path from CURRENT_POSITION to START
+        # Shortest_path from START to GOAL
+
+        # sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
+        # sp_list = sp.shortest_path()
+        # sp_sequence = sp_list['sequence']
+        # sp_sequence.reverse()
+        # test_sp(sp_sequence)
+
+
 app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
+    (r'/start/(.+)', StartHandler)
 ])
 
 def tick(action):
@@ -85,7 +113,10 @@ def translate(action):
     elif action == "D":
         return RIGHT
 
-@delay(.1)
+started = False
+delay_time = 0.1 # TODO: How to make this variable? (i.e. controllable from the UI?) --> Find a way to redefine decorator
+
+@delay(delay_time)
 def test(exp):
     sensors = robot.get_sensors()
     # choice = random.choice([FORWARD, LEFT, RIGHT])
@@ -94,9 +125,10 @@ def test(exp):
     # test()
     cur = exp.getRealTimeMap()
     robot.action(translate(cur[1]))
+    sensors = robot.get_sensors()
     test(exp)
 
-@delay(.1)
+@delay(delay_time)
 def test_sp(sequence):
     if len(sequence) == 0:
         print("DONE")
@@ -111,25 +143,8 @@ def test_sp(sequence):
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-
     robot = sim.Robot()
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
-    # test()
-    exp = Exploration()
-    test(exp)
-
-
-    # After Exploration is done
-    # Shortest_path from CURRENT_POSITION to START
-    # Shortest_path from START to GOAL
-
-    # sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
-    # sp_list = sp.shortest_path()
-    # sp_sequence = sp_list['sequence']
-    # sp_sequence.reverse()
-    # test_sp(sp_sequence)
-
-
     tornado.ioloop.IOLoop.instance().start()

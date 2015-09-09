@@ -4,6 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
+        <div style="position:fixed; right:0; top: 0; z-index: 100;"><button id="start">Start</button></div>
         <div id="messages" style="position:fixed; right:0; top: 0; width: 300px; height: 600px; overflow: auto;"></div>
         <canvas id="canvas" width="450" height="600" style="background: #eee">
             
@@ -69,7 +70,18 @@
             }
             draw(map);
 
+
             messageContainer.innerHTML = "";
+
+            document.getElementById("start").addEventListener('click', function(e) {
+                var r = new XMLHttpRequest();
+                r.open("GET", "/start/0.1", true);
+                r.onreadystatechange = function () {
+                  if (r.readyState != 4 || r.status != 200) return;
+                    messageContainer.innerHTML += "<br>" + r.responseText;
+                };
+                r.send();
+            });
             ws = new WebSocket("ws://localhost:8888/ws?Id=" + Math.floor(Math.random() * 1000000));
             ws.onopen = function() {
                 ws.send("Initializing connection");
@@ -77,7 +89,7 @@
             };
             ws.onmessage = function (evt) { 
                 var received_msg = evt.data;
-                messageContainer.innerHTML += "<br>Message is received: " + received_msg;
+                //messageContainer.innerHTML += "<br>Message is received: " + received_msg;
                 var data = JSON.parse(evt.data);
                 var map = data.map;
                 draw(map);

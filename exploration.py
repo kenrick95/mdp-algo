@@ -131,9 +131,9 @@ class Exploration(object):
 		self.callAllMethods()
 		# print("-----------------------------------------------------------------")
 		
-		for tup in pathTaken:
-			if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
-				realTimeMap[tup[0]][tup[1]] = 8
+		# for tup in pathTaken:
+		# 	if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
+		# 		realTimeMap[tup[0]][tup[1]] = 8
 		# for i in range(0,20):
 		# 	for j in range(0,15):
 		# 		print (realTimeMap[i][j],end="")
