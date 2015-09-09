@@ -33,22 +33,29 @@ def main():
 	#	for j in range(0,15):
 	#		print (simulatorMap[i][j],end="")
 	#	print()
-	for k in range(0,114):
-	#		for j in range(0,15):
-	#			print (realTimeMap[i][j],end="")
-	#		print()
+	#for i in range(0,20):
+	#	for j in range(0,15):
+	#		print (realTimeMap[i][j],end="")
+	#	print()
+	exploredArea = 0
+	while repeatedArea <= 30 and (exploredArea/300) < 1.0:
+		exploredArea = 0
 		callAllMethods()
-		print(k+1, robotCurMovement)
+		for tup in pathTaken:
+			if tup == (robotCenterY, robotCenterX):
+				repeatedArea = repeatedArea + 1
+		
+		for i in range(0,20):
+			for j in range(0,15):
+				if realTimeMap[i][j] != 0:
+					exploredArea = exploredArea + 1
+		print (exploredArea/300)
 	print("-----------------------------------------------------------------")
 	
 	for tup in pathTaken:
 		if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
 			realTimeMap[tup[0]][tup[1]] = 8
 		
-		#print((tup[0], tup[1]), end="")
-		#print((robotCenterY, robotCenterX))
-		if tup == (robotCenterY, robotCenterX):
-			repeatedArea = repeatedArea + 1
 	for i in range(0,20):
 		for j in range(0,15):
 			print (realTimeMap[i][j],end="")
@@ -65,6 +72,7 @@ def variableInitialisation():
 	global robotCenterY
 	global robotDirectionX
 	global robotDirectionY
+	global repeatedArea
 	
 	Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
