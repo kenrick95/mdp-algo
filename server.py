@@ -128,6 +128,8 @@ def test(exp):
     sensors = robot.get_sensors()
     if not cur[2]:
         test(exp)
+    # TODO: After finish (cur[2] == True), start shortest path to START
+    # TODO: Then, shortest path from START to GOAL
 
 @delay(delay_time)
 def test_sp(sequence):
@@ -138,8 +140,6 @@ def test_sp(sequence):
     robot.action(choice, 9)
     print(choice, ': ', robot.direction)
     test_sp(sequence)
-
-# every 1 s, call Nelson's exploration function --> get sth to print
 
 if __name__ == '__main__':
     parse_command_line()

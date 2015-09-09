@@ -135,6 +135,7 @@ class Robot(object):
 
     def __get_value(self, y, x):
         if 0 <= y < self.MAX_ROW and 0 <= x < self.MAX_COL:
+            # TODO: if false information is given, how to update?
             if self.__map[y][x] == 2:
                 if self.explored_map[y][x] == 0:
                     self.explored_map[y][x] = 2
@@ -143,14 +144,14 @@ class Robot(object):
                 if self.explored_map[y][x] == 0:
                     self.explored_map[y][x] = 1
                 return 1
-        return 0
+        return None
 
     def get_sensors(self):
         sensors = []
         for i in range(6):
             sensors.append([])
             for j in range(4):
-                sensors[i].append([])
+                sensors[i].append(None)
 
         for i in range(4):
             if self.direction == NORTH:

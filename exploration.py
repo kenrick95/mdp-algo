@@ -15,6 +15,7 @@ class Exploration(object):
 	robotDirectionX = 2
 	robotDirectionY = 18
 	repeatedArea = 0
+	exploredArea = 0
 	cnt = 0
 
 	def __init__(self):
@@ -34,6 +35,7 @@ class Exploration(object):
 		global repeatedArea
 		global robotBreak
 		global cnt
+		global exploredArea
 		cnt = 0
 		
 		Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -54,8 +56,8 @@ class Exploration(object):
 		Row15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		Row16 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		Row17 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row18 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row19 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		Row18 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		Row19 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 
 		# realTimeMap[0] = bottom row
@@ -75,6 +77,7 @@ class Exploration(object):
 		pathTaken = []
 		
 		repeatedArea = 0
+		exploredArea = 0
 		robotPrevMovement = "O"
 		robotCurMovement = "O"
 
@@ -124,6 +127,7 @@ class Exploration(object):
 		global robotDirectionY
 		global repeatedArea
 		global robotBreak
+		global exploredArea
 	
 			
 		realTimeMap = self.updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
@@ -136,8 +140,8 @@ class Exploration(object):
 		#		for j in range(0,15):
 		#			print (realTimeMap[i][j],end="")
 		#		print()
-		exploredArea = 0
-		if repeatedArea <= 30 and (exploredArea/300) < 1.0:
+
+		if repeatedArea <= 30 and exploredArea < 300:
 			exploredArea = 0
 			self.callAllMethods()
 			for tup in pathTaken:
@@ -148,7 +152,7 @@ class Exploration(object):
 				for j in range(0,15):
 					if realTimeMap[i][j] != 0:
 						exploredArea = exploredArea + 1
-			print (exploredArea/300)
+			print (repeatedArea, exploredArea)
 		else:
 			robotBreak = True
 
