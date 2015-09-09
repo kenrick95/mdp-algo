@@ -77,13 +77,15 @@ def tick(action):
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
 
-@delay(1.0)
-def test():
-    sensors = robot.get_sensors()
-    choice = random.choice([FORWARD, LEFT, RIGHT])
-    robot.action(choice)
-    print(choice, ': ', robot.direction)
-    test()
+@delay(.1)
+def test(exp):
+    # sensors = robot.get_sensors()
+    # choice = random.choice([FORWARD, LEFT, RIGHT])
+    # robot.action(choice)
+    # print(choice, ': ', robot.direction)
+    # test()
+    exp.getRealTimeMap()
+    test(exp)
 
 
 @delay(.1)
@@ -107,11 +109,14 @@ if __name__ == '__main__':
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
     # test()
-    sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
-    sp_list = sp.shortest_path()
-    sp_sequence = sp_list['sequence']
-    sp_sequence.reverse()
-    test_sp(sp_sequence)
+    exp = Exploration()
+    test(exp)
+
+    # sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
+    # sp_list = sp.shortest_path()
+    # sp_sequence = sp_list['sequence']
+    # sp_sequence.reverse()
+    # test_sp(sp_sequence)
 
 
     tornado.ioloop.IOLoop.instance().start()
