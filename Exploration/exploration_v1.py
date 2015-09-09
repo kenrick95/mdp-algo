@@ -1,4 +1,30 @@
+import time
+realTimeMap = []
+simulatorMap = []
+sensorList = []
+pathTaken = []
+repeatedArea = 0
+robotPrevMovement = "O"
+robotCurMovement = "O"
+
+robotCenterX = 1
+robotCenterY = 18
+robotDirectionX = 2
+robotDirectionY = 18
+
 def main():
+	global realTimeMap
+	global simulatorMap
+	global sensorList
+	global pathTaken
+	global robotCenterX
+	global robotPrevMovement
+	global robotCurMovement
+	global robotCenterX
+	global robotCenterY
+	global robotDirectionX
+	global robotDirectionY
+	
 	Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	Row2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -72,71 +98,91 @@ def main():
 	#	for j in range(0,15):
 	#		print (simulatorMap[i][j],end="")
 	#	print()
-	for k in range(0,100):	
-		sensorList = getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
-		for i in range(0,7):
-			print(sensorList[i])
-		realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
-		
-		for i in range(0,20):
-			for j in range(0,15):
-				print (realTimeMap[i][j],end="")
-			print()
-		robotCurMovement = robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
-		robotPrevMovement = robotCurMovement
-		if robotCurMovement == "W":
-			pathTaken.append((robotCenterY, robotCenterX))
-		print (robotCurMovement)
-		realTimeMap = executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
-		
-		if sensorList[0][0] == "U":
-			if robotCurMovement == "D":
-				robotDirectionX = robotDirectionX + 1
-				robotDirectionY = robotDirectionY + 1
-			elif robotCurMovement == "W":
-				robotCenterY = robotCenterY - 1
-				robotDirectionY = robotDirectionY - 1
-			elif robotCurMovement == "A":
-				robotDirectionX = robotDirectionX - 1
-				robotDirectionY = robotDirectionY + 1
-		if sensorList[0][0] == "D":
-			if robotCurMovement == "D":
-				robotDirectionX = robotDirectionX - 1
-				robotDirectionY = robotDirectionY - 1
-			elif robotCurMovement == "W":
-				robotCenterY = robotCenterY + 1
-				robotDirectionY = robotDirectionY + 1
-			elif robotCurMovement == "A":
-				robotDirectionX = robotDirectionX + 1
-				robotDirectionY = robotDirectionY - 1
-		if sensorList[0][0] == "L":
-			if robotCurMovement == "D":
-				robotDirectionX = robotDirectionX + 1
-				robotDirectionY = robotDirectionY - 1
-			elif robotCurMovement == "W":
-				robotCenterX = robotCenterX -1
-				robotDirectionX = robotDirectionX - 1
-			elif robotCurMovement == "A":
-				robotDirectionX = robotDirectionX + 1
-				robotDirectionY = robotDirectionY + 1
-		if sensorList[0][0] == "R":
-			if robotCurMovement == "D":
-				robotDirectionX = robotDirectionX - 1
-				robotDirectionY = robotDirectionY + 1
-			elif robotCurMovement == "W":
-				robotCenterX = robotCenterX + 1
-				robotDirectionX = robotDirectionX + 1
-			elif robotCurMovement == "A":
-				robotDirectionX = robotDirectionX - 1
-				robotDirectionY = robotDirectionY - 1
-		
-		print("-----------------------------------------------------------------")
+	for k in range(0,150):
+	#		for j in range(0,15):
+	#			print (realTimeMap[i][j],end="")
+	#		print()
+		callAllMethods()
+	print("-----------------------------------------------------------------")
+	
 	for tup in pathTaken:
-		realTimeMap[tup[0]][tup[1]] = 8
+		if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
+			realTimeMap[tup[0]][tup[1]] = 8
 	for i in range(0,20):
 		for j in range(0,15):
 			print (realTimeMap[i][j],end="")
 		print()
+
+def callAllMethods():
+	global realTimeMap
+	global simulatorMap
+	global sensorList
+	global pathTaken
+	global robotCenterX
+	global robotPrevMovement
+	global robotCurMovement
+	global robotCenterX
+	global robotCenterY
+	global robotDirectionX
+	global robotDirectionY
+	
+	sensorList = getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+	#for i in range(0,7):
+	#	print(sensorList[i])
+	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
+	
+	robotCurMovement = robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
+	robotPrevMovement = robotCurMovement
+	if robotCurMovement == "W":
+		pathTaken.append((robotCenterY, robotCenterX))
+	#print (robotCurMovement)
+	realTimeMap = executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
+	
+	if sensorList[0][0] == "U":
+		if robotCurMovement == "D":
+			robotDirectionX = robotDirectionX + 1
+			robotDirectionY = robotDirectionY + 1
+		elif robotCurMovement == "W":
+			robotCenterY = robotCenterY - 1
+			robotDirectionY = robotDirectionY - 1
+		elif robotCurMovement == "A":
+			robotDirectionX = robotDirectionX - 1
+			robotDirectionY = robotDirectionY + 1
+	if sensorList[0][0] == "D":
+		if robotCurMovement == "D":
+			robotDirectionX = robotDirectionX - 1
+			robotDirectionY = robotDirectionY - 1
+		elif robotCurMovement == "W":
+			robotCenterY = robotCenterY + 1
+			robotDirectionY = robotDirectionY + 1
+		elif robotCurMovement == "A":
+			robotDirectionX = robotDirectionX + 1
+			robotDirectionY = robotDirectionY - 1
+	if sensorList[0][0] == "L":
+		if robotCurMovement == "D":
+			robotDirectionX = robotDirectionX + 1
+			robotDirectionY = robotDirectionY - 1
+		elif robotCurMovement == "W":
+			robotCenterX = robotCenterX -1
+			robotDirectionX = robotDirectionX - 1
+		elif robotCurMovement == "A":
+			robotDirectionX = robotDirectionX + 1
+			robotDirectionY = robotDirectionY + 1
+	if sensorList[0][0] == "R":
+		if robotCurMovement == "D":
+			robotDirectionX = robotDirectionX - 1
+			robotDirectionY = robotDirectionY + 1
+		elif robotCurMovement == "W":
+			robotCenterX = robotCenterX + 1
+			robotDirectionX = robotDirectionX + 1
+		elif robotCurMovement == "A":
+			robotDirectionX = robotDirectionX - 1
+			robotDirectionY = robotDirectionY - 1
+	#for i in range(0,20):
+	#	for j in range(0,15):
+	#		print (realTimeMap[i][j],end="")
+	#	print()
+	#print("-----------------------------------------------------------------")
 		
 def getSensor(simMap, centerX, centerY, directionX, directionY):
 	# returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
@@ -460,4 +506,9 @@ def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 		elif movement == "A":
 			realTimeMap[CenterY-1][CenterX] = 4
 			realTimeMap[CenterY][CenterX+1] = 1
+	return realTimeMap
+	
+def getRealTimeMap():
+	global realTimeMap
+	main()
 	return realTimeMap
