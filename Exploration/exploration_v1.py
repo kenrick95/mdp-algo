@@ -24,6 +24,47 @@ def main():
 	global robotCenterY
 	global robotDirectionX
 	global robotDirectionY
+	global repeatedArea
+	
+	variableInitialisation()
+	realTimeMap = updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+	
+	#for i in range(0,20):
+	#	for j in range(0,15):
+	#		print (simulatorMap[i][j],end="")
+	#	print()
+	for k in range(0,114):
+	#		for j in range(0,15):
+	#			print (realTimeMap[i][j],end="")
+	#		print()
+		callAllMethods()
+		print(k+1, robotCurMovement)
+	print("-----------------------------------------------------------------")
+	
+	for tup in pathTaken:
+		if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
+			realTimeMap[tup[0]][tup[1]] = 8
+		
+		#print((tup[0], tup[1]), end="")
+		#print((robotCenterY, robotCenterX))
+		if tup == (robotCenterY, robotCenterX):
+			repeatedArea = repeatedArea + 1
+	for i in range(0,20):
+		for j in range(0,15):
+			print (realTimeMap[i][j],end="")
+		print()
+		
+def variableInitialisation():
+	global realTimeMap
+	global simulatorMap
+	global sensorList
+	global pathTaken
+	global robotPrevMovement
+	global robotCurMovement
+	global robotCenterX
+	global robotCenterY
+	global robotDirectionX
+	global robotDirectionY
 	
 	Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -90,28 +131,8 @@ def main():
 	realTimeMap.append(Row17)
 	realTimeMap.append(Row18)
 	realTimeMap.append(Row19)
-		
-	realTimeMap = updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
 	
 	simulatorMap = simulatorReadMap()
-	#for i in range(0,20):
-	#	for j in range(0,15):
-	#		print (simulatorMap[i][j],end="")
-	#	print()
-	for k in range(0,150):
-	#		for j in range(0,15):
-	#			print (realTimeMap[i][j],end="")
-	#		print()
-		callAllMethods()
-	print("-----------------------------------------------------------------")
-	
-	for tup in pathTaken:
-		if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
-			realTimeMap[tup[0]][tup[1]] = 8
-	for i in range(0,20):
-		for j in range(0,15):
-			print (realTimeMap[i][j],end="")
-		print()
 
 def callAllMethods():
 	global realTimeMap
@@ -509,6 +530,7 @@ def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 	return realTimeMap
 	
 def getRealTimeMap():
+	global robotCurMovement
 	global realTimeMap
 	main()
-	return realTimeMap
+	return (realTimeMap, robotCurMovement)
