@@ -55,9 +55,9 @@ class Exploration(object):
 		Row14 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		Row15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		Row16 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row17 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row18 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row19 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		Row17 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
+		Row18 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
+		Row19 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
 
 
 		# realTimeMap[0] = bottom row
@@ -113,7 +113,7 @@ class Exploration(object):
 		simulatorMap = self.simulatorReadMap()
 
 
-	def main(self):
+	def main(self, sensors):
 		global realTimeMap
 		global simulatorMap
 		global sensorList
@@ -143,7 +143,7 @@ class Exploration(object):
 
 		if repeatedArea <= 30 and exploredArea < 300:
 			exploredArea = 0
-			self.callAllMethods()
+			self.callAllMethods(sensors)
 			for tup in pathTaken:
 				if tup == (robotCenterY, robotCenterX):
 					repeatedArea = repeatedArea + 1
@@ -166,7 +166,7 @@ class Exploration(object):
 		# 		print (realTimeMap[i][j],end="")
 		# 	print()
 
-	def callAllMethods(self):
+	def callAllMethods(self, sensors):
 		global realTimeMap
 		global simulatorMap
 		global sensorList
@@ -182,6 +182,12 @@ class Exploration(object):
 		sensorList = self.getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
 		#for i in range(0,7):
 		#	print(sensorList[i])
+		# print(sensorList)
+		sensors[3], sensors[4] = sensors[4], sensors[3]
+		sensors.insert(0, sensorList[0])
+		# print(sensors)
+		sensorList = sensors
+
 		realTimeMap = self.updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
 		
 		robotCurMovement = self.robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
@@ -354,161 +360,161 @@ class Exploration(object):
 	def updateRealTimeMap(self, realTimeMap, sensorList, centerX, centerY):
 		if sensorList[0][0] == "U":
 			#front left
-			if sensorList[1][0] != 3 :realTimeMap[centerY-2][centerX-1] = sensorList[1][0]
-			if sensorList[1][1] != 3 :realTimeMap[centerY-3][centerX-1] = sensorList[1][1]
-			if sensorList[1][2] != 3 :realTimeMap[centerY-4][centerX-1] = sensorList[1][2]
-			if sensorList[1][3] != 3 :realTimeMap[centerY-5][centerX-1] = sensorList[1][3]
+			if sensorList[1][0] != None :realTimeMap[centerY-2][centerX-1] = sensorList[1][0]
+			if sensorList[1][1] != None :realTimeMap[centerY-3][centerX-1] = sensorList[1][1]
+			if sensorList[1][2] != None :realTimeMap[centerY-4][centerX-1] = sensorList[1][2]
+			if sensorList[1][3] != None :realTimeMap[centerY-5][centerX-1] = sensorList[1][3]
 			#front center
-			if sensorList[2][0] != 3 :realTimeMap[centerY-2][centerX] = sensorList[2][0]
-			if sensorList[2][1] != 3 :realTimeMap[centerY-3][centerX] = sensorList[2][1]
-			if sensorList[2][2] != 3 :realTimeMap[centerY-4][centerX] = sensorList[2][2]
-			if sensorList[2][3] != 3 :realTimeMap[centerY-5][centerX] = sensorList[2][3]
+			if sensorList[2][0] != None :realTimeMap[centerY-2][centerX] = sensorList[2][0]
+			if sensorList[2][1] != None :realTimeMap[centerY-3][centerX] = sensorList[2][1]
+			if sensorList[2][2] != None :realTimeMap[centerY-4][centerX] = sensorList[2][2]
+			if sensorList[2][3] != None :realTimeMap[centerY-5][centerX] = sensorList[2][3]
 			#front right
-			if sensorList[3][0] != 3 :realTimeMap[centerY-2][centerX+1] = sensorList[3][0]
-			if sensorList[3][1] != 3 :realTimeMap[centerY-3][centerX+1] = sensorList[3][1]
-			if sensorList[3][2] != 3 :realTimeMap[centerY-4][centerX+1] = sensorList[3][2]
-			if sensorList[3][3] != 3 :realTimeMap[centerY-5][centerX+1] = sensorList[3][3]
+			if sensorList[3][0] != None :realTimeMap[centerY-2][centerX+1] = sensorList[3][0]
+			if sensorList[3][1] != None :realTimeMap[centerY-3][centerX+1] = sensorList[3][1]
+			if sensorList[3][2] != None :realTimeMap[centerY-4][centerX+1] = sensorList[3][2]
+			if sensorList[3][3] != None :realTimeMap[centerY-5][centerX+1] = sensorList[3][3]
 			#left
-			if sensorList[4][0] != 3 :realTimeMap[centerY-1][centerX-2] = sensorList[4][0]
-			if sensorList[4][1] != 3 :realTimeMap[centerY-1][centerX-3] = sensorList[4][1]
-			if sensorList[4][2] != 3 :realTimeMap[centerY-1][centerX-4] = sensorList[4][2]
-			if sensorList[4][3] != 3 :realTimeMap[centerY-1][centerX-5] = sensorList[4][3]
+			if sensorList[4][0] != None :realTimeMap[centerY-1][centerX-2] = sensorList[4][0]
+			if sensorList[4][1] != None :realTimeMap[centerY-1][centerX-3] = sensorList[4][1]
+			if sensorList[4][2] != None :realTimeMap[centerY-1][centerX-4] = sensorList[4][2]
+			if sensorList[4][3] != None :realTimeMap[centerY-1][centerX-5] = sensorList[4][3]
 			#right
-			if sensorList[5][0] != 3 :realTimeMap[centerY-1][centerX+2] = sensorList[5][0]
-			if sensorList[5][1] != 3 :realTimeMap[centerY-1][centerX+3] = sensorList[5][1]
-			if sensorList[5][2] != 3 :realTimeMap[centerY-1][centerX+4] = sensorList[5][2]
-			if sensorList[5][3] != 3 :realTimeMap[centerY-1][centerX+5] = sensorList[5][3]
+			if sensorList[5][0] != None :realTimeMap[centerY-1][centerX+2] = sensorList[5][0]
+			if sensorList[5][1] != None :realTimeMap[centerY-1][centerX+3] = sensorList[5][1]
+			if sensorList[5][2] != None :realTimeMap[centerY-1][centerX+4] = sensorList[5][2]
+			if sensorList[5][3] != None :realTimeMap[centerY-1][centerX+5] = sensorList[5][3]
 			#bottom left
-			if sensorList[6][0] != 3 :realTimeMap[centerY+1][centerX-2] = sensorList[6][0]
-			if sensorList[6][1] != 3 :realTimeMap[centerY+1][centerX-3] = sensorList[6][1]
-			if sensorList[6][2] != 3 :realTimeMap[centerY+1][centerX-4] = sensorList[6][2]
-			if sensorList[6][3] != 3 :realTimeMap[centerY+1][centerX-5] = sensorList[6][3]
+			if sensorList[6][0] != None :realTimeMap[centerY+1][centerX-2] = sensorList[6][0]
+			if sensorList[6][1] != None :realTimeMap[centerY+1][centerX-3] = sensorList[6][1]
+			if sensorList[6][2] != None :realTimeMap[centerY+1][centerX-4] = sensorList[6][2]
+			if sensorList[6][3] != None :realTimeMap[centerY+1][centerX-5] = sensorList[6][3]
 		elif sensorList[0][0] == "D":
-			if sensorList[1][0] != 3 :realTimeMap[centerY+2][centerX+1] = sensorList[1][0]
-			if sensorList[1][1] != 3 :realTimeMap[centerY+3][centerX+1] = sensorList[1][1]
-			if sensorList[1][2] != 3 :realTimeMap[centerY+4][centerX+1] = sensorList[1][2]
-			if sensorList[1][3] != 3 :realTimeMap[centerY+5][centerX+1] = sensorList[1][3]
+			if sensorList[1][0] != None :realTimeMap[centerY+2][centerX+1] = sensorList[1][0]
+			if sensorList[1][1] != None :realTimeMap[centerY+3][centerX+1] = sensorList[1][1]
+			if sensorList[1][2] != None :realTimeMap[centerY+4][centerX+1] = sensorList[1][2]
+			if sensorList[1][3] != None :realTimeMap[centerY+5][centerX+1] = sensorList[1][3]
 			
-			if sensorList[2][0] != 3 :realTimeMap[centerY+2][centerX] = sensorList[2][0]
-			if sensorList[2][1] != 3 :realTimeMap[centerY+3][centerX] = sensorList[2][1]
-			if sensorList[2][2] != 3 :realTimeMap[centerY+4][centerX] = sensorList[2][2]
-			if sensorList[2][3] != 3 :realTimeMap[centerY+5][centerX] = sensorList[2][3]
+			if sensorList[2][0] != None :realTimeMap[centerY+2][centerX] = sensorList[2][0]
+			if sensorList[2][1] != None :realTimeMap[centerY+3][centerX] = sensorList[2][1]
+			if sensorList[2][2] != None :realTimeMap[centerY+4][centerX] = sensorList[2][2]
+			if sensorList[2][3] != None :realTimeMap[centerY+5][centerX] = sensorList[2][3]
 			
-			if sensorList[3][0] != 3 :realTimeMap[centerY+2][centerX-1] = sensorList[3][0]
-			if sensorList[3][1] != 3 :realTimeMap[centerY+3][centerX-1] = sensorList[3][1]
-			if sensorList[3][2] != 3 :realTimeMap[centerY+4][centerX-1] = sensorList[3][2]
-			if sensorList[3][3] != 3 :realTimeMap[centerY+5][centerX-1] = sensorList[3][3]
+			if sensorList[3][0] != None :realTimeMap[centerY+2][centerX-1] = sensorList[3][0]
+			if sensorList[3][1] != None :realTimeMap[centerY+3][centerX-1] = sensorList[3][1]
+			if sensorList[3][2] != None :realTimeMap[centerY+4][centerX-1] = sensorList[3][2]
+			if sensorList[3][3] != None :realTimeMap[centerY+5][centerX-1] = sensorList[3][3]
 			
-			if sensorList[4][0] != 3 :realTimeMap[centerY+1][centerX+2] = sensorList[4][0]
-			if sensorList[4][1] != 3 :realTimeMap[centerY+1][centerX+3] = sensorList[4][1]
-			if sensorList[4][2] != 3 :realTimeMap[centerY+1][centerX+4] = sensorList[4][2]
-			if sensorList[4][3] != 3 :realTimeMap[centerY+1][centerX+5] = sensorList[4][3]
+			if sensorList[4][0] != None :realTimeMap[centerY+1][centerX+2] = sensorList[4][0]
+			if sensorList[4][1] != None :realTimeMap[centerY+1][centerX+3] = sensorList[4][1]
+			if sensorList[4][2] != None :realTimeMap[centerY+1][centerX+4] = sensorList[4][2]
+			if sensorList[4][3] != None :realTimeMap[centerY+1][centerX+5] = sensorList[4][3]
 			
-			if sensorList[5][0] != 3 :realTimeMap[centerY+1][centerX-2] = sensorList[5][0]
-			if sensorList[5][1] != 3 :realTimeMap[centerY+1][centerX-3] = sensorList[5][1]
-			if sensorList[5][2] != 3 :realTimeMap[centerY+1][centerX-4] = sensorList[5][2]
-			if sensorList[5][3] != 3 :realTimeMap[centerY+1][centerX-5] = sensorList[5][3]
+			if sensorList[5][0] != None :realTimeMap[centerY+1][centerX-2] = sensorList[5][0]
+			if sensorList[5][1] != None :realTimeMap[centerY+1][centerX-3] = sensorList[5][1]
+			if sensorList[5][2] != None :realTimeMap[centerY+1][centerX-4] = sensorList[5][2]
+			if sensorList[5][3] != None :realTimeMap[centerY+1][centerX-5] = sensorList[5][3]
 			
-			if sensorList[6][0] != 3 :realTimeMap[centerY-1][centerX+2] = sensorList[6][0]
-			if sensorList[6][1] != 3 :realTimeMap[centerY-1][centerX+3] = sensorList[6][1]
-			if sensorList[6][2] != 3 :realTimeMap[centerY-1][centerX+4] = sensorList[6][2]
-			if sensorList[6][3] != 3 :realTimeMap[centerY-1][centerX+5] = sensorList[6][3]
+			if sensorList[6][0] != None :realTimeMap[centerY-1][centerX+2] = sensorList[6][0]
+			if sensorList[6][1] != None :realTimeMap[centerY-1][centerX+3] = sensorList[6][1]
+			if sensorList[6][2] != None :realTimeMap[centerY-1][centerX+4] = sensorList[6][2]
+			if sensorList[6][3] != None :realTimeMap[centerY-1][centerX+5] = sensorList[6][3]
 		elif sensorList[0][0] == "L":
-			if sensorList[1][0] != 3 :realTimeMap[centerY+1][centerX-2] = sensorList[1][0]
-			if sensorList[1][1] != 3 :realTimeMap[centerY+1][centerX-3] = sensorList[1][1]
-			if sensorList[1][2] != 3 :realTimeMap[centerY+1][centerX-4] = sensorList[1][2]
-			if sensorList[1][3] != 3 :realTimeMap[centerY+1][centerX-5] = sensorList[1][3]
+			if sensorList[1][0] != None :realTimeMap[centerY+1][centerX-2] = sensorList[1][0]
+			if sensorList[1][1] != None :realTimeMap[centerY+1][centerX-3] = sensorList[1][1]
+			if sensorList[1][2] != None :realTimeMap[centerY+1][centerX-4] = sensorList[1][2]
+			if sensorList[1][3] != None :realTimeMap[centerY+1][centerX-5] = sensorList[1][3]
 			
-			if sensorList[2][0] != 3 :realTimeMap[centerY][centerX-2] = sensorList[2][0]
-			if sensorList[2][1] != 3 :realTimeMap[centerY][centerX-3] = sensorList[2][1]
-			if sensorList[2][2] != 3 :realTimeMap[centerY][centerX-4] = sensorList[2][2]
-			if sensorList[2][3] != 3 :realTimeMap[centerY][centerX-5] = sensorList[2][3]
+			if sensorList[2][0] != None :realTimeMap[centerY][centerX-2] = sensorList[2][0]
+			if sensorList[2][1] != None :realTimeMap[centerY][centerX-3] = sensorList[2][1]
+			if sensorList[2][2] != None :realTimeMap[centerY][centerX-4] = sensorList[2][2]
+			if sensorList[2][3] != None :realTimeMap[centerY][centerX-5] = sensorList[2][3]
 			
-			if sensorList[3][0] != 3 :realTimeMap[centerY-1][centerX-2] = sensorList[3][0]
-			if sensorList[3][1] != 3 :realTimeMap[centerY-1][centerX-3] = sensorList[3][1]
-			if sensorList[3][2] != 3 :realTimeMap[centerY-1][centerX-4] = sensorList[3][2]
-			if sensorList[3][3] != 3 :realTimeMap[centerY-1][centerX-5] = sensorList[3][3]
+			if sensorList[3][0] != None :realTimeMap[centerY-1][centerX-2] = sensorList[3][0]
+			if sensorList[3][1] != None :realTimeMap[centerY-1][centerX-3] = sensorList[3][1]
+			if sensorList[3][2] != None :realTimeMap[centerY-1][centerX-4] = sensorList[3][2]
+			if sensorList[3][3] != None :realTimeMap[centerY-1][centerX-5] = sensorList[3][3]
 			
-			if sensorList[4][0] != 3 :realTimeMap[centerY+2][centerX-1] = sensorList[4][0]
-			if sensorList[4][1] != 3 :realTimeMap[centerY+3][centerX-1] = sensorList[4][1]
-			if sensorList[4][2] != 3 :realTimeMap[centerY+4][centerX-1] = sensorList[4][2]
-			if sensorList[4][3] != 3 :realTimeMap[centerY+5][centerX-1] = sensorList[4][3]
+			if sensorList[4][0] != None :realTimeMap[centerY+2][centerX-1] = sensorList[4][0]
+			if sensorList[4][1] != None :realTimeMap[centerY+3][centerX-1] = sensorList[4][1]
+			if sensorList[4][2] != None :realTimeMap[centerY+4][centerX-1] = sensorList[4][2]
+			if sensorList[4][3] != None :realTimeMap[centerY+5][centerX-1] = sensorList[4][3]
 			
-			if sensorList[5][0] != 3 :realTimeMap[centerY-2][centerX-1] = sensorList[5][0]
-			if sensorList[5][1] != 3 :realTimeMap[centerY-3][centerX-1] = sensorList[5][1]
-			if sensorList[5][2] != 3 :realTimeMap[centerY-4][centerX-1] = sensorList[5][2]
-			if sensorList[5][3] != 3 :realTimeMap[centerY-5][centerX-1] = sensorList[5][3]
+			if sensorList[5][0] != None :realTimeMap[centerY-2][centerX-1] = sensorList[5][0]
+			if sensorList[5][1] != None :realTimeMap[centerY-3][centerX-1] = sensorList[5][1]
+			if sensorList[5][2] != None :realTimeMap[centerY-4][centerX-1] = sensorList[5][2]
+			if sensorList[5][3] != None :realTimeMap[centerY-5][centerX-1] = sensorList[5][3]
 			
-			if sensorList[6][0] != 3 :realTimeMap[centerY+2][centerX+1] = sensorList[6][0]
-			if sensorList[6][1] != 3 :realTimeMap[centerY+3][centerX+1] = sensorList[6][1]
-			if sensorList[6][2] != 3 :realTimeMap[centerY+4][centerX+1] = sensorList[6][2]
-			if sensorList[6][3] != 3 :realTimeMap[centerY+5][centerX+1] = sensorList[6][3]
+			if sensorList[6][0] != None :realTimeMap[centerY+2][centerX+1] = sensorList[6][0]
+			if sensorList[6][1] != None :realTimeMap[centerY+3][centerX+1] = sensorList[6][1]
+			if sensorList[6][2] != None :realTimeMap[centerY+4][centerX+1] = sensorList[6][2]
+			if sensorList[6][3] != None :realTimeMap[centerY+5][centerX+1] = sensorList[6][3]
 		elif sensorList[0][0] == "R":
-			if sensorList[1][0] != 3 :realTimeMap[centerY-1][centerX+2] = sensorList[1][0]
-			if sensorList[1][1] != 3 :realTimeMap[centerY-1][centerX+3] = sensorList[1][1]
-			if sensorList[1][2] != 3 :realTimeMap[centerY-1][centerX+4] = sensorList[1][2]
-			if sensorList[1][3] != 3 :realTimeMap[centerY-1][centerX+5] = sensorList[1][3]
+			if sensorList[1][0] != None :realTimeMap[centerY-1][centerX+2] = sensorList[1][0]
+			if sensorList[1][1] != None :realTimeMap[centerY-1][centerX+3] = sensorList[1][1]
+			if sensorList[1][2] != None :realTimeMap[centerY-1][centerX+4] = sensorList[1][2]
+			if sensorList[1][3] != None :realTimeMap[centerY-1][centerX+5] = sensorList[1][3]
 			
-			if sensorList[2][0] != 3 :realTimeMap[centerY][centerX+2] = sensorList[2][0]
-			if sensorList[2][1] != 3 :realTimeMap[centerY][centerX+3] = sensorList[2][1]
-			if sensorList[2][2] != 3 :realTimeMap[centerY][centerX+4] = sensorList[2][2]
-			if sensorList[2][3] != 3 :realTimeMap[centerY][centerX+5] = sensorList[2][3]
+			if sensorList[2][0] != None :realTimeMap[centerY][centerX+2] = sensorList[2][0]
+			if sensorList[2][1] != None :realTimeMap[centerY][centerX+3] = sensorList[2][1]
+			if sensorList[2][2] != None :realTimeMap[centerY][centerX+4] = sensorList[2][2]
+			if sensorList[2][3] != None :realTimeMap[centerY][centerX+5] = sensorList[2][3]
 			
-			if sensorList[3][0] != 3 :realTimeMap[centerY+1][centerX+2] = sensorList[3][0]
-			if sensorList[3][1] != 3 :realTimeMap[centerY+1][centerX+3] = sensorList[3][1]
-			if sensorList[3][2] != 3 :realTimeMap[centerY+1][centerX+4] = sensorList[3][2]
-			if sensorList[3][3] != 3 :realTimeMap[centerY+1][centerX+5] = sensorList[3][3]
+			if sensorList[3][0] != None :realTimeMap[centerY+1][centerX+2] = sensorList[3][0]
+			if sensorList[3][1] != None :realTimeMap[centerY+1][centerX+3] = sensorList[3][1]
+			if sensorList[3][2] != None :realTimeMap[centerY+1][centerX+4] = sensorList[3][2]
+			if sensorList[3][3] != None :realTimeMap[centerY+1][centerX+5] = sensorList[3][3]
 			
-			if sensorList[4][0] != 3 :realTimeMap[centerY-2][centerX+1] = sensorList[4][0]
-			if sensorList[4][1] != 3 :realTimeMap[centerY-3][centerX+1] = sensorList[4][1]
-			if sensorList[4][2] != 3 :realTimeMap[centerY-4][centerX+1] = sensorList[4][2]
-			if sensorList[4][3] != 3 :realTimeMap[centerY-5][centerX+1] = sensorList[4][3]
+			if sensorList[4][0] != None :realTimeMap[centerY-2][centerX+1] = sensorList[4][0]
+			if sensorList[4][1] != None :realTimeMap[centerY-3][centerX+1] = sensorList[4][1]
+			if sensorList[4][2] != None :realTimeMap[centerY-4][centerX+1] = sensorList[4][2]
+			if sensorList[4][3] != None :realTimeMap[centerY-5][centerX+1] = sensorList[4][3]
 			
-			if sensorList[5][0] != 3 :realTimeMap[centerY+2][centerX+1] = sensorList[5][0]
-			if sensorList[5][1] != 3 :realTimeMap[centerY+3][centerX+1] = sensorList[5][1]
-			if sensorList[5][2] != 3 :realTimeMap[centerY+4][centerX+1] = sensorList[5][2]
-			if sensorList[5][3] != 3 :realTimeMap[centerY+5][centerX+1] = sensorList[5][3]
+			if sensorList[5][0] != None :realTimeMap[centerY+2][centerX+1] = sensorList[5][0]
+			if sensorList[5][1] != None :realTimeMap[centerY+3][centerX+1] = sensorList[5][1]
+			if sensorList[5][2] != None :realTimeMap[centerY+4][centerX+1] = sensorList[5][2]
+			if sensorList[5][3] != None :realTimeMap[centerY+5][centerX+1] = sensorList[5][3]
 			
-			if sensorList[6][0] != 3 :realTimeMap[centerY-2][centerX-1] = sensorList[6][0]
-			if sensorList[6][1] != 3 :realTimeMap[centerY-3][centerX-1] = sensorList[6][1]
-			if sensorList[6][2] != 3 :realTimeMap[centerY-4][centerX-1] = sensorList[6][2]
-			if sensorList[6][3] != 3 :realTimeMap[centerY-5][centerX-1] = sensorList[6][3]
+			if sensorList[6][0] != None :realTimeMap[centerY-2][centerX-1] = sensorList[6][0]
+			if sensorList[6][1] != None :realTimeMap[centerY-3][centerX-1] = sensorList[6][1]
+			if sensorList[6][2] != None :realTimeMap[centerY-4][centerX-1] = sensorList[6][2]
+			if sensorList[6][3] != None :realTimeMap[centerY-5][centerX-1] = sensorList[6][3]
 		return realTimeMap
 		
 	def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
 		if direction == "U":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != "D":
+			if sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != "D":
 				resultMovement = "D"
-			elif sensorList[1][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
+			elif sensorList[1][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
+			elif sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
 				resultMovement = "A"
 			else:
 				resultMovement = "D"
 		elif direction == "D":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "D":
+			if sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "D":
 				resultMovement = "D"
-			elif sensorList[1][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
+			elif sensorList[1][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
+			elif sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
 				resultMovement = "A"
 			else:
 				resultMovement = "D"
 		elif direction == "L":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != "D":
+			if sensorList[5][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != "D":
 				resultMovement = "D"
-			elif sensorList[1][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
+			elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
+			elif sensorList[4][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
 				resultMovement = "A"
 			else:
 				resultMovement = "D"
 		elif direction == "R":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != "D":
+			if sensorList[5][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != "D":
 				resultMovement = "D"
-			elif sensorList[1][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
+			elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
+			elif sensorList[4][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
 				resultMovement = "A"
 			else:
 				resultMovement = "D"
@@ -562,12 +568,12 @@ class Exploration(object):
 		return realTimeMap
 	
 
-	def getRealTimeMap(self):
+	def getRealTimeMap(self, sensors):
 		global cnt
 		global realTimeMap
 		global robotCurMovement
 		global robotBreak
-		self.main()
+		self.main(sensors)
 		print(cnt + 1, robotCurMovement)
 		cnt += 1
 		return (realTimeMap, robotCurMovement, robotBreak)

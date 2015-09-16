@@ -123,23 +123,51 @@ def test(exp):
     # robot.action(choice)
     # print(choice, ': ', robot.direction)
     # test()
-    cur = exp.getRealTimeMap()
+    cur = exp.getRealTimeMap(sensors)
     robot.action(translate(cur[1]))
     sensors = robot.get_sensors()
     if not cur[2]:
         test(exp)
+    else:
+        print("EXPLORATION DONE")
+
+        sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
+        sp_list = sp.shortest_path()
+        sp_sequence = sp_list['sequence']
+        sp_sequence.reverse()
+        print(sp_sequence)
+        test_sp(sp_sequence)
     # TODO: After finish (cur[2] == True), start shortest path to START
     # TODO: Then, shortest path from START to GOAL
 
 @delay(delay_time)
 def test_sp(sequence):
     if len(sequence) == 0:
-        print("DONE")
+        print("GONE BACK TO START")
+
+        sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+        sp_list = sp.shortest_path()
+        sp_sequence = sp_list['sequence']
+        sp_sequence.reverse()
+        print(sp_sequence)
+        test_sp_to_goal(sp_sequence)
+
+        return False
+    choice = sequence.pop()
+    robot.action(choice, 8)
+    print(choice, ': ', robot.direction)
+    test_sp(sequence)
+
+
+@delay(delay_time)
+def test_sp_to_goal(sequence):
+    if len(sequence) == 0:
+        print("SHORTEST PATH DONE")
         return False
     choice = sequence.pop()
     robot.action(choice, 9)
     print(choice, ': ', robot.direction)
-    test_sp(sequence)
+    test_sp_to_goal(sequence)
 
 if __name__ == '__main__':
     parse_command_line()
