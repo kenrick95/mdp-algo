@@ -94,7 +94,8 @@ class Robot(object):
         self.__clear_marks()
         self.__mark_surroundings(self.start, 6)
         self.__mark_surroundings(self.goal, 7)
-        self.explored_map[self.current[0]][self.current[1]] = mark_value
+        if mark_value >= 0:
+            self.explored_map[self.current[0]][self.current[1]] = mark_value
 
         next_coords = []
         next_coords.append(self.current[0])

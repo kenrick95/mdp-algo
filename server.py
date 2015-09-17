@@ -132,7 +132,7 @@ def test(exp):
         print("EXPLORATION DONE")
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
-        sp_list = sp.shortest_path()
+        sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         print(sp_sequence)
@@ -154,7 +154,7 @@ def test_sp(sequence):
 
         return False
     choice = sequence.pop()
-    robot.action(choice, 8)
+    robot.action(choice, -1)
     print(choice, ': ', robot.direction)
     test_sp(sequence)
 

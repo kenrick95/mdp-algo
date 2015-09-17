@@ -155,7 +155,8 @@ class ShortestPath(object):
         ret_map = self.map
         while cur[0] != self.start[0] or cur[1] != self.start[1]:
             # print('a', ret_map)
-            ret_map[cur[0]][cur[1]] = mark_value
+            if mark_value >= 0:
+                ret_map[cur[0]][cur[1]] = mark_value
             prev_post = prev[cur[0]][cur[1]]
             next_post[prev_post[0]][prev_post[1]] = [cur[0], cur[1]]
             cur = prev_post
