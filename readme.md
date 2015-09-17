@@ -9,14 +9,10 @@ pip install zope.event
 ```
 python server.py
 ```
-
 and then open browser and navigate to `localhost:8888`
 
 ## Stopping
 Ctrl + Pause/break.
-
-
-
 
 ## Definitions
 - 0: unexplored
@@ -34,23 +30,3 @@ Ctrl + Pause/break.
 ## TODO
 - Integrate exploration.py with sim.py
 - Use the map descriptor format -_-
-
-
-
-get_sensors(LOCATION)
-- LOCATION: coordinate of center of robot
-- 6 sensors
-    + 1: Front left
-    + 2: Front mid
-    + 3: front right
-    + 4: right
-    + 5: left
-    + 6: left back
-- return value example: array of size 6, each cell is an array of 4 values
-    + [[1, 1, 1, 1], [1, 2, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
-
-move_forward()
-- FORWARD
-
-rotate(DIRECTION)
-- LEFT or RIGHT
