@@ -10,7 +10,7 @@
 - 8: explored path
 - 9: optimum path
 """
-from queue import PriorityQueue
+from Queue import PriorityQueue
 from constants import *
 
 class PqNode(object):
