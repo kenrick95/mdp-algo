@@ -152,7 +152,7 @@ class Exploration(object):
 				for j in range(0,15):
 					if realTimeMap[i][j] != 0:
 						exploredArea = exploredArea + 1
-			print (repeatedArea, exploredArea)
+			#print (repeatedArea, exploredArea)
 		else:
 			robotBreak = True
 

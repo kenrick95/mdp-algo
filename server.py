@@ -130,6 +130,9 @@ def test(exp):
         test(exp)
     else:
         print("EXPLORATION DONE")
+        
+        print(robot.descriptor_one())
+        print(robot.descriptor_two())
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)

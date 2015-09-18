@@ -8,6 +8,8 @@ class Robot(object):
         self.__map = []
         self.explored_map = []
         self.__get_map()
+        # self.descriptor_map_one = [row[:] for row in self.explored_map]
+        # self.descriptor_map_two = [row[:] for row in self.explored_map]
         
         self.MAX_ROW = len(self.__map)
         self.MAX_COL = len(self.__map[0])
@@ -233,6 +235,59 @@ class Robot(object):
         zope.event.notify("SENSOR")
         # bug: seen robot move to SOUTH while facing WEST
         return sensors
+
+    def descriptor_one(self):
+        ret = [1, 1]
+        for row in reversed(self.explored_map):
+            for col in row:
+                if col > 0:
+                    ret.append(1)
+                else:
+                    ret.append(0)
+        ret.append(1)
+        ret.append(1)
+
+        hex_ret = []
+        temp = []
+        for bit in ret:
+            if len(temp) < 4:
+                temp.append(bit)
+            else:
+                temp_str = ''.join([str(b) for b in temp])
+                hex_ret.append(str(hex(int(temp_str, 2)))[2:])
+
+                temp = []
+
+        return ''.join([h for h in hex_ret])
+
+    def descriptor_two(self):
+        ret = []
+        cnt = 0
+        for row in reversed(self.explored_map):
+            for col in row:
+                if col > 0:
+                    cnt += 1
+                    if col == 2:
+                        ret.append(1)
+                    else:
+                        ret.append(0)
+        while cnt % 8 != 0:
+            ret.append(0)
+            cnt += 1
+
+        print(ret)
+        hex_ret = []
+        temp = []
+        for bit in ret:
+            if len(temp) < 4:
+                temp.append(bit)
+            else:
+                temp_str = ''.join([str(b) for b in temp])
+                hex_ret.append(str(hex(int(temp_str, 2)))[2:])
+
+                temp = [bit]
+
+        return ''.join([h for h in hex_ret])
 
 if __name__ == '__main__':
     robot = Robot()
