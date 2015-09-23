@@ -247,6 +247,8 @@ class Robot(object):
         ret.append(1)
         ret.append(1)
 
+        # print(ret)
+        # print(len(ret))
         hex_ret = []
         temp = []
         for bit in ret:
@@ -255,8 +257,13 @@ class Robot(object):
             else:
                 temp_str = ''.join([str(b) for b in temp])
                 hex_ret.append(str(hex(int(temp_str, 2)))[2:])
+                temp = [bit]
+        if len(temp) > 0:
+            temp_str = ''.join([str(b) for b in temp])
+            hex_ret.append(str(hex(int(temp_str, 2)))[2:])
 
-                temp = []
+        # print(hex_ret)
+        # print(len(hex_ret))
 
         return ''.join([h for h in hex_ret])
 
@@ -275,7 +282,8 @@ class Robot(object):
             ret.append(0)
             cnt += 1
 
-        print(ret)
+        # print(ret)
+        # print(len(ret))
         hex_ret = []
         temp = []
         for bit in ret:
@@ -284,8 +292,13 @@ class Robot(object):
             else:
                 temp_str = ''.join([str(b) for b in temp])
                 hex_ret.append(str(hex(int(temp_str, 2)))[2:])
-
                 temp = [bit]
+        if len(temp) > 0:
+            temp_str = ''.join([str(b) for b in temp])
+            hex_ret.append(str(hex(int(temp_str, 2)))[2:])
+        
+        # print(hex_ret)
+        # print(len(hex_ret))
 
         return ''.join([h for h in hex_ret])
 

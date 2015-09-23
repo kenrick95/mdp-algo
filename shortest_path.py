@@ -53,8 +53,8 @@ class ShortestPath(object):
         for direction in directions:
             if  coord[0] + direction[0] < 0 or coord[0] + direction[0] >= self.MAX_ROW or \
                 coord[1] + direction[1] < 0 or coord[1] + direction[1] >= self.MAX_COL or \
-                self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 0 or \
-                self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 2:
+                self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 2: # obstacle
+                # self.map[coord[0] + direction[0]][coord[1] + direction[1]] == 0 or \ # unexplored
                 return False
         return True
 
@@ -110,12 +110,23 @@ class ShortestPath(object):
                 else:
                     return [RIGHT, FORWARD]
         return [FORWARD]
+    def manhattan(self, _from, _to):
+        return abs(_from[0] - _to[0]) + abs(_from[1] - _to[1])
+
     def cost(self, _from, _to, _current_direction):
         # can be the heuristic function
-        # if going backward of current direction, cost = 3
-        # if going to turn left or right, cost = 2
+        # if going backward of current direction, cost = 9
+        # if going to turn left or right, cost = 4
         # else cost = 1
-        return len(self.action(_from, _to, _current_direction))
+        action = self.action(_from, _to, _current_direction)
+        add_cost = self.manhattan(_to, self.goal)
+
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
+                add_cost += 1
+                
+        return len(action) * len(action) + add_cost
 
     def shortest_path(self, mark_value = 9):
         dist = [] # for each cell, how far is it from the start?
@@ -138,6 +149,11 @@ class ShortestPath(object):
 
         while not pq.empty():
             head = pq.get()
+
+            # if goal, break
+            if head["position"][0] == self.goal[0] and head["position"][1] == self.goal[1]:
+                break
+
             # expand head
             neighbors =  self.expand(head["position"])
 

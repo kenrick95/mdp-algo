@@ -78,6 +78,7 @@ class StartHandler(tornado.web.RequestHandler):
         # test()
         exp = Exploration()
         test(exp)
+        inform("Exploration started!")
 
 
         # After Exploration is done
@@ -100,9 +101,20 @@ app = tornado.web.Application([
 def tick(action):
     for key in clients:
         message = dict()
+        message['type'] = 'map'
         message['action'] = action
         message['time'] = str(datetime.datetime.utcnow())
         message['map'] = robot.explored_map
+        clients[key]['object'].write_message(json.dumps(message))
+
+
+def inform(string):
+    print(string)
+    for key in clients:
+        message = dict()
+        message['type'] = 'info'
+        message['time'] = str(datetime.datetime.utcnow())
+        message['info'] = string
         clients[key]['object'].write_message(json.dumps(message))
 
 def translate(action):
@@ -129,10 +141,10 @@ def test(exp):
     if not cur[2]:
         test(exp)
     else:
-        print("EXPLORATION DONE")
+        inform("EXPLORATION DONE")
         
-        print(robot.descriptor_one())
-        print(robot.descriptor_two())
+        inform(robot.descriptor_one())
+        inform(robot.descriptor_two())
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
@@ -146,13 +158,13 @@ def test(exp):
 @delay(delay_time)
 def test_sp(sequence):
     if len(sequence) == 0:
-        print("GONE BACK TO START")
+        inform("GONE BACK TO START")
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
         sp_list = sp.shortest_path()
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
-        print(sp_sequence)
+        inform(sp_sequence)
         test_sp_to_goal(sp_sequence)
 
         return False
@@ -165,7 +177,7 @@ def test_sp(sequence):
 @delay(delay_time)
 def test_sp_to_goal(sequence):
     if len(sequence) == 0:
-        print("SHORTEST PATH DONE")
+        inform("SHORTEST PATH DONE")
         return False
     choice = sequence.pop()
     robot.action(choice, 9)
