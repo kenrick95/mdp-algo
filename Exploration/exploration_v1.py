@@ -11,7 +11,8 @@ robotCenterY = 18
 robotDirectionX = 1
 robotDirectionY = 17
 
-def main():
+#changed
+def explorationMain(exploredPercentage):
 	global realTimeMap
 	global simulatorMap
 	global sensorList
@@ -26,7 +27,9 @@ def main():
 	global repeatedArea
 	
 	variableInitialisation()
-	realTimeMap = updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+	#set robot starting position
+	realTimeMap[robotCenterY][robotCenterX] = 5
+	realTimeMap[robotDirectionY][robotDirectionX] = 4
 	
 	#for i in range(0,20):
 	#	for j in range(0,15):
@@ -37,7 +40,7 @@ def main():
 	#		print (realTimeMap[i][j],end="")
 	#	print()
 	exploredArea = 0
-	while repeatedArea <= 20 and (exploredArea/300) < 1.0:
+	while repeatedArea <= 20 and (exploredArea/300*100) < exploredPercentage:
 		exploredArea = 0
 		for i in range(0,20):
 			for j in range(0,15):
@@ -66,7 +69,7 @@ def main():
 			print (realTimeMap[i][j],end="")
 		print()
 		
-		
+#changed		
 def variableInitialisation():
 	global realTimeMap
 	global simulatorMap
@@ -80,26 +83,6 @@ def variableInitialisation():
 	global robotDirectionY
 	global repeatedArea
 	
-	Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row3 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row4 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row5 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row6 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row7 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row9 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row10 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row11 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row12 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row14 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row16 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row17 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row18 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
-	Row19 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
 	# realTimeMap[0] = bottom row
 	# realTimeMap[19] = top row
 	realTimeMap = []
@@ -125,26 +108,9 @@ def variableInitialisation():
 	robotDirectionX = 1
 	robotDirectionY = 17
 
-	realTimeMap.append(Row0)
-	realTimeMap.append(Row1)
-	realTimeMap.append(Row2)
-	realTimeMap.append(Row3)
-	realTimeMap.append(Row4)
-	realTimeMap.append(Row5)
-	realTimeMap.append(Row6)
-	realTimeMap.append(Row7)
-	realTimeMap.append(Row8)
-	realTimeMap.append(Row9)
-	realTimeMap.append(Row10)
-	realTimeMap.append(Row11)
-	realTimeMap.append(Row12)
-	realTimeMap.append(Row13)
-	realTimeMap.append(Row14)
-	realTimeMap.append(Row15)
-	realTimeMap.append(Row16)
-	realTimeMap.append(Row17)
-	realTimeMap.append(Row18)
-	realTimeMap.append(Row19)
+	for i in range (0,20):
+		Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		realTimeMap.append(Row)
 	
 	simulatorMap = simulatorReadMap()
 
@@ -162,15 +128,12 @@ def callAllMethods():
 	global robotDirectionY
 	
 	sensorList = getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
-	#for i in range(0,7):
-	#	print(sensorList[i])
 	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
 	
 	robotCurMovement = robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
 	robotPrevMovement = robotCurMovement
 	if robotCurMovement == "W":
 		pathTaken.append((robotCenterY, robotCenterX))
-	#print (robotCurMovement)
 	realTimeMap = executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
 	
 	if sensorList[0][0] == "U":
@@ -213,12 +176,7 @@ def callAllMethods():
 		elif robotCurMovement == "A":
 			robotDirectionX = robotDirectionX - 1
 			robotDirectionY = robotDirectionY - 1
-	#for i in range(0,20):
-	#	for j in range(0,15):
-	#		print (realTimeMap[i][j],end="")
-	#	print()
-	#print("-----------------------------------------------------------------")
-		
+#changed		
 def getSensor(simMap, centerX, centerY, directionX, directionY):
 	# returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
 	# returnValue[1] = frontleft
@@ -282,7 +240,7 @@ def getSensor(simMap, centerX, centerY, directionX, directionY):
 	#R-facing right
 	elif (centerY == directionY) and (directionX > centerX):
 		returnValue.append(["R"])
-	
+	#get sensor value from simulator map
 	if returnValue[0][0] == "U":			
 		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
 		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX]])
@@ -313,12 +271,8 @@ def getSensor(simMap, centerX, centerY, directionX, directionY):
 		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
 		
 	return returnValue
-	
-def updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY):
-	realTimeMap[robotCenterY][robotCenterX] = 5
-	realTimeMap[robotDirectionY][robotDirectionX] = 4
-	return realTimeMap
-	
+
+#load simulatorMap from text file
 def simulatorReadMap():
 	simulatorMap = []
 	for line in list(open("Simulator Real Map.txt","r")):
