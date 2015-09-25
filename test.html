@@ -76,7 +76,17 @@
                 context.restore();
             }
             draw(map);
-
+            var Timer = function () {
+                this.startTime = null;
+                this.currentTime = new Date();
+            };
+            Timer.prototype.start = function () {
+                this.startTime = new Date();
+            };
+            Timer.prototype.tick = function () {
+                this.currentTime = new Date();
+                return this.currentTime - this.startTime;
+            };
 
             messageContainer.innerHTML = "";
 

@@ -17,6 +17,15 @@ import sim
 from exploration import Exploration
 from shortest_path import ShortestPath
 
+class FuncThread(threading.Thread):
+    def __init__(self, target, *args):
+        self._target = target
+        self._args = args
+        threading.Thread.__init__(self)
+ 
+    def run(self):
+        self._target(*self._args)
+
 def delay(delay=0.):
     """
     Decorator delaying the execution of a function for a while.
@@ -77,9 +86,12 @@ class StartHandler(tornado.web.RequestHandler):
 
         # test()
         exp = Exploration()
-        test(exp)
+        # test(exp)
+        t1 = FuncThread(test, exp)
+        t1.start()
+        t1.join()
         inform("Exploration started!")
-
+        self.flush()
 
         # After Exploration is done
         # Shortest_path from CURRENT_POSITION to START
