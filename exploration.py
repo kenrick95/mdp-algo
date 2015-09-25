@@ -1,7 +1,6 @@
 class Exploration(object):
 	"""docstring for Exploration"""
 
-
 	realTimeMap = []
 	simulatorMap = []
 	sensorList = []
@@ -17,15 +16,17 @@ class Exploration(object):
 	repeatedArea = 0
 	exploredArea = 0
 	cnt = 0
+	robotBreak = False
 
-	def __init__(self):
+	def __init__(self, _exploredPercentage):
 		super(Exploration, self).__init__()
+		global cnt
+		cnt = 0
 
 		global realTimeMap
 		global simulatorMap
 		global sensorList
 		global pathTaken
-		global robotCenterX
 		global robotPrevMovement
 		global robotCurMovement
 		global robotCenterX
@@ -33,33 +34,12 @@ class Exploration(object):
 		global robotDirectionX
 		global robotDirectionY
 		global repeatedArea
+		global exploredPercentage
 		global robotBreak
-		global cnt
 		global exploredArea
-		cnt = 0
-		
-		Row0 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row3 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row4 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row5 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row6 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row7 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row9 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row10 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row11 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row12 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row14 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row16 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row17 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row18 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
-		Row19 = [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
-
-
+		robotBreak = False
+		exploredArea = 0
+		exploredPercentage = _exploredPercentage
 		# realTimeMap[0] = bottom row
 		# realTimeMap[19] = top row
 		realTimeMap = []
@@ -77,39 +57,18 @@ class Exploration(object):
 		pathTaken = []
 		
 		repeatedArea = 0
-		exploredArea = 0
 		robotPrevMovement = "O"
 		robotCurMovement = "O"
-
-		robotBreak = False
 		
 		robotCenterX = 1
 		robotCenterY = 18
 		robotDirectionX = 1
 		robotDirectionY = 17
 
-		realTimeMap.append(Row0)
-		realTimeMap.append(Row1)
-		realTimeMap.append(Row2)
-		realTimeMap.append(Row3)
-		realTimeMap.append(Row4)
-		realTimeMap.append(Row5)
-		realTimeMap.append(Row6)
-		realTimeMap.append(Row7)
-		realTimeMap.append(Row8)
-		realTimeMap.append(Row9)
-		realTimeMap.append(Row10)
-		realTimeMap.append(Row11)
-		realTimeMap.append(Row12)
-		realTimeMap.append(Row13)
-		realTimeMap.append(Row14)
-		realTimeMap.append(Row15)
-		realTimeMap.append(Row16)
-		realTimeMap.append(Row17)
-		realTimeMap.append(Row18)
-		realTimeMap.append(Row19)
-
-
+		for i in range (0,20):
+			Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+			realTimeMap.append(Row)
+		
 		simulatorMap = self.simulatorReadMap()
 
 
@@ -126,45 +85,82 @@ class Exploration(object):
 		global robotDirectionX
 		global robotDirectionY
 		global repeatedArea
+		global exploredPercentage
 		global robotBreak
 		global exploredArea
-	
-			
-		realTimeMap = self.updateRobotPosition(realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+		
+		#set robot starting position
+		realTimeMap[robotCenterY][robotCenterX] = 5
+		realTimeMap[robotDirectionY][robotDirectionX] = 4
 		
 		#for i in range(0,20):
 		#	for j in range(0,15):
 		#		print (simulatorMap[i][j],end="")
 		#	print()
-		# for k in range(0,150):
-		#		for j in range(0,15):
-		#			print (realTimeMap[i][j],end="")
-		#		print()
-
-		if repeatedArea <= 30 and exploredArea < 300:
+		#for i in range(0,20):
+		#	for j in range(0,15):
+		#		print (realTimeMap[i][j],end="")
+		#	print()
+		#	
+		#	
+		# TODO: Something is terribly wrong at #75
+		# (75, 'A')
+		# (76, 'A')
+		# (77, 'W')
+		# (78, 'A')
+		# (79, 'W')
+		# (80, 'A')
+		# (81, 'W')
+		# (82, 'A')
+		# (83, 'W')
+		# (84, 'A')
+		# (85, 'W')
+		# (86, 'A')
+		# (87, 'W')
+		# (88, 'A')
+		# (89, 'W')
+		# (90, 'A')
+		# (91, 'W')
+		# (92, 'A')
+		# (93, 'W')
+		# (94, 'A')
+		# (95, 'W')
+		# (96, 'A')
+		# (97, 'W')
+		# (98, 'A')
+		if repeatedArea <= 20 and (exploredArea*100) < exploredPercentage * 300:
 			exploredArea = 0
+			# for i in range(0,20):
+			# 	for j in range(0,15):
+			# 		print (realTimeMap[i][j],end="")
+			# 	print()
 			self.callAllMethods(sensors)
 			for tup in pathTaken:
 				if tup == (robotCenterY, robotCenterX):
 					repeatedArea = repeatedArea + 1
+					break;
 			
 			for i in range(0,20):
 				for j in range(0,15):
 					if realTimeMap[i][j] != 0:
 						exploredArea = exploredArea + 1
-			#print (repeatedArea, exploredArea)
+			# print(repeatedArea, " ", exploredArea , " ", exploredPercentage * 300)
+
+			# print ("repeated Area:", repeatedArea)
+			# print ("exploredArea:", exploredArea)
+			# print("-----------------------------------------------------------------")
 		else:
 			robotBreak = True
 
-		# print("-----------------------------------------------------------------")
-		
-		# for tup in pathTaken:
-		# 	if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
-		# 		realTimeMap[tup[0]][tup[1]] = 8
+		for tup in pathTaken:
+			if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
+				realTimeMap[tup[0]][tup[1]] = 8
+
 		# for i in range(0,20):
 		# 	for j in range(0,15):
 		# 		print (realTimeMap[i][j],end="")
 		# 	print()
+
 
 	def callAllMethods(self, sensors):
 		global realTimeMap
@@ -306,8 +302,8 @@ class Exploration(object):
 		#R-facing right
 		elif (centerY == directionY) and (directionX > centerX):
 			returnValue.append(["R"])
-		
-		if returnValue[0][0] == "U":
+		#get sensor value from simulator map
+		if returnValue[0][0] == "U":			
 			returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
 			returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX]])
 			returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX+1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX+1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX+1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX+1]])

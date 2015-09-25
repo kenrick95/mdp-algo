@@ -85,7 +85,7 @@ class StartHandler(tornado.web.RequestHandler):
         delay_time = float(delay)
 
         # test()
-        exp = Exploration()
+        exp = Exploration(100)
         # test(exp)
         t1 = FuncThread(test, exp)
         t1.start()
