@@ -11,7 +11,6 @@ robotCenterY = 18
 robotDirectionX = 1
 robotDirectionY = 17
 
-#changed
 def explorationMain(exploredPercentage):
 	global realTimeMap
 	global simulatorMap
@@ -40,12 +39,15 @@ def explorationMain(exploredPercentage):
 	#		print (realTimeMap[i][j],end="")
 	#	print()
 	exploredArea = 0
+	indexing = 1
 	while repeatedArea <= 20 and (exploredArea/300*100) < exploredPercentage:
+		print ("Index:", indexing)
+		indexing = indexing + 1
 		exploredArea = 0
-		for i in range(0,20):
-			for j in range(0,15):
-				print (realTimeMap[i][j],end="")
-			print()
+		#for i in range(0,20):
+		#	for j in range(0,15):
+		#		print (realTimeMap[i][j],end="")
+		#	print()
 		callAllMethods()
 		for tup in pathTaken:
 			if tup == (robotCenterY, robotCenterX):
@@ -69,7 +71,6 @@ def explorationMain(exploredPercentage):
 			print (realTimeMap[i][j],end="")
 		print()
 		
-#changed		
 def variableInitialisation():
 	global realTimeMap
 	global simulatorMap
@@ -176,7 +177,7 @@ def callAllMethods():
 		elif robotCurMovement == "A":
 			robotDirectionX = robotDirectionX - 1
 			robotDirectionY = robotDirectionY - 1
-#changed		
+		
 def getSensor(simMap, centerX, centerY, directionX, directionY):
 	# returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
 	# returnValue[1] = frontleft
@@ -484,7 +485,7 @@ def updateRealTimeMap(realTimeMap, sensorList, centerX, centerY):
 	return realTimeMap
 	
 def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
-	print (direction)
+	#print (direction)
 	if direction == "U":
 		if sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "A":
 			resultMovement = "A"
@@ -521,6 +522,7 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 			resultMovement = "D"
 		else:
 			resultMovement = "A"
+	print (resultMovement)
 	return resultMovement
 	
 def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
