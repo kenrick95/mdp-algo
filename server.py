@@ -57,9 +57,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         for this example i will just print message to console
         """
         print ("Client " + str(self.id) + " received a message : " + str(message))
-        for key in clients:
-            if (clients[key]['id'] != self.id):
-                clients[key]['object'].write_message(message)
+        #for key in clients:
+        #    if (clients[key]['id'] != self.id):
+        #        clients[key]['object'].write_message(message)
 
     def on_close(self):
         if self.id in clients:
@@ -104,10 +104,20 @@ class StartHandler(tornado.web.RequestHandler):
         # test_sp(sp_sequence)
 
 
+class StopHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self, delay):
+        global started
+        inform("Exploration stopped!")
+        started = False
+        self.flush()
+
+
 app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
-    (r'/start/(.+)', StartHandler)
+    (r'/start/(.*)', StartHandler),
+    (r'/stop/(.*)', StopHandler)
 ])
 
 def tick(action):
@@ -142,6 +152,11 @@ delay_time = 0.1 # TODO: How to make this variable? (i.e. controllable from the 
 
 @delay(delay_time)
 def test(exp):
+    global started
+    if not started:
+        return False
+
+
     sensors = robot.get_sensors()
     # choice = random.choice([FORWARD, LEFT, RIGHT])
     # robot.action(choice)
@@ -158,17 +173,20 @@ def test(exp):
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
 
+        return
+
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         print(sp_sequence)
         test_sp(sp_sequence)
-    # TODO: After finish (cur[2] == True), start shortest path to START
-    # TODO: Then, shortest path from START to GOAL
 
 @delay(delay_time)
 def test_sp(sequence):
+    global started
+    if not started:
+        return False
     if len(sequence) == 0:
         inform("GONE BACK TO START")
 
@@ -188,6 +206,9 @@ def test_sp(sequence):
 
 @delay(delay_time)
 def test_sp_to_goal(sequence):
+    global started
+    if not started:
+        return False
     if len(sequence) == 0:
         inform("SHORTEST PATH DONE")
         return False

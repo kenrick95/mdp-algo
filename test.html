@@ -11,7 +11,7 @@
         </style>
     </head>
     <body>
-        <div style="position:fixed; right:0; top: 0; z-index: 100;"><button id="start">Start</button></div>
+        <div style="position:fixed; right:0; top: 0; z-index: 100;"><input type="time" name="timeLimit" id="timeLimit" value="" placeholder=""><button id="start">Start</button></div>
         <div id="messages" style="position:fixed; right:0; top: 0; width: 300px; height: 600px; overflow: auto;"></div>
         <canvas id="canvas" width="450" height="600" style="background: #eee">
             
@@ -76,6 +76,7 @@
                 context.restore();
             }
             draw(map);
+            var timeLimit = 10 * 1000;
             var Timer = function () {
                 this.startTime = null;
                 this.currentTime = new Date();
@@ -83,13 +84,41 @@
             Timer.prototype.start = function () {
                 this.startTime = new Date();
             };
-            Timer.prototype.tick = function () {
+
+            Timer.prototype.tick = function (check) {
                 this.currentTime = new Date();
-                return this.currentTime - this.startTime;
+                if (this.currentTime - this.startTime > timeLimit) {
+                    this.end();
+                    return false;
+                }
+                window.requestAnimationFrame(this.tick.bind(this));
             };
+            Timer.prototype.end = function() {
+                var r = new XMLHttpRequest();
+                r.open("GET", "/stop/", true);
+                r.onreadystatechange = function () {
+                  if (r.readyState != 4 || r.status != 200) return;
+                    messageContainer.innerHTML += "<br>" + r.responseText;
+                };
+                r.send();
+            };
+            var timer = new Timer();
 
             messageContainer.innerHTML = "";
+            document.getElementById("timeLimit").addEventListener("change", function(e) {
+                var timeString = this.value;
+                var len = this.value.length;
+                // convert sting (mm:ss) to seconds value
+                
+                // enforce mm:ss
+                timeLimit = parseInt(timeString[0], 10) * 600 +
+                    parseInt(timeString[1], 10) * 60 +
+                    parseInt(timeString[3], 10) * 10 +
+                    parseInt(timeString[4], 10);
 
+                timeLimit *= 1000; // convert to ms
+                console.log(timeLimit);
+            });
             document.getElementById("start").addEventListener('click', function(e) {
                 var r = new XMLHttpRequest();
                 r.open("GET", "/start/0.1", true);
@@ -98,6 +127,9 @@
                     messageContainer.innerHTML += "<br>" + r.responseText;
                 };
                 r.send();
+
+                timer.start();
+                timer.tick();
             });
             ws = new WebSocket("ws://localhost:8888/ws?Id=" + Math.floor(Math.random() * 1000000));
             ws.onopen = function() {

@@ -24,7 +24,7 @@ class Robot(object):
 
         self.current = [18, 1] # find_centre(start)
         
-        self.direction = EAST
+        self.direction = NORTH # ODO: need to face NORTH in order to work!
         self.__mark_robot()
 
 

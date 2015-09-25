@@ -12,8 +12,8 @@ class Exploration(object):
 
 	robotCenterX = 1
 	robotCenterY = 18
-	robotDirectionX = 2
-	robotDirectionY = 18
+	robotDirectionX = 1
+	robotDirectionY = 17
 	repeatedArea = 0
 	exploredArea = 0
 	cnt = 0
@@ -85,8 +85,8 @@ class Exploration(object):
 		
 		robotCenterX = 1
 		robotCenterY = 18
-		robotDirectionX = 2
-		robotDirectionY = 18
+		robotDirectionX = 1
+		robotDirectionY = 17
 
 		realTimeMap.append(Row0)
 		realTimeMap.append(Row1)
@@ -556,41 +556,41 @@ class Exploration(object):
 		
 	def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
 		if direction == "U":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != "D":
-				resultMovement = "D"
+			if sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "A":
+				resultMovement = "A"
 			elif sensorList[1][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
-				resultMovement = "A"
+			elif sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
+				resultMovement = "D"
 			else:
-				resultMovement = "D"
+				resultMovement = "A"
 		elif direction == "D":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "D":
-				resultMovement = "D"
+			if sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != "A":
+				resultMovement = "A"
 			elif sensorList[1][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
-				resultMovement = "A"
+			elif sensorList[5][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
+				resultMovement = "D"
 			else:
-				resultMovement = "D"
+				resultMovement = "A"
 		elif direction == "L":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != "D":
-				resultMovement = "D"
+			if sensorList[4][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != "A":
+				resultMovement = "A"
 			elif sensorList[1][0] != 3 and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
-				resultMovement = "A"
+			elif sensorList[5][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
+				resultMovement = "D"
 			else:
-				resultMovement = "D"
+				resultMovement = "A"
 		elif direction == "R":
-			if sensorList[5][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != "D":
-				resultMovement = "D"
+			if sensorList[4][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != "A":
+				resultMovement = "A"
 			elif sensorList[1][0] != 3 and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
 				resultMovement = "W"
-			elif sensorList[4][0] != 3 and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
-				resultMovement = "A"
-			else:
+			elif sensorList[5][0] != 3 and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
 				resultMovement = "D"
+			else:
+				resultMovement = "A"
 		return resultMovement
 		
 	def executeRobotMovement(self, realTimeMap, CenterX, CenterY, direction, movement):
