@@ -69,6 +69,12 @@ class Exploration(object):
 			Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 			realTimeMap.append(Row)
 		
+		# set robot initial position as explored
+		directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+		for direction in directions:
+			realTimeMap[robotCenterY + direction[0]][robotCenterX + direction[1]] = 1
+
+
 		simulatorMap = self.simulatorReadMap()
 
 
@@ -101,33 +107,6 @@ class Exploration(object):
 		#	for j in range(0,15):
 		#		print (realTimeMap[i][j],end="")
 		#	print()
-		#	
-		#	
-		# TODO: Something is terribly wrong at #75
-		# (75, 'A')
-		# (76, 'A')
-		# (77, 'W')
-		# (78, 'A')
-		# (79, 'W')
-		# (80, 'A')
-		# (81, 'W')
-		# (82, 'A')
-		# (83, 'W')
-		# (84, 'A')
-		# (85, 'W')
-		# (86, 'A')
-		# (87, 'W')
-		# (88, 'A')
-		# (89, 'W')
-		# (90, 'A')
-		# (91, 'W')
-		# (92, 'A')
-		# (93, 'W')
-		# (94, 'A')
-		# (95, 'W')
-		# (96, 'A')
-		# (97, 'W')
-		# (98, 'A')
 		if repeatedArea <= 20 and (exploredArea*100) < exploredPercentage * 300:
 			exploredArea = 0
 			# for i in range(0,20):
