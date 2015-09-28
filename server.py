@@ -75,17 +75,17 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self, delay):
+    def get(self, percentage):
         self.write("Starting...")
         global started
-        global delay_time
+        ### global delay_time
         if started:
             return
         started = True
-        delay_time = float(delay)
+        ### delay_time = float(delay)
 
         # test()
-        exp = Exploration(100)
+        exp = Exploration(int(percentage))
         # test(exp)
         t1 = FuncThread(test, exp)
         t1.start()
