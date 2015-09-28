@@ -64,15 +64,20 @@ class IndexHandler(tornado.web.RequestHandler):
         #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
         #self.finish()
 
+
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
+        global robot
+
         global started
         global delay_time
         if started:
             return
         started = True
+        robot = sim.Robot()
+
         delay_time = float(delay)
 
         # test()
@@ -187,6 +192,7 @@ def test_sp_to_goal(sequence):
         return False
     if len(sequence) == 0:
         inform("SHORTEST PATH DONE")
+        started = False
         return False
     choice = sequence.pop()
     robot.action(choice, 9)
