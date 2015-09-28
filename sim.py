@@ -88,7 +88,7 @@ class Robot(object):
     def action(self, action, mark_value = 8):
         if action == FORWARD:
             self.forward(mark_value)
-        else:
+        elif action == LEFT or action == RIGHT:
             self.rotate(action)
         zope.event.notify(action)
 

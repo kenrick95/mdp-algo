@@ -36,7 +36,11 @@ class ShortestPath(object):
 
     def __init__(self, map, direction, start, goal):
         super(ShortestPath, self).__init__()
-        self.map = map
+        self.map = []
+        for row in map:
+            self.map.append([])
+            for col in row:
+                self.map[-1].append(col)
         self.MAX_ROW = len(self.map)
         self.MAX_COL = len(self.map[0])
         # direction: N, E, W, S
@@ -170,7 +174,6 @@ class ShortestPath(object):
         cur = self.goal
         ret_map = self.map
         while cur[0] != self.start[0] or cur[1] != self.start[1]:
-            # print('a', ret_map)
             if mark_value >= 0:
                 ret_map[cur[0]][cur[1]] = mark_value
             prev_post = prev[cur[0]][cur[1]]
@@ -185,8 +188,10 @@ class ShortestPath(object):
         ret_seq = []
         while cur[0] != self.goal[0] or cur[1] != self.goal[1]:
             next_coord = next_post[cur[0]][cur[1]]
+            print(cur, next_coord, cur_dir)
             for x in self.action(cur, next_coord, cur_dir):
                 ret_seq.append(x)
+                # print(x)
             cur_dir = self.direction(cur, next_coord)
             cur = next_coord
 

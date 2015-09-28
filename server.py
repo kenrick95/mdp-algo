@@ -26,22 +26,13 @@ class FuncThread(threading.Thread):
     def run(self):
         self._target(*self._args)
 
-def delay(delay=0.):
-    """
-    Decorator delaying the execution of a function for a while.
-    """
-    def wrap(f):
-        @wraps(f)
-        def delayed(*args, **kwargs):
-            timer = threading.Timer(delay, f, args=args, kwargs=kwargs)
-            timer.start()
-        return delayed
-    return wrap
-
+def delay_call(f, *args, **kwargs):
+    global delay_time
+    t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
+    t.start()
 
 define("port", default=8888, help="run on the given port", type=int)
 
-# we gonna store clients in dictionary..
 clients = dict()
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -75,14 +66,14 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self, percentage):
+    def get(self, percentage, delay):
         self.write("Starting...")
         global started
-        ### global delay_time
+        global delay_time
         if started:
             return
         started = True
-        ### delay_time = float(delay)
+        delay_time = float(delay)
 
         # test()
         exp = Exploration(int(percentage))
@@ -92,16 +83,6 @@ class StartHandler(tornado.web.RequestHandler):
         t1.join()
         inform("Exploration started!")
         self.flush()
-
-        # After Exploration is done
-        # Shortest_path from CURRENT_POSITION to START
-        # Shortest_path from START to GOAL
-
-        # sp = ShortestPath(robot.explored_map, NORTH, [18, 1], [1, 13])
-        # sp_list = sp.shortest_path()
-        # sp_sequence = sp_list['sequence']
-        # sp_sequence.reverse()
-        # test_sp(sp_sequence)
 
 
 class StopHandler(tornado.web.RequestHandler):
@@ -116,7 +97,7 @@ class StopHandler(tornado.web.RequestHandler):
 app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
-    (r'/start/(.*)', StartHandler),
+    (r'/start/(.*)/(.*)', StartHandler),
     (r'/stop/(.*)', StopHandler)
 ])
 
@@ -150,39 +131,32 @@ def translate(action):
 started = False
 delay_time = 0.1 # TODO: How to make this variable? (i.e. controllable from the UI?) --> Find a way to redefine decorator
 
-@delay(delay_time)
 def test(exp):
     global started
     if not started:
         return False
-
-
+    #realTimeMap and robot.__map is not synced -_-
     sensors = robot.get_sensors()
-    # choice = random.choice([FORWARD, LEFT, RIGHT])
-    # robot.action(choice)
-    # print(choice, ': ', robot.direction)
-    # test()
     cur = exp.getRealTimeMap(sensors)
-    robot.action(translate(cur[1]))
-    sensors = robot.get_sensors()
     if not cur[2]:
-        test(exp)
+        robot.action(translate(cur[1]))
+        sensors = robot.get_sensors()
+        delay_call(test, exp)
     else:
         inform("EXPLORATION DONE")
         
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
 
-        return
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         print(sp_sequence)
-        test_sp(sp_sequence)
+        delay_call(test_sp, sp_sequence)
 
-@delay(delay_time)
+# @delay(delay_time)
 def test_sp(sequence):
     global started
     if not started:
@@ -195,16 +169,16 @@ def test_sp(sequence):
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         inform(sp_sequence)
-        test_sp_to_goal(sp_sequence)
+        delay_call(test_sp_to_goal, sp_sequence)
 
         return False
     choice = sequence.pop()
     robot.action(choice, -1)
     print(choice, ': ', robot.direction)
-    test_sp(sequence)
+    delay_call(test_sp, sequence)
 
 
-@delay(delay_time)
+# @delay(delay_time)
 def test_sp_to_goal(sequence):
     global started
     if not started:
@@ -215,7 +189,7 @@ def test_sp_to_goal(sequence):
     choice = sequence.pop()
     robot.action(choice, 9)
     print(choice, ': ', robot.direction)
-    test_sp_to_goal(sequence)
+    delay_call(test_sp_to_goal, sequence)
 
 if __name__ == '__main__':
     parse_command_line()
