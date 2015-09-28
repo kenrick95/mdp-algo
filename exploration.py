@@ -1,5 +1,6 @@
 from shortest_path import ShortestPath
 from constants import *
+import random
 
 class Exploration(object):
     """docstring for Exploration"""
@@ -84,7 +85,35 @@ class Exploration(object):
 
 
     def main(self, sensors):
-        
+        def normalizeY(i):
+            if 0 <= i <= 19:
+                return i
+            elif i < 0:
+                return 0
+            else:
+                return 19
+        def normalizeX(j):
+            if 0 <= j <= 14:
+                return j
+            elif j < 0:
+                return 0
+            else:
+                return 14
+        def okay(i, j):
+            #return False
+
+            global realTimeMap
+            if realTimeMap[i][j] == 0:
+                return 0
+            directions = [[0, 2], [1, 2], [-1, 2], [0, -2], [1, -2], [-1, -2], [-2, 0], [-2, 1], [-2, -1], [2, 0], [2, -1], [2, 1]]
+            cnt = 0
+            for direction in directions:
+                if realTimeMap[normalizeY(i + direction[0])][normalizeX(j + direction[1])] == 0:
+                    cnt += 1
+            return cnt
+
+
+
         global realTimeMap
         global simulatorMap
         global sensorList
@@ -106,9 +135,9 @@ class Exploration(object):
         #set robot starting position
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
-        print(robotCenterY, robotCenterX, ": ", robotDirectionY, robotDirectionX)
+        # print(robotCenterY, robotCenterX, ": ", robotDirectionY, robotDirectionX)
         
-        if repeatedArea <= 20 and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
+        if repeatedArea <= 10 and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
             exploredArea = 0
 
             self.callAllMethods(sensors)
@@ -116,12 +145,15 @@ class Exploration(object):
                 if tup == (robotCenterY, robotCenterX):
                     repeatedArea = repeatedArea + 1
                     break
-            
+            #x = []
             for i in range(0,20):
                 for j in range(0,15):
                     if realTimeMap[i][j] != 0:
                         exploredArea = exploredArea + 1
-            # print(repeatedArea, " ", exploredArea , " ", exploredPercentage * 300)
+                    #else:
+                    #    x.append([i,j])
+            #print(x)
+            # print(repeatedArea, " ", exploredArea)
         else:
             robotCurMovement = None
             if exploredArea >= exploredPercentage * 3:
@@ -137,18 +169,35 @@ class Exploration(object):
                 elif robotCenterY < robotDirectionY:
                     rdirection = SOUTH
                 elif robotCenterX < robotDirectionX:
-                    rdirection = WEST
-                elif robotCenterX > robotDirectionX:
                     rdirection = EAST
+                elif robotCenterX > robotDirectionX:
+                    rdirection = WEST
 
                 dest = [10, 8]
+                dest_candidate = []
+                for i in range(0,20):
+                    for j in range(0,15):
+                        v = okay(i, j)
+                        if v > 0:
+                            dest_candidate.append([[i, j], v])
+                best_candidate_v = 0
+                best_candidate = [10, 8]
+                for cand in dest_candidate:
+                    if cand[1] > best_candidate_v:
+                        best_candidate_v = cand[1]
+                        best_candidate = cand[0]
+                # print(dest_candidate)
+                dest = best_candidate
+
                 sp = ShortestPath(realTimeMap, rdirection, rcurrent, dest)
                 sp_list = sp.shortest_path(8)
                 sp_sequence = sp_list['sequence']
                 #sp_sequence.reverse()
                 spList = sp_sequence
-                print(spList)
-                #robotBreak = True
+                # print(rdirection)
+                # print(rcurrent)
+                # print(dest)
+                # print(spList)
 
                 repeatedArea = 0
 
@@ -646,8 +695,10 @@ class Exploration(object):
         global realTimeMap
         global robotCurMovement
         global robotBreak
+        global robotCenterX
+        global robotCenterY
         #print(cnt + 1, "before: ",  robotCurMovement)
         self.main(sensors)
-        print(cnt + 1, robotCurMovement)
+        print(cnt + 1, robotCurMovement, ': ', robotCenterY, robotCenterX)
         cnt += 1
         return (realTimeMap, robotCurMovement, robotBreak)

@@ -135,11 +135,11 @@ def test(exp):
     global started
     if not started:
         return False
-    #realTimeMap and robot.__map is not synced -_-
     sensors = robot.get_sensors()
     cur = exp.getRealTimeMap(sensors)
     if not cur[2]:
         robot.action(translate(cur[1]))
+        print(robot.current)
         sensors = robot.get_sensors()
         delay_call(test, exp)
     else:
@@ -153,7 +153,9 @@ def test(exp):
         sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
-        print(sp_sequence)
+        inform(sp_sequence)
+        
+        # call sp to start
         delay_call(test_sp, sp_sequence)
 
 # @delay(delay_time)

@@ -188,7 +188,7 @@ class ShortestPath(object):
         ret_seq = []
         while cur[0] != self.goal[0] or cur[1] != self.goal[1]:
             next_coord = next_post[cur[0]][cur[1]]
-            print(cur, next_coord, cur_dir)
+            # print(cur, next_coord, cur_dir)
             for x in self.action(cur, next_coord, cur_dir):
                 ret_seq.append(x)
                 # print(x)
