@@ -44,16 +44,11 @@ def explorationMain(exploredPercentage):
 		print ("Index:", indexing)
 		indexing = indexing + 1
 		exploredArea = 0
-		#for i in range(0,20):
-		#	for j in range(0,15):
-		#		print (realTimeMap[i][j],end="")
-		#	print()
 		callAllMethods()
 		for tup in pathTaken:
 			if tup == (robotCenterY, robotCenterX):
 				repeatedArea = repeatedArea + 1
 				break;
-		
 		for i in range(0,20):
 			for j in range(0,15):
 				if realTimeMap[i][j] != 0:
@@ -112,6 +107,13 @@ def variableInitialisation():
 	for i in range (0,20):
 		Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		realTimeMap.append(Row)
+	realTimeMap[17][0] = 1
+	realTimeMap[17][2] = 1
+	realTimeMap[18][0] = 1
+	realTimeMap[18][2] = 1
+	realTimeMap[19][0] = 1
+	realTimeMap[19][1] = 1
+	realTimeMap[19][2] = 1
 	
 	simulatorMap = simulatorReadMap()
 
@@ -135,6 +137,14 @@ def callAllMethods():
 	robotPrevMovement = robotCurMovement
 	if robotCurMovement == "W":
 		pathTaken.append((robotCenterY, robotCenterX))
+	alignmentAction = robotAngleAndDistanceAlignment(sensorList)
+	print (alignmentAction)
+	
+	for i in range(0,20):
+		for j in range(0,15):
+			print (realTimeMap[i][j],end="")
+		print()
+		
 	realTimeMap = executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
 	
 	if sensorList[0][0] == "U":
@@ -524,6 +534,23 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 			resultMovement = "A"
 	print (resultMovement)
 	return resultMovement
+	
+def robotAngleAndDistanceAlignment(sensorList):
+	# 0 = no alignment
+	# LA = left angle alignment
+	# FA = front angle alignment
+	# FD = front distance alignment
+	# A = turn left
+	# D = turn right
+	# return tuple of alignment actions
+	if (sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3)  and (sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
+		return ("FD","A","FD","D","LA")
+	elif(sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3):
+		return ("FA", "FD")
+	elif(sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
+		return ("LA")
+	else:
+		return("0")
 	
 def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 	if direction == "U":
