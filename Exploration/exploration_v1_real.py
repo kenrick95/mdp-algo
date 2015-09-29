@@ -115,7 +115,7 @@ def callAllMethods():
 	global robotDirectionX
 	global robotDirectionY
 	
-	# Get sensor from robot, in string "xx,xx,xx,xx,xx,xx"
+	#sensorString = Get sensor from robot, in string "xx.xx,xx.xx,xx.xx,xx.xx,xx.xx,xx.xx"
 	sensorList = getSensor(sensorString, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
 	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
 	
@@ -402,6 +402,23 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 			resultMovement = "A"
 	print (resultMovement)
 	return resultMovement
+	
+def robotAngleAndDistanceAlignment(sensorList):
+	# 0 = no alignment
+	# L = left angle alignment
+	# F = front angle alignment
+	# Y = front distance alignment
+	# A = turn left
+	# D = turn right
+	# return tuple of alignment actions
+	if (sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3)  and (sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
+		return ["Y","A","Y","D","L"]
+	elif(sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3):
+		return ["F", "Y"]
+	elif(sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
+		return ["L"]
+	else:
+		return []
 	
 def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 	if direction == "U":
