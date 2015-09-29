@@ -1,5 +1,4 @@
 realTimeMap = []
-simulatorMap = []
 sensorList = []
 pathTaken = []
 repeatedArea = 0
@@ -13,7 +12,6 @@ robotDirectionY = 17
 
 def explorationMain(exploredPercentage):
 	global realTimeMap
-	global simulatorMap
 	global sensorList
 	global pathTaken
 	global robotCenterX
@@ -30,10 +28,6 @@ def explorationMain(exploredPercentage):
 	realTimeMap[robotCenterY][robotCenterX] = 5
 	realTimeMap[robotDirectionY][robotDirectionX] = 4
 	
-	#for i in range(0,20):
-	#	for j in range(0,15):
-	#		print (simulatorMap[i][j],end="")
-	#	print()
 	#for i in range(0,20):
 	#	for j in range(0,15):
 	#		print (realTimeMap[i][j],end="")
@@ -73,7 +67,6 @@ def explorationMain(exploredPercentage):
 		
 def variableInitialisation():
 	global realTimeMap
-	global simulatorMap
 	global sensorList
 	global pathTaken
 	global robotPrevMovement
@@ -87,9 +80,6 @@ def variableInitialisation():
 	# realTimeMap[0] = bottom row
 	# realTimeMap[19] = top row
 	realTimeMap = []
-	# simulatorMap[0] = bottom row
-	# simulatorMap[19] = top row
-	simulatorMap = []
 	# sensorList[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
 	# sensorList[1] = frontleft
 	# sensorList[2] = frontcenter
@@ -112,12 +102,9 @@ def variableInitialisation():
 	for i in range (0,20):
 		Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		realTimeMap.append(Row)
-	
-	simulatorMap = simulatorReadMap()
 
 def callAllMethods():
 	global realTimeMap
-	global simulatorMap
 	global sensorList
 	global pathTaken
 	global robotCenterX
@@ -128,7 +115,8 @@ def callAllMethods():
 	global robotDirectionX
 	global robotDirectionY
 	
-	sensorList = getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+	# Get sensor from robot, in string "xx,xx,xx,xx,xx,xx"
+	sensorList = getSensor(sensorString, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
 	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
 	
 	robotCurMovement = robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
@@ -177,116 +165,6 @@ def callAllMethods():
 		elif robotCurMovement == "A":
 			robotDirectionX = robotDirectionX - 1
 			robotDirectionY = robotDirectionY - 1
-		
-def getSensor(simMap, centerX, centerY, directionX, directionY):
-	# returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
-	# returnValue[1] = frontleft
-	# returnValue[2] = frontcenter
-	# returnValue[3] = frontright
-	# returnValue[4] = left
-	# returnValue[5] = right
-	# returnValue[6] = bottomleft
-	returnValue = []
-	outOfBoundLeft = 0
-	outOfBoundRight = 0
-	outOfBoundUp = 0
-	outOfBoundDown = 0
-	
-	if centerX <= 4:
-		if centerX == 1:
-			outOfBoundLeft = 4
-		elif centerX == 2:
-			outOfBoundLeft = 3
-		elif centerX == 3:
-			outOfBoundLeft = 2
-		elif centerX == 4:
-			outOfBoundLeft = 1
-	if centerX >= 10:
-		if centerX == 13:
-			outOfBoundRight = 4
-		elif centerX == 12:
-			outOfBoundRight = 3
-		elif centerX == 11:
-			outOfBoundRight = 2
-		elif centerX == 10:
-			outOfBoundRight = 1
-	if centerY <= 4:
-		if centerY == 1:
-			outOfBoundUp = 4
-		elif centerY == 2:
-			outOfBoundUp = 3
-		elif centerY == 3:
-			outOfBoundUp = 2
-		elif centerY == 4:
-			outOfBoundUp = 1
-	if centerY >= 15:
-		if centerY == 18:
-			outOfBoundDown = 4
-		elif centerY == 17:
-			outOfBoundDown = 3
-		elif centerY == 16:
-			outOfBoundDown = 2
-		elif centerY == 15:
-			outOfBoundDown = 1
-	
-	#U-Facing up
-	if (centerX == directionX) and (directionY < centerY):
-		returnValue.append(["U"])
-	#D-Facing down
-	elif (centerX == directionX) and (directionY > centerY):
-		returnValue.append(["D"])
-	#L-facing left
-	elif (centerY == directionY) and (directionX < centerX):
-		returnValue.append(["L"])
-	#R-facing right
-	elif (centerY == directionY) and (directionX > centerX):
-		returnValue.append(["R"])
-	#get sensor value from simulator map
-	if returnValue[0][0] == "U":			
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX]])
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX+1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX+1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX+1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX+1]])
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY-1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY-1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY-1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY-1][centerX-5]])
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
-	elif returnValue[0][0] == "D":
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX]])
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY+1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY+1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY+1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY+1][centerX+5]])
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
-	elif returnValue[0][0] == "L":
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY][centerX-5]])
-		returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY-1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY-1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY-1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY-1][centerX-5]])
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
-	elif returnValue[0][0] == "R":
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY][centerX+5]])
-		returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY+1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY+1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY+1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY+1][centerX+5]])
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX+1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX+1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX+1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX+1]])
-		returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
-		returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
-		
-	return returnValue
-
-#load simulatorMap from text file
-def simulatorReadMap():
-	simulatorMap = []
-	for line in list(open("Simulator Real Map.txt","r")):
-		oneRow = []
-		count = 1
-		for num in line:
-			if count > 15:
-				break
-			oneRow.append(int(num))
-			count = count + 1
-		simulatorMap.append(oneRow)
-	print("Done")
-	return simulatorMap
 	
 def updateRealTimeMap(realTimeMap, sensorList, centerX, centerY):
 	if sensorList[0][0] == "U":
@@ -572,8 +450,283 @@ def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 			realTimeMap[CenterY][CenterX+1] = 1
 	return realTimeMap
 	
+def getSensor(sensorString, centerX, centerY, directionX, directionY):
+	# returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
+	# returnValue[1] = frontleft
+	# returnValue[2] = frontcenter
+	# returnValue[3] = frontright
+	# returnValue[4] = left
+	# returnValue[5] = right
+	# returnValue[6] = bottomleft
+	returnValue = []
+	outOfBoundLeft = 0
+	outOfBoundRight = 0
+	outOfBoundUp = 0
+	outOfBoundDown = 0
+	
+	if centerX <= 4:
+		if centerX == 1:
+			outOfBoundLeft = 4
+		elif centerX == 2:
+			outOfBoundLeft = 3
+		elif centerX == 3:
+			outOfBoundLeft = 2
+		elif centerX == 4:
+			outOfBoundLeft = 1
+	if centerX >= 10:
+		if centerX == 13:
+			outOfBoundRight = 4
+		elif centerX == 12:
+			outOfBoundRight = 3
+		elif centerX == 11:
+			outOfBoundRight = 2
+		elif centerX == 10:
+			outOfBoundRight = 1
+	if centerY <= 4:
+		if centerY == 1:
+			outOfBoundUp = 4
+		elif centerY == 2:
+			outOfBoundUp = 3
+		elif centerY == 3:
+			outOfBoundUp = 2
+		elif centerY == 4:
+			outOfBoundUp = 1
+	if centerY >= 15:
+		if centerY == 18:
+			outOfBoundDown = 4
+		elif centerY == 17:
+			outOfBoundDown = 3
+		elif centerY == 16:
+			outOfBoundDown = 2
+		elif centerY == 15:
+			outOfBoundDown = 1
+	
+	#U-Facing up
+	if (centerX == directionX) and (directionY < centerY):
+		returnValue.append(["U"])
+	#D-Facing down
+	elif (centerX == directionX) and (directionY > centerY):
+		returnValue.append(["D"])
+	#L-facing left
+	elif (centerY == directionY) and (directionX < centerX):
+		returnValue.append(["L"])
+	#R-facing right
+	elif (centerY == directionY) and (directionX > centerX):
+		returnValue.append(["R"])
+	
+	sensors = sensorString.split(",")
+	returnValue.append(convertShortSensorDistance(sensors[0]))
+	returnValue.append(convertShortSensorDistance(sensors[1]))
+	returnValue.append(convertShortSensorDistance(sensors[2]))
+	returnValue.append(convertShortSensorDistance(sensors[3]))
+	returnValue.append(convertShortSensorDistance(sensors[4]))
+	returnValue.append(convertShortSensorDistance(sensors[5]))
+	
+	if returnValue[0][0] == "U":			
+		if outOfBoundUp>=4:
+			returnValue[1][0]=3
+			returnValue[2][0]=3
+			returnValue[3][0]=3
+		if outOfBoundUp>=3:
+			returnValue[1][1]=3
+			returnValue[2][1]=3
+			returnValue[3][1]=3
+		if outOfBoundUp>=2:
+			returnValue[1][2]=3
+			returnValue[2][2]=3
+			returnValue[3][2]=3
+		if outOfBoundUp>=1:
+			returnValue[1][3]=3
+			returnValue[2][3]=3
+			returnValue[3][3]=3
+		
+		if outOfBoundLeft>=4:
+			returnValue[4][0]=3
+			returnValue[6][0]=3
+		if outOfBoundLeft>=3:
+			returnValue[4][1]=3
+			returnValue[6][1]=3
+		if outOfBoundLeft>=2:
+			returnValue[4][2]=3
+			returnValue[6][2]=3
+		if outOfBoundLeft>=1:
+			returnValue[4][3]=3
+			returnValue[6][3]=3
+		
+		if outOfBoundRight>=4:
+			returnValue[5][0]=3
+		if outOfBoundRight>=3:
+			returnValue[5][1]=3
+		if outOfBoundRight>=2:
+			returnValue[5][2]=3
+		if outOfBoundRight>=1:
+			returnValue[5][3]=3
+	elif returnValue[0][0] == "D":
+		if outOfBoundDown>=4:
+			returnValue[1][0]=3
+			returnValue[2][0]=3
+			returnValue[3][0]=3
+		if outOfBoundDown>=3:
+			returnValue[1][1]=3
+			returnValue[2][1]=3
+			returnValue[3][1]=3
+		if outOfBoundDown>=2:
+			returnValue[1][2]=3
+			returnValue[2][2]=3
+			returnValue[3][2]=3
+		if outOfBoundDown>=1:
+			returnValue[1][3]=3
+			returnValue[2][3]=3
+			returnValue[3][3]=3
+		
+		if outOfBoundRight>=4:
+			returnValue[4][0]=3
+			returnValue[6][0]=3
+		if outOfBoundRight>=3:
+			returnValue[4][1]=3
+			returnValue[6][1]=3
+		if outOfBoundRight>=2:
+			returnValue[4][2]=3
+			returnValue[6][2]=3
+		if outOfBoundRight>=1:
+			returnValue[4][3]=3
+			returnValue[6][3]=3
+			
+		if outOfBoundLeft>=4:
+			returnValue[5][0]=3
+		if outOfBoundLeft>=3:
+			returnValue[5][1]=3
+		if outOfBoundLeft>=2:
+			returnValue[5][2]=3
+		if outOfBoundLeft>=1:
+			returnValue[5][3]=3
+	elif returnValue[0][0] == "L":
+		if outOfBoundLeft>=4:
+			returnValue[1][0]=3
+			returnValue[2][0]=3
+			returnValue[3][0]=3
+		if outOfBoundLeft>=3:
+			returnValue[1][1]=3
+			returnValue[2][1]=3
+			returnValue[3][1]=3
+		if outOfBoundLeft>=2:
+			returnValue[1][2]=3
+			returnValue[2][2]=3
+			returnValue[3][2]=3
+		if outOfBoundLeft>=1:
+			returnValue[1][3]=3
+			returnValue[2][3]=3
+			returnValue[3][3]=3
+		
+		if outOfBoundDown>=4:
+			returnValue[4][0]=3
+			returnValue[6][0]=3
+		if outOfBoundDown>=3:
+			returnValue[4][1]=3
+			returnValue[6][1]=3
+		if outOfBoundDown>=2:
+			returnValue[4][2]=3
+			returnValue[6][2]=3
+		if outOfBoundDown>=1:
+			returnValue[4][3]=3
+			returnValue[6][3]=3
+			
+		if outOfBoundUp>=4:
+			returnValue[5][0]=3
+		if outOfBoundUp>=3:
+			returnValue[5][1]=3
+		if outOfBoundUp>=2:
+			returnValue[5][2]=3
+		if outOfBoundUp>=1:
+			returnValue[5][3]=3
+	elif returnValue[0][0] == "R":
+		if outOfBoundRight>=4:
+			returnValue[1][0]=3
+			returnValue[2][0]=3
+			returnValue[3][0]=3
+		if outOfBoundRight>=3:
+			returnValue[1][1]=3
+			returnValue[2][1]=3
+			returnValue[3][1]=3
+		if outOfBoundRight>=2:
+			returnValue[1][2]=3
+			returnValue[2][2]=3
+			returnValue[3][2]=3
+		if outOfBoundRight>=1:
+			returnValue[1][3]=3
+			returnValue[2][3]=3
+			returnValue[3][3]=3
+		
+		if outOfBoundUp>=4:
+			returnValue[4][0]=3
+			returnValue[6][0]=3
+		if outOfBoundUp>=3:
+			returnValue[4][1]=3
+			returnValue[6][1]=3
+		if outOfBoundUp>=2:
+			returnValue[4][2]=3
+			returnValue[6][2]=3
+		if outOfBoundUp>=1:
+			returnValue[4][3]=3
+			returnValue[6][3]=3
+			
+		if outOfBoundDown>=4:
+			returnValue[5][0]=3
+		if outOfBoundDown>=3:
+			returnValue[5][1]=3
+		if outOfBoundDown>=2:
+			returnValue[5][2]=3
+		if outOfBoundDown>=1:
+			returnValue[5][3]=3
+	return returnValue
+	
+def convertShortSensorDistance(sensorValueStr):
+	if RepresentsFloat(sensorValueStr):
+		sensorValue = float(sensorValueStr)
+		if ((sensorValue >=  0) and (sensorValue <  6)):
+			return [2,0,0,0] #5-14
+		elif ((sensorValue >=  6) and (sensorValue <  16)):
+			return [1,2,0,0] #15-24
+		elif ((sensorValue >=  16) and (sensorValue <  26)):
+			return [1,1,2,0] #25-34
+		elif ((sensorValue >=  26) and (sensorValue <  36)):
+			return [1,1,1,2] #35-44
+		elif (sensorValue >=  36):
+			return [1,1,1,1] #45
+		
+def convertLongSensorDistance( sensorOffset, sensorValue, centerX, centerY, directionX, directionY):
+	if ((sensorValue >=  sensorOffset-2+0*10) and (sensorValue <  sensorOffset+8+0*10)):
+		return [2,0,0,0,0,0,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+1*10) and (sensorValue <  sensorOffset+8+1*10)):
+		return [1,2,0,0,0,0,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+2*10) and (sensorValue <  sensorOffset+8+2*10)):
+		return [1,1,2,0,0,0,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+3*10) and (sensorValue <  sensorOffset+8+3*10)):
+		return [1,1,1,2,0,0,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+4*10) and (sensorValue <  sensorOffset+8+4*10)):
+		return [1,1,1,1,2,0,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+5*10) and (sensorValue <  sensorOffset+8+5*10)):
+		return [1,1,1,1,1,2,0,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+6*10) and (sensorValue <  sensorOffset+8+6*10)):
+		return [1,1,1,1,1,1,2,0,0,0]
+	elif ((sensorValue >=  sensorOffset-2+7*10) and (sensorValue <  sensorOffset+8+7*10)):
+		return [1,1,1,1,1,1,1,2,0,0]
+	elif ((sensorValue >=  sensorOffset-2+8*10) and (sensorValue <  sensorOffset+8+8*10)):
+		return [1,1,1,1,1,1,1,1,2,0]
+	elif ((sensorValue >=  sensorOffset-2+9*10) and (sensorValue <  sensorOffset+8+9*10)):
+		return [1,1,1,1,1,1,1,1,1,2]
+	elif (sensorValue >=  sensorOffset-2+10*10):
+		return [1,1,1,1,1,1,1,1,1,1]
+	
 def getRealTimeMap():
 	global robotCurMovement
 	global realTimeMap
 	main()
 	return (realTimeMap, robotCurMovement)
+	
+def RepresentsFloat(s):
+    try: 
+        float(s)
+        return True
+    except ValueError:
+        return False
