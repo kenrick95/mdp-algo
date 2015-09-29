@@ -142,8 +142,8 @@ def test(exp):
         return False
     sensors = robot.get_sensors()
     cur = exp.getRealTimeMap(sensors)
-    if not cur[2]:
-        robot.action(translate(cur[1]))
+    if not cur[1]:
+        robot.action(translate(cur[0]))
         print(robot.current)
         sensors = robot.get_sensors()
         delay_call(test, exp)

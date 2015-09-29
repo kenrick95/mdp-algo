@@ -128,7 +128,7 @@ class ShortestPath(object):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
             if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
-                add_cost += 1
+                add_cost += 30
                 
         return len(action) * len(action) + add_cost
 
