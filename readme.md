@@ -25,8 +25,3 @@ Ctrl + Pause/break.
 - 7: goal
 - 8: explored path
 - 9: optimum path
-
-
-## TODO
-- Integrate exploration.py with sim.py
-- Use the map descriptor format -_-

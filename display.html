@@ -28,10 +28,31 @@
     color: #111;
     width: inherit;
 }
+#right {
+    position: absolute;
+    top: 1em;
+    right: 0;
+    width: 250px;
+    display: block;
+}
+#control {
+    width: 250px;
+}
+#messages {
+    height: 520px;
+    overflow: auto;
+}
+#canvas-container {
+    margin: 1em auto 0 auto; width: 450px;
+}
+#canvas {
+    background: #eee;
+}
         </style>
     </head>
     <body>
-        <div style="position:fixed; right:0; top: 0; z-index: 100;">
+        <div id="right">
+        <div id="control">
             <label>Per step: <input type="text" name="stepTime" id="stepTime" value="0.1" placeholder="0.1"></label>
             <br>
             <label>Time limit: <input type="time" name="timeLimit" id="timeLimit" value="99:99" placeholder="00:00"></label>
@@ -41,9 +62,10 @@
             <button id="start">Start</button>
             <button id="stop">Stop</button>
         </div>
-        <div id="messages" style="position:fixed; right:0; top: 100px; width: 250px; height: 520px; overflow: auto;"></div>
-        <div style="width: 100%"><div style="margin: 0 auto; width: 450px;">
-        <canvas id="canvas" width="450" height="600" style="background: #eee;">
+        <div id="messages"></div>
+        </div>
+        <div style="width: 100%"><div id="canvas-container">
+        <canvas id="canvas" width="450" height="600">
             
         </canvas>
         </div></div>
@@ -55,14 +77,48 @@
                 context = canvas.getContext('2d');
             var ROW_COUNT = 20, COL_COUNT = 15;
             var map = [];
+            var timeLimit = 1 * 60 * 60 * 1000;
+
             for (var y = 0; y < ROW_COUNT; y++) {
                 map[y] = [];
                 for (var x = 0; x < COL_COUNT; x++) {
                     map[y][x] = 0;
                 }
             }
+            var Timer = function () {
+                this.startTime = null;
+                this.currentTime = new Date();
+            };
+            Timer.prototype.start = function () {
+                this.startTime = new Date();
+            };
+
+            Timer.prototype.tick = function (check) {
+                this.currentTime = new Date();
+                if (this.currentTime - this.startTime > timeLimit) {
+                    this.end();
+                    return false;
+                }
+                window.requestAnimationFrame(this.tick.bind(this));
+            };
+            Timer.prototype.end = function() {
+                var r = new XMLHttpRequest();
+                r.open("GET", "/stop/", true);
+                r.onreadystatechange = function () {
+                  if (r.readyState != 4 || r.status != 200) return;
+                    //messageContainer.innerHTML += "<br>" + r.responseText;
+                    var d = JSON.parse(r.responseText);
+                    logInfo({
+                        time: d.time,
+                        body: d.info
+                    });
+                };
+                r.send();
+            };
+
             function logInfo(msg) {
                 messageContainer.innerHTML += "<div class=\"info\"><div class=\"info-time\">" + msg.time + "</div><div class=\"info-body\">" + msg.body + "</div></div>";
+                messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
             }
 
             function getStyle(cell) {
@@ -109,41 +165,7 @@
                 }
                 context.restore();
             }
-            draw(map);
-            var timeLimit = 1 * 60 * 60 * 1000;
-            var Timer = function () {
-                this.startTime = null;
-                this.currentTime = new Date();
-            };
-            Timer.prototype.start = function () {
-                this.startTime = new Date();
-            };
 
-            Timer.prototype.tick = function (check) {
-                this.currentTime = new Date();
-                if (this.currentTime - this.startTime > timeLimit) {
-                    this.end();
-                    return false;
-                }
-                window.requestAnimationFrame(this.tick.bind(this));
-            };
-            Timer.prototype.end = function() {
-                var r = new XMLHttpRequest();
-                r.open("GET", "/stop/", true);
-                r.onreadystatechange = function () {
-                  if (r.readyState != 4 || r.status != 200) return;
-                    //messageContainer.innerHTML += "<br>" + r.responseText;
-                    var d = JSON.parse(r.responseText);
-                    logInfo({
-                        time: d.time,
-                        body: d.info
-                    });
-                };
-                r.send();
-            };
-            var timer = new Timer();
-
-            messageContainer.innerHTML = "";
             document.getElementById("timeLimit").addEventListener("change", function(e) {
                 var timeString = this.value;
                 var len = this.value.length;
@@ -253,6 +275,10 @@
                     wsOk = false;
                 };
             }
+            
+            var timer = new Timer();
+            draw(map);
+            messageContainer.innerHTML = "";
             wsConnect();
             // 20 x 15
             // goal and end always at corner, but may be different corners

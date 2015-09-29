@@ -11,11 +11,22 @@ import json
 import zope.event
 import random
 
-
 from constants import *
 import sim
 from exploration import Exploration
 from shortest_path import ShortestPath
+
+clients = dict()
+started = False
+delay_time = 0.1
+
+
+define("port", default=8888, help="run on the given port", type=int)
+
+def delay_call(f, *args, **kwargs):
+    global delay_time
+    t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
+    t.start()
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -26,14 +37,7 @@ class FuncThread(threading.Thread):
     def run(self):
         self._target(*self._args)
 
-def delay_call(f, *args, **kwargs):
-    global delay_time
-    t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
-    t.start()
 
-define("port", default=8888, help="run on the given port", type=int)
-
-clients = dict()
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def open(self, *args):
@@ -60,7 +64,7 @@ class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         #self.write("This is your response")
-        self.render("test.html")
+        self.render("display.html")
         #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
         #self.finish()
 
@@ -77,15 +81,18 @@ class StartHandler(tornado.web.RequestHandler):
             return
         started = True
         robot = sim.Robot()
-
         delay_time = float(delay)
 
-        # test()
         exp = Exploration(int(percentage))
-        # test(exp)
-        t1 = FuncThread(test, exp)
+        
+        global sensors
+        sensors = robot.get_sensors()
+
+
+        t1 = FuncThread(exploration, exp)
         t1.start()
         t1.join()
+
         inform("Exploration started!")
         self.flush()
 
@@ -98,13 +105,16 @@ class StopHandler(tornado.web.RequestHandler):
         started = False
         self.flush()
 
-
 app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
     (r'/start/(.*)/(.*)', StartHandler),
     (r'/stop/(.*)', StopHandler)
 ])
+
+
+
+
 
 def tick(action):
     for key in clients:
@@ -133,22 +143,21 @@ def translate(action):
     elif action == "D":
         return RIGHT
 
-started = False
-delay_time = 0.1 # TODO: How to make this variable? (i.e. controllable from the UI?) --> Find a way to redefine decorator
 
-def test(exp):
+def exploration(exp):
     global started
     if not started:
         return False
-    sensors = robot.get_sensors()
+    
+    global sensors
     cur = exp.getRealTimeMap(sensors)
     if not cur[1]:
         robot.action(translate(cur[0]))
         print(robot.current)
         sensors = robot.get_sensors()
-        delay_call(test, exp)
+        delay_call(exploration, exp)
     else:
-        inform("EXPLORATION DONE")
+        inform("Exploration done!")
         
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
@@ -161,43 +170,43 @@ def test(exp):
         inform(sp_sequence)
         
         # call sp to start
-        delay_call(test_sp, sp_sequence)
+        delay_call(sp_to_start, sp_sequence)
 
 # @delay(delay_time)
-def test_sp(sequence):
+def sp_to_start(sequence):
     global started
     if not started:
         return False
     if len(sequence) == 0:
-        inform("GONE BACK TO START")
+        inform("Gone back to start!")
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
         sp_list = sp.shortest_path()
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         inform(sp_sequence)
-        delay_call(test_sp_to_goal, sp_sequence)
+        delay_call(sp_to_goal, sp_sequence)
 
         return False
     choice = sequence.pop()
     robot.action(choice, -1)
     print(choice, ': ', robot.direction)
-    delay_call(test_sp, sequence)
+    delay_call(sp_to_start, sequence)
 
 
 # @delay(delay_time)
-def test_sp_to_goal(sequence):
+def sp_to_goal(sequence):
     global started
     if not started:
         return False
     if len(sequence) == 0:
-        inform("SHORTEST PATH DONE")
+        inform("ShortestPath done!")
         started = False
         return False
     choice = sequence.pop()
     robot.action(choice, 9)
     print(choice, ': ', robot.direction)
-    delay_call(test_sp_to_goal, sequence)
+    delay_call(sp_to_goal, sequence)
 
 if __name__ == '__main__':
     parse_command_line()
@@ -206,4 +215,6 @@ if __name__ == '__main__':
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
+
+    print("Listening to http://localhost:" + str(options.port) + "...")
     tornado.ioloop.IOLoop.instance().start()
