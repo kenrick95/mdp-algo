@@ -21,7 +21,7 @@ from collections import deque
 
 
 from constants import *
-import sim
+import real
 from exploration import Exploration
 from shortest_path import ShortestPath
 
@@ -95,7 +95,9 @@ class StartHandler(tornado.web.RequestHandler):
         exp = Exploration(int(percentage))
         
         global sensors
-        sensors = robot.get_sensors()
+        sensorString = robot.get_sensors() # from physical robot
+        robot.parse_sensors(sensorString)
+        robot.update_map()
 
 
         t1 = FuncThread(exploration, exp)
@@ -144,15 +146,6 @@ def inform(string):
         message['info'] = string
         clients[key]['object'].write_message(json.dumps(message))
 
-def translate(action):
-    if action == "W":
-        return FORWARD
-    elif action == "A":
-        return LEFT
-    elif action == "D":
-        return RIGHT
-
-
 def exploration(exp):
     global started
     if not started:
@@ -161,9 +154,15 @@ def exploration(exp):
     global sensors
     cur = exp.getRealTimeMap(sensors)
     if not cur[1]:
-        robot.action(translate(cur[0]))
+        robot.action(cur[0])
+        send_cmd(cur[0])
+
+        # TODO: Wait for ACK before going on.
+
         print(robot.current)
-        sensors = robot.get_sensors()
+        sensorString = robot.get_sensors() # from Arduino
+        robot.parse_sensors(sensorString)
+        robot.update_map()
         delay_call(exploration, exp)
     else:
         inform("Exploration done!")
@@ -199,6 +198,9 @@ def sp_to_start(sequence):
         return False
     choice = sequence.pop()
     robot.action(choice, -1)
+    send_cmd(choice)
+    # TODO: Wait for ACK before going on.
+
     print(choice, ': ', robot.direction)
     delay_call(sp_to_start, sequence)
 
@@ -214,6 +216,9 @@ def sp_to_goal(sequence):
         return False
     choice = sequence.pop()
     robot.action(choice, 9)
+    send_cmd(choice)
+    # TODO: Wait for ACK before going on.
+    
     print(choice, ': ', robot.direction)
     delay_call(sp_to_goal, sequence)
 
@@ -270,7 +275,10 @@ def serRead(threadName, delay):
     while 1:
         gevent.sleep(delay)
         msg = serial.readline()
-        sockq.append(msg)
+        #sockq.append(msg)
+        # received "msg" from Arduino
+        parse_msg(msg)
+
         print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
 
 def serWrite(threadName, delay):
@@ -303,17 +311,23 @@ def writeInput():
         test = raw_input("Enter Command: ")
         btq.append(test)
 
+def send_cmd(cmd):
+    serialq.append(cmd)
+
+def parse_msg(msg):
+    return
+    # K: acknowledgement of W, A, D;
 
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    robot = sim.Robot()
+    robot = real.Robot()
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
 
 
-    wifisock = wifiComm() 
+    # wifisock = wifiComm() 
     btsock = btComm()
     #server = Server('', 5143)
     #asyncore.loop(timeout=1)
@@ -332,10 +346,10 @@ if __name__ == '__main__':
     #    thread4 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5)
         thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
         thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
-        thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
-        thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
+    #    thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
+    #    thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
     #    thread3 = gevent.spawn(writeInput)
-        threads = [thread1, thread2, thread3, thread4, thread5, thread6]
+        threads = [thread1, thread2, thread3, thread4]
         gevent.joinall(threads)
     except:
         print ("Error, cannot create threads.")

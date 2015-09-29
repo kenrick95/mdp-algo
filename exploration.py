@@ -417,9 +417,6 @@ class Exploration(object):
         return simulatorMap
         
     def updateRealTimeMap(self, realTimeMap, sensorList, centerX, centerY):
-        # need to break current spList if gone to unsafe area
-        
-
         if sensorList[0][0] == NORTH:
             #front left
             if sensorList[1][0] != None :realTimeMap[centerY-2][centerX-1] = sensorList[1][0]

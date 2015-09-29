@@ -5,18 +5,21 @@ class Robot(object):
     """docstring for Robot"""
     def __init__(self):
         super(Robot, self).__init__()
-        self.__map = []
         self.explored_map = []
-        self.__get_map()
-        # self.descriptor_map_one = [row[:] for row in self.explored_map]
-        # self.descriptor_map_two = [row[:] for row in self.explored_map]
         
-        self.MAX_ROW = len(self.__map)
-        self.MAX_COL = len(self.__map[0])
+        self.MAX_ROW = 20
+        self.MAX_COL = 15
+
+        temp = []
+        for i in range(self.MAX_COL):
+            temp.append([0])
+        for i in range(self.MAX_ROW):
+            self.explored_map.append(temp)
+
         self.__recolor_later = []
 
-        self.start = [18, 1] # find_centre(start)
-        self.goal = [1, 13] # find_centre(goal)
+        self.start = [18, 1]
+        self.goal = [1, 13]
 
         # mark start & goal area
         self.__mark_surroundings(self.start, 6)
@@ -60,30 +63,15 @@ class Robot(object):
         self.__recolor_later = []
 
     def __is_safe(self, _center):
+        # now we're totally blind, we need to use explored_map!
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
             if  _center[0] + direction[0] < 0 or _center[0] + direction[0] >= self.MAX_ROW or \
                 _center[1] + direction[1] < 0 or _center[1] + direction[1] >= self.MAX_COL or \
-                self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 2:
-                # self.__map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
+                self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]] == 2:
+                # self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]] == 1:
                 return False
         return True
-
-    def __get_map(self):
-        start = []
-        goal = []
-        with open("Simulator Real Map.txt") as f:
-            content = f.readlines()
-            for line in content:
-                temp = []
-                temp0 = []
-                for char in line:
-                    if char.isdigit():
-                        temp.append(int(char))
-                        temp0.append(0)
-                self.__map.append(temp)
-                # self.explored_map.append(temp)
-                self.explored_map.append(temp0)
 
     def action(self, action, mark_value = 8):
         if action == FORWARD:
@@ -136,112 +124,151 @@ class Robot(object):
                 self.direction = SOUTH
         self.__mark_robot()
 
-    def __get_value(self, y, x):
-        if 0 <= y < self.MAX_ROW and 0 <= x < self.MAX_COL:
-            # TODO: if false information is given, how to update?
-            if self.__map[y][x] == 2:
-                if self.explored_map[y][x] == 0:
-                    self.explored_map[y][x] = 2
-                return 2
-            else:
-                if self.explored_map[y][x] == 0:
-                    self.explored_map[y][x] = 1
-                return 1
-        return None
+    def parse_sensors(self, sensorString):
+        def represent_float(s):
+            try: 
+                float(s)
+                return True
+            except ValueError:
+                return False
+        def convert_long_sensor_distance(sensorOffset, sensorValue):
+            if ((sensorValue >=  sensorOffset - 2 + 0 * 10) and (sensorValue <  sensorOffset + 8 + 0 * 10)):
+                return [2, None, None, None, None, None, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 1 * 10) and (sensorValue <  sensorOffset + 8 + 1 * 10)):
+                return [1, 2, None, None, None, None, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 2 * 10) and (sensorValue <  sensorOffset + 8 + 2 * 10)):
+                return [1, 1, 2, None, None, None, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 3 * 10) and (sensorValue <  sensorOffset + 8 + 3 * 10)):
+                return [1, 1, 1, 2, None, None, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 4 * 10) and (sensorValue <  sensorOffset + 8 + 4 * 10)):
+                return [1, 1, 1, 1, 2, None, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 5 * 10) and (sensorValue <  sensorOffset + 8 + 5 * 10)):
+                return [1, 1, 1, 1, 1, 2, None, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 6 * 10) and (sensorValue <  sensorOffset + 8 + 6 * 10)):
+                return [1, 1, 1, 1, 1, 1, 2, None, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 7 * 10) and (sensorValue <  sensorOffset + 8 + 7 * 10)):
+                return [1, 1, 1, 1, 1, 1, 1, 2, None, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 8 * 10) and (sensorValue <  sensorOffset + 8 + 8 * 10)):
+                return [1, 1, 1, 1, 1, 1, 1, 1, 2, None]
+            elif ((sensorValue >=  sensorOffset - 2 + 9 * 10) and (sensorValue <  sensorOffset + 8 + 9 * 10)):
+                return [1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+            elif (sensorValue >=  sensorOffset - 2 + 10 * 10):
+                return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        def convert_short_sensor_distance(sensorValueStr):
+            if represent_float(sensorValueStr):
+                sensorValue = float(sensorValueStr)
+                if ((sensorValue >=  0) and (sensorValue <  6)):
+                    return [2, None, None, None] #5 - 14
+                elif ((sensorValue >=  6) and (sensorValue <  16)):
+                    return [1, 2, None, None] #15 - 24
+                elif ((sensorValue >=  16) and (sensorValue <  26)):
+                    return [1, 1, 2, 0] #25 - 34
+                elif ((sensorValue >=  26) and (sensorValue <  36)):
+                    return [1, 1, 1, 2] #35 - 44
+                elif (sensorValue >=  36):
+                    return [1, 1, 1, 1] #45
 
-    def get_sensors(self):
         sensors = []
-        for i in range(6):
-            sensors.append([])
-            for j in range(4):
-                sensors[i].append(None)
+        #for i in range(6):
+        #    sensors.append([])
+        #    for j in range(4):
+        #       sensors[i].append(None)
+
+        sensorList = sensorString.split(",")
+
+        # FL
+        sensors.append(convert_short_sensor_distance(sensorList[0]))
+        # FM
+        sensors.append(convert_short_sensor_distance(sensorList[1]))
+        # FR
+        sensors.append(convert_short_sensor_distance(sensorList[2]))
+        # LT
+        sensors.append(convert_short_sensor_distance(sensorList[3]))
+        # RT
+        sensors.append(convert_short_sensor_distance(sensorList[4]))
+        # LB
+        sensors.append(convert_short_sensor_distance(sensorList[5]))
+
+        self.sensors = sensors
+        return sensors
+
+    def update_map(self):
+        def upd(y, x, sensorValue):
+            if sensorValue:
+                self.explored_map[y][x] = sensorValue
 
         # FL
         for i in range(4):
             if self.direction == NORTH:
-                sensors[0][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+                upd(self.current[0] - i - 2, self.current[1] - 1, self.sensors[0][i])
             elif self.direction == EAST:
-                sensors[0][i] = self.__get_value(self.current[0] - 1 , self.current[1] + i + 2)
+                upd(self.current[0] - 1 , self.current[1] + i + 2, self.sensors[0][i])
             elif self.direction == WEST:
-                sensors[0][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+                upd(self.current[0] + 1, self.current[1] - i - 2, self.sensors[0][i])
             else: # self.direction == SOUTH:
-                sensors[0][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+                upd(self.current[0] + i + 2, self.current[1] + 1, self.sensors[0][i])
 
-            if sensors[0][i] == 2:
-                break
         # FM
         for i in range(4):
             if self.direction == NORTH:
-                sensors[1][i] = self.__get_value(self.current[0] - i - 2, self.current[1])
+                upd(self.current[0] - i - 2, self.current[1], sensors[1][i])
             elif self.direction == EAST:
-                sensors[1][i] = self.__get_value(self.current[0], self.current[1] + i + 2)
+                upd(self.current[0], self.current[1] + i + 2, sensors[1][i])
             elif self.direction == WEST:
-                sensors[1][i] = self.__get_value(self.current[0], self.current[1] - i - 2)
+                upd(self.current[0], self.current[1] - i - 2, sensors[1][i])
             else: # self.direction == SOUTH:
-                sensors[1][i] = self.__get_value(self.current[0] + i + 2, self.current[1])
+                upd(self.current[0] + i + 2, self.current[1], sensors[1][i])
 
-            if sensors[1][i] == 2:
-                break
         # FR
         for i in range(4):
             if self.direction == NORTH:
-                sensors[2][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+                upd(self.current[0] - i - 2, self.current[1] + 1, sensors[2][i])
             elif self.direction == EAST:
-                sensors[2][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
+                upd(self.current[0] + 1, self.current[1] + i + 2, sensors[2][i])
             elif self.direction == WEST:
-                sensors[2][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+                upd(self.current[0] - 1, self.current[1] - i - 2, sensors[2][i])
             else: # self.direction == SOUTH:
-                sensors[2][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+                upd(self.current[0] + i + 2, self.current[1] - 1, sensors[2][i])
 
-            if sensors[2][i] == 2:
-                break
         
         # LT
         for i in range(4):
             if self.direction == NORTH:
-                sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
+                upd(self.current[0] - 1, self.current[1] - i - 2, sensors[3][i])
             elif self.direction == EAST:
-                sensors[3][i] = self.__get_value(self.current[0] - i - 2, self.current[1] + 1)
+                upd(self.current[0] - i - 2, self.current[1] + 1, sensors[3][i])
             elif self.direction == WEST:
-                sensors[3][i] = self.__get_value(self.current[0] + i + 2, self.current[1] - 1)
+                upd(self.current[0] + i + 2, self.current[1] - 1, sensors[3][i])
             else: # self.direction == SOUTH:
-                sensors[3][i] = self.__get_value(self.current[0] + 1, self.current[1] + i + 2)
+                upd(self.current[0] + 1, self.current[1] + i + 2, sensors[3][i])
 
-            # sensors[3][i] = self.__get_value(self.current[0] - 1, self.current[1] - i - 2)
-            if sensors[3][i] == 2:
-                break
 
         # RT
         for i in range(4):
             if self.direction == NORTH:
-                sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+                upd(self.current[0] - 1, self.current[1] + i + 2, sensors[4][i])
             elif self.direction == EAST:
-                sensors[4][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+                upd(self.current[0] + i + 2, self.current[1] + 1, sensors[4][i])
             elif self.direction == WEST:
-                sensors[4][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+                upd(self.current[0] - i - 2, self.current[1] - 1, sensors[4][i])
             else: # self.direction == SOUTH:
-                sensors[4][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+                upd(self.current[0] + 1, self.current[1] - i - 2, sensors[4][i])
 
-            # sensors[4][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
-            if sensors[4][i] == 2:
-                break
+
         
         # LB
         for i in range(4):
             if self.direction == NORTH:
-                sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
+                upd(self.current[0] + 1, self.current[1] - i - 2, sensors[5][i])
             elif self.direction == EAST:
-                sensors[5][i] = self.__get_value(self.current[0] - i - 2, self.current[1] - 1)
+                upd(self.current[0] - i - 2, self.current[1] - 1, sensors[5][i])
             elif self.direction == WEST:
-                sensors[5][i] = self.__get_value(self.current[0] + i + 2, self.current[1] + 1)
+                upd(self.current[0] + i + 2, self.current[1] + 1, sensors[5][i])
             else: # self.direction == SOUTH:
-                sensors[5][i] = self.__get_value(self.current[0] - 1, self.current[1] + i + 2)
+                upd(self.current[0] - 1, self.current[1] + i + 2, sensors[5][i])
 
-            #sensors[5][i] = self.__get_value(self.current[0] + 1, self.current[1] - i - 2)
-            if sensors[5][i] == 2:
-                break
         zope.event.notify("SENSOR")
-        return sensors
+        return self.explored_map
 
     def descriptor_one(self):
         ret = [1, 1]
@@ -308,8 +335,3 @@ class Robot(object):
         # print(len(hex_ret))
 
         return ''.join([h for h in hex_ret])
-
-if __name__ == '__main__':
-    robot = Robot()
-    print(robot.get_sensors())
-    print(robot.explored_map)
