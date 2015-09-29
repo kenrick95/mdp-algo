@@ -405,20 +405,20 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 	
 def robotAngleAndDistanceAlignment(sensorList):
 	# 0 = no alignment
-	# LA = left angle alignment
-	# FA = front angle alignment
-	# FD = front distance alignment
+	# L = left angle alignment
+	# F = front angle alignment
+	# Y = front distance alignment
 	# A = turn left
 	# D = turn right
 	# return tuple of alignment actions
 	if (sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3)  and (sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ("FD","A","FD","D","LA")
+		return ["Y","A","Y","D","L"]
 	elif(sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3):
-		return ("FA", "FD")
+		return ["F", "Y"]
 	elif(sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ("LA")
+		return ["L"]
 	else:
-		return("0")
+		return []
 	
 def executeRobotMovement(realTimeMap, CenterX, CenterY, direction, movement):
 	if direction == "U":
