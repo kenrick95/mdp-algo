@@ -41,8 +41,10 @@ class Exploration(object):
         global exploredPercentage
         global robotBreak
         global exploredArea
+        global spCounter
         global spList
         spList = []
+        spCounter = 0
         robotBreak = False
         exploredArea = 0
         exploredPercentage = _exploredPercentage
@@ -108,15 +110,22 @@ class Exploration(object):
             global realTimeMap
             global robotCenterX
             global robotCenterY
-            if realTimeMap[i][j] == 0:
-                return 0
+            if realTimeMap[i][j] == 0 or realTimeMap[i][j] == 2:
+                return -100000007
+            directions = [[0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+            for direction in directions:
+                if realTimeMap[i + direction[0]][j + direction[1]] == 2:
+                    return -100000007
+            
+
             directions = [[0, 2], [1, 2], [-1, 2], [0, -2], [1, -2], [-1, -2], [-2, 0], [-2, 1], [-2, -1], [2, 0], [2, -1], [2, 1]]
             dist = manhattan([robotCenterY, robotCenterX], [i, j])
             cnt = 0
             for direction in directions:
-                if realTimeMap[normalizeY(i + direction[0])][normalizeX(j + direction[1])] == 0:
-                    cnt += 1
-            return cnt * cnt - dist
+                temp = realTimeMap[normalizeY(i + direction[0])][normalizeX(j + direction[1])]
+                if temp == 0:
+                    cnt += 2
+            return cnt * cnt * cnt - dist
 
 
 
@@ -137,13 +146,14 @@ class Exploration(object):
         global exploredArea
 
         global spList
+        global spCounter
         
         #set robot starting position
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
         # print(robotCenterY, robotCenterX, ": ", robotDirectionY, robotDirectionX)
         
-        if repeatedArea <= 25 and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
+        if repeatedArea <= 30 and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
             exploredArea = 0
 
             self.callAllMethods(sensors)
@@ -163,7 +173,7 @@ class Exploration(object):
             # print(repeatedArea, " ", exploredArea)
         else:
             robotCurMovement = None
-            if exploredArea >= exploredPercentage * 3:
+            if exploredArea >= exploredPercentage * 3 or spCounter > 5:
                 # good enough, break
                 robotBreak = True
             else:
@@ -182,12 +192,12 @@ class Exploration(object):
 
                 dest = [10, 8]
                 dest_candidate = []
-                for i in range(0,20):
-                    for j in range(0,15):
+                for i in range(1, 19):
+                    for j in range(1, 14):
                         v = okay(i, j)
-                        if v > 0:
+                        if v > -100000007:
                             dest_candidate.append([[i, j], v])
-                best_candidate_v = 0
+                best_candidate_v = -100000007
                 best_candidate = [10, 8]
                 for cand in dest_candidate:
                     if cand[1] > best_candidate_v:
@@ -201,13 +211,16 @@ class Exploration(object):
                 sp_sequence = sp_list['sequence']
                 #sp_sequence.reverse()
                 spList = sp_sequence
+                """
                 print("--------------")
                 print(rdirection)
                 print(rcurrent)
                 print(dest)
                 print(spList)
                 print("--------------")
-
+                """
+                print(spList)
+                spCounter += 1
                 repeatedArea = 0
 
         # THIS IS THE CULPRIT, DO NOT MARK realTimeMap with 8 OR ELSE robotMovementAnalyses will fail :)

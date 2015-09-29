@@ -41,7 +41,7 @@
             <button id="start">Start</button>
             <button id="stop">Stop</button>
         </div>
-        <div id="messages" style="position:fixed; right:0; top: 100px; width: 250px; height: 600px; overflow: auto;"></div>
+        <div id="messages" style="position:fixed; right:0; top: 100px; width: 250px; height: 520px; overflow: auto;"></div>
         <div style="width: 100%"><div style="margin: 0 auto; width: 450px;">
         <canvas id="canvas" width="450" height="600" style="background: #eee;">
             
@@ -49,7 +49,7 @@
         </div></div>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function(e) {
-            var ws;
+            var ws, wsOk = false;
             var messageContainer = document.getElementById('messages');
             var canvas = document.getElementById('canvas'),
                 context = canvas.getContext('2d');
@@ -159,6 +159,9 @@
                 console.log(timeLimit);
             });
             document.getElementById("start").addEventListener('click', function(e) {
+                if (!wsOk) {
+                    wsConnect();
+                }
                 var r = new XMLHttpRequest();
                 var percentage = document.getElementById('percentageLimit').value || 0;
                 var stepTime = parseFloat(document.getElementById('stepTime').value);
@@ -195,6 +198,9 @@
                 timer.tick();
             });
             document.getElementById("stop").addEventListener('click', function(e) {
+                if (!wsOk) {
+                    wsConnect();
+                }
                 var r = new XMLHttpRequest();
                 var percentage = document.getElementById('percentageLimit').value || 0;
                 var stepTime = parseFloat(document.getElementById('stepTime').value);
@@ -212,39 +218,42 @@
                 };
                 r.send();
             });
-
-            ws = new WebSocket("ws://"+window.location.host+"/ws?Id=" + Math.floor(Math.random() * 1000000));
-            ws.onopen = function() {
-                ws.send("Initializing connection");
-                //messageContainer.innerHTML += "<br>Connection is opened...";
-                logInfo({
-                    time: (new Date()).toISOString(),
-                    body: "Connection opened."
-                });
-            };
-            ws.onmessage = function (evt) { 
-                var received_msg = evt.data;
-                //messageContainer.innerHTML += "<br>Message is received: " + received_msg;
-                var data = JSON.parse(evt.data);
-                if (data.type === "map") {
-                    var map = data.map;
-                    draw(map);
-                } else if (data.type === "info") {
-                    //messageContainer.innerHTML += "<br>" + received_msg;
+            function wsConnect() {
+                ws = new WebSocket("ws://"+window.location.host+"/ws?Id=" + Math.floor(Math.random() * 1000000));
+                ws.onopen = function() {
+                    ws.send("Initializing connection");
+                    //messageContainer.innerHTML += "<br>Connection is opened...";
                     logInfo({
-                        time: data.time,
-                        body: data.info
+                        time: (new Date()).toISOString(),
+                        body: "Connection opened."
                     });
-                }
-            };
-            ws.onclose = function() { 
-                //messageContainer.innerHTML += "<br>Connection is closed...";
-                logInfo({
-                    time: (new Date()).toISOString(),
-                    body: "Connection closed."
-                });
-            };
-
+                    wsOk = true;
+                };
+                ws.onmessage = function (evt) { 
+                    var received_msg = evt.data;
+                    //messageContainer.innerHTML += "<br>Message is received: " + received_msg;
+                    var data = JSON.parse(evt.data);
+                    if (data.type === "map") {
+                        var map = data.map;
+                        draw(map);
+                    } else if (data.type === "info") {
+                        //messageContainer.innerHTML += "<br>" + received_msg;
+                        logInfo({
+                            time: data.time,
+                            body: data.info
+                        });
+                    }
+                };
+                ws.onclose = function() { 
+                    //messageContainer.innerHTML += "<br>Connection is closed...";
+                    logInfo({
+                        time: (new Date()).toISOString(),
+                        body: "Connection closed."
+                    });
+                    wsOk = false;
+                };
+            }
+            wsConnect();
             // 20 x 15
             // goal and end always at corner, but may be different corners
         });
