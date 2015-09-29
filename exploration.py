@@ -111,11 +111,11 @@ class Exploration(object):
             global robotCenterX
             global robotCenterY
             if realTimeMap[i][j] == 0 or realTimeMap[i][j] == 2:
-                return -100000007
+                return -INF
             directions = [[0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
             for direction in directions:
                 if realTimeMap[i + direction[0]][j + direction[1]] == 2:
-                    return -100000007
+                    return -INF
             
 
             directions = [[0, 2], [1, 2], [-1, 2], [0, -2], [1, -2], [-1, -2], [-2, 0], [-2, 1], [-2, -1], [2, 0], [2, -1], [2, 1]]
@@ -244,8 +244,6 @@ class Exploration(object):
         global robotDirectionY
         
         sensorList = self.getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
-        print(sensorList)
-        sensors[3], sensors[4] = sensors[4], sensors[3]
         sensors.insert(0, sensorList[0])
         sensorList = sensors
 
@@ -253,49 +251,49 @@ class Exploration(object):
         
         robotCurMovement = self.robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
         robotPrevMovement = robotCurMovement
-        if robotCurMovement == "W":
+        if robotCurMovement == FORWARD:
             pathTaken.append((robotCenterY, robotCenterX))
         #print (robotCurMovement)
         realTimeMap = self.executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
         
-        if sensorList[0][0] == "U":
-            if robotCurMovement == "D":
+        if sensorList[0][0] == NORTH:
+            if robotCurMovement == RIGHT:
                 robotDirectionX = robotDirectionX + 1
                 robotDirectionY = robotDirectionY + 1
-            elif robotCurMovement == "W":
+            elif robotCurMovement == FORWARD:
                 robotCenterY = robotCenterY - 1
                 robotDirectionY = robotDirectionY - 1
-            elif robotCurMovement == "A":
+            elif robotCurMovement == LEFT:
                 robotDirectionX = robotDirectionX - 1
                 robotDirectionY = robotDirectionY + 1
-        if sensorList[0][0] == "D":
-            if robotCurMovement == "D":
+        if sensorList[0][0] == SOUTH:
+            if robotCurMovement == RIGHT:
                 robotDirectionX = robotDirectionX - 1
                 robotDirectionY = robotDirectionY - 1
-            elif robotCurMovement == "W":
+            elif robotCurMovement == FORWARD:
                 robotCenterY = robotCenterY + 1
                 robotDirectionY = robotDirectionY + 1
-            elif robotCurMovement == "A":
+            elif robotCurMovement == LEFT:
                 robotDirectionX = robotDirectionX + 1
                 robotDirectionY = robotDirectionY - 1
-        if sensorList[0][0] == "L":
-            if robotCurMovement == "D":
+        if sensorList[0][0] == WEST:
+            if robotCurMovement == RIGHT:
                 robotDirectionX = robotDirectionX + 1
                 robotDirectionY = robotDirectionY - 1
-            elif robotCurMovement == "W":
+            elif robotCurMovement == FORWARD:
                 robotCenterX = robotCenterX -1
                 robotDirectionX = robotDirectionX - 1
-            elif robotCurMovement == "A":
+            elif robotCurMovement == LEFT:
                 robotDirectionX = robotDirectionX + 1
                 robotDirectionY = robotDirectionY + 1
-        if sensorList[0][0] == "R":
-            if robotCurMovement == "D":
+        if sensorList[0][0] == EAST:
+            if robotCurMovement == RIGHT:
                 robotDirectionX = robotDirectionX - 1
                 robotDirectionY = robotDirectionY + 1
-            elif robotCurMovement == "W":
+            elif robotCurMovement == FORWARD:
                 robotCenterX = robotCenterX + 1
                 robotDirectionX = robotDirectionX + 1
-            elif robotCurMovement == "A":
+            elif robotCurMovement == LEFT:
                 robotDirectionX = robotDirectionX - 1
                 robotDirectionY = robotDirectionY - 1
 
@@ -353,42 +351,42 @@ class Exploration(object):
         
         #U-Facing up
         if (centerX == directionX) and (directionY < centerY):
-            returnValue.append(["U"])
+            returnValue.append([NORTH])
         #D-Facing down
         elif (centerX == directionX) and (directionY > centerY):
-            returnValue.append(["D"])
+            returnValue.append([SOUTH])
         #L-facing left
         elif (centerY == directionY) and (directionX < centerX):
-            returnValue.append(["L"])
+            returnValue.append([WEST])
         #R-facing right
         elif (centerY == directionY) and (directionX > centerX):
-            returnValue.append(["R"])
+            returnValue.append([EAST])
         return returnValue
         
         """
         #get sensor value from simulator map
-        if returnValue[0][0] == "U":            
+        if returnValue[0][0] == NORTH:            
             returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
             returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX]])
             returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX+1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX+1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX+1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX+1]])
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY-1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY-1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY-1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY-1][centerX-5]])
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
-        elif returnValue[0][0] == "D":
+        elif returnValue[0][0] == SOUTH:
             returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
             returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX]])
             returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY+1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY+1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY+1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY+1][centerX+5]])
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
-        elif returnValue[0][0] == "L":
+        elif returnValue[0][0] == WEST:
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY+1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY+1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY+1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY+1][centerX-5]])
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY][centerX-5]])
             returnValue.append([3 if outOfBoundLeft>=4 else simMap[centerY-1][centerX-2], 3 if outOfBoundLeft>=3 else simMap[centerY-1][centerX-3], 3 if outOfBoundLeft>=2 else simMap[centerY-1][centerX-4], 3 if outOfBoundLeft>=1 else simMap[centerY-1][centerX-5]])
             returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX-1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX-1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX-1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX-1]])
             returnValue.append([3 if outOfBoundUp>=4 else simMap[centerY-2][centerX-1], 3 if outOfBoundUp>=3 else simMap[centerY-3][centerX-1], 3 if outOfBoundUp>=2 else simMap[centerY-4][centerX-1], 3 if outOfBoundUp>=1 else simMap[centerY-5][centerX-1]])
             returnValue.append([3 if outOfBoundDown>=4 else simMap[centerY+2][centerX+1], 3 if outOfBoundDown>=3 else simMap[centerY+3][centerX+1], 3 if outOfBoundDown>=2 else simMap[centerY+4][centerX+1], 3 if outOfBoundDown>=1 else simMap[centerY+5][centerX+1]])
-        elif returnValue[0][0] == "R":
+        elif returnValue[0][0] == EAST:
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY-1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY-1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY-1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY-1][centerX+5]])
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY][centerX+5]])
             returnValue.append([3 if outOfBoundRight>=4 else simMap[centerY+1][centerX+2], 3 if outOfBoundRight>=3 else simMap[centerY+1][centerX+3], 3 if outOfBoundRight>=2 else simMap[centerY+1][centerX+4], 3 if outOfBoundRight>=1 else simMap[centerY+1][centerX+5]])
@@ -422,7 +420,7 @@ class Exploration(object):
         # need to break current spList if gone to unsafe area
         
 
-        if sensorList[0][0] == "U":
+        if sensorList[0][0] == NORTH:
             #front left
             if sensorList[1][0] != None :realTimeMap[centerY-2][centerX-1] = sensorList[1][0]
             if sensorList[1][0] != 2:
@@ -471,7 +469,7 @@ class Exploration(object):
                     if sensorList[6][2] != None :realTimeMap[centerY+1][centerX-4] = sensorList[6][2]
                     if sensorList[6][2] != 2:
                         if sensorList[6][3] != None :realTimeMap[centerY+1][centerX-5] = sensorList[6][3]
-        elif sensorList[0][0] == "D":
+        elif sensorList[0][0] == SOUTH:
             if sensorList[1][0] != None :realTimeMap[centerY+2][centerX+1] = sensorList[1][0]
             if sensorList[1][0] != 2:
                 if sensorList[1][1] != None :realTimeMap[centerY+3][centerX+1] = sensorList[1][1]
@@ -519,7 +517,7 @@ class Exploration(object):
                     if sensorList[6][2] != None :realTimeMap[centerY-1][centerX+4] = sensorList[6][2]
                     if sensorList[6][2] != 2:
                         if sensorList[6][3] != None :realTimeMap[centerY-1][centerX+5] = sensorList[6][3]
-        elif sensorList[0][0] == "L":
+        elif sensorList[0][0] == WEST:
             if sensorList[1][0] != None :realTimeMap[centerY+1][centerX-2] = sensorList[1][0]
             if sensorList[1][0] != 2:
                 if sensorList[1][1] != None :realTimeMap[centerY+1][centerX-3] = sensorList[1][1]
@@ -567,7 +565,7 @@ class Exploration(object):
                     if sensorList[6][2] != None :realTimeMap[centerY+4][centerX+1] = sensorList[6][2]
                     if sensorList[6][2] != 2:
                         if sensorList[6][3] != None :realTimeMap[centerY+5][centerX+1] = sensorList[6][3]
-        elif sensorList[0][0] == "R":
+        elif sensorList[0][0] == EAST:
             if sensorList[1][0] != None :realTimeMap[centerY-1][centerX+2] = sensorList[1][0]
             if sensorList[1][0] != 2:
                 if sensorList[1][1] != None :realTimeMap[centerY-1][centerX+3] = sensorList[1][1]
@@ -621,11 +619,11 @@ class Exploration(object):
     def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
         def translate_back(action):
             if action == FORWARD:
-                return "W"
+                return FORWARD
             elif action == LEFT:
-                return "A"
+                return LEFT
             elif action == RIGHT:
-                return "D"
+                return RIGHT
 
         global spList
         if len(spList) > 0:
@@ -634,87 +632,87 @@ class Exploration(object):
             return resultMovement
 
 
-        if direction == "U":
-            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != "A":
-                resultMovement = "A"
+        if direction == NORTH:
+            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != LEFT:
+                resultMovement = LEFT
             elif sensorList[1][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
-                resultMovement = "W"
+                resultMovement = FORWARD
             elif sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
-                resultMovement = "D"
+                resultMovement = RIGHT
             else:
-                resultMovement = "A"
-        elif direction == "D":
-            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != "A":
-                resultMovement = "A"
+                resultMovement = LEFT
+        elif direction == SOUTH:
+            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != LEFT:
+                resultMovement = LEFT
             elif sensorList[1][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
-                resultMovement = "W"
+                resultMovement = FORWARD
             elif sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
-                resultMovement = "D"
+                resultMovement = RIGHT
             else:
-                resultMovement = "A"
-        elif direction == "L":
-            if sensorList[4][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != "A":
-                resultMovement = "A"
+                resultMovement = LEFT
+        elif direction == WEST:
+            if sensorList[4][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != LEFT:
+                resultMovement = LEFT
             elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
-                resultMovement = "W"
+                resultMovement = FORWARD
             elif sensorList[5][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
-                resultMovement = "D"
+                resultMovement = RIGHT
             else:
-                resultMovement = "A"
-        elif direction == "R":
-            if sensorList[4][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != "A":
-                resultMovement = "A"
+                resultMovement = LEFT
+        elif direction == EAST:
+            if sensorList[4][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != LEFT:
+                resultMovement = LEFT
             elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
-                resultMovement = "W"
+                resultMovement = FORWARD
             elif sensorList[5][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
-                resultMovement = "D"
+                resultMovement = RIGHT
             else:
-                resultMovement = "A"
+                resultMovement = LEFT
         return resultMovement
         
     def executeRobotMovement(self, realTimeMap, CenterX, CenterY, direction, movement):
-        if direction == "U":
-            if movement == "D":
+        if direction == NORTH:
+            if movement == RIGHT:
                 realTimeMap[CenterY][CenterX+1] = 4
                 realTimeMap[CenterY-1][CenterX] = 1
-            elif movement == "W":
+            elif movement == FORWARD:
                 realTimeMap[CenterY][CenterX] = 1
                 realTimeMap[CenterY-1][CenterX] = 5
                 realTimeMap[CenterY-2][CenterX] = 4
-            elif movement == "A":
+            elif movement == LEFT:
                 realTimeMap[CenterY][CenterX-1] = 4
                 realTimeMap[CenterY-1][CenterX] = 1
-        elif direction == "D":
-            if movement == "D":
+        elif direction == SOUTH:
+            if movement == RIGHT:
                 realTimeMap[CenterY][CenterX-1] = 4
                 realTimeMap[CenterY+1][CenterX] = 1
-            elif movement == "W":
+            elif movement == FORWARD:
                 realTimeMap[CenterY][CenterX] = 1
                 realTimeMap[CenterY+1][CenterX] = 5
                 realTimeMap[CenterY+2][CenterX] = 4
-            elif movement == "A":
+            elif movement == LEFT:
                 realTimeMap[CenterY][CenterX+1] = 4
                 realTimeMap[CenterY+1][CenterX] = 1
-        elif direction == "L":
-            if movement == "D":
+        elif direction == WEST:
+            if movement == RIGHT:
                 realTimeMap[CenterY-1][CenterX] = 4
                 realTimeMap[CenterY][CenterX-1] = 1
-            elif movement == "W":
+            elif movement == FORWARD:
                 realTimeMap[CenterY][CenterX] = 1
                 realTimeMap[CenterY][CenterX-1] = 5
                 realTimeMap[CenterY][CenterX-2] = 4
-            elif movement == "A":
+            elif movement == LEFT:
                 realTimeMap[CenterY+1][CenterX] = 4
                 realTimeMap[CenterY][CenterX-1] = 1
-        elif direction == "R":
-            if movement == "D":
+        elif direction == EAST:
+            if movement == RIGHT:
                 realTimeMap[CenterY+1][CenterX] = 4
                 realTimeMap[CenterY][CenterX+1] = 1
-            elif movement == "W":
+            elif movement == FORWARD:
                 realTimeMap[CenterY][CenterX] = 1
                 realTimeMap[CenterY][CenterX+1] = 5
                 realTimeMap[CenterY][CenterX+2] = 4
-            elif movement == "A":
+            elif movement == LEFT:
                 realTimeMap[CenterY-1][CenterX] = 4
                 realTimeMap[CenterY][CenterX+1] = 1
         return realTimeMap

@@ -4,9 +4,6 @@ import gevent
 import serial
 from gevent import socket
 
-#from gevent import monkey, sleep
-#monkey.patch_all()
-
 from collections import deque
 
 def wifiComm():
