@@ -2,6 +2,7 @@ realTimeMap = []
 simulatorMap = []
 sensorList = []
 pathTaken = []
+alignmentAction = []
 repeatedArea = 0
 robotPrevMovement = "O"
 robotCurMovement = "O"
@@ -40,7 +41,7 @@ def explorationMain(exploredPercentage):
 	#	print()
 	exploredArea = 0
 	indexing = 1
-	while repeatedArea <= 20 and (exploredArea/300*100) < exploredPercentage:
+	while repeatedArea <= 20 and (exploredArea*100) < (exploredPercentage*300):
 		print ("Index:", indexing)
 		indexing = indexing + 1
 		exploredArea = 0
@@ -129,6 +130,7 @@ def callAllMethods():
 	global robotCenterY
 	global robotDirectionX
 	global robotDirectionY
+	global alignmentAction
 	
 	sensorList = getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
 	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
@@ -536,19 +538,17 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 	return resultMovement
 	
 def robotAngleAndDistanceAlignment(sensorList):
-	# 0 = no alignment
 	# L = left angle alignment
+	# Q = left distance alignment (Includes rotate left and right back)
 	# F = front angle alignment
-	# Y = front distance alignment
-	# A = turn left
-	# D = turn right
-	# return tuple of alignment actions
+	# W = front distance alignment
+	# return list of alignment actions. Empty list means no alignment required
 	if (sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3)  and (sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ["Y","A","Y","D","L"]
+		return ["W","Q","L"]
 	elif(sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3):
-		return ["F", "Y"]
+		return ["F","W"]
 	elif(sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ["L"]
+		return ["Q","L"]
 	else:
 		return []
 	
@@ -603,4 +603,4 @@ def getRealTimeMap():
 	global robotCurMovement
 	global realTimeMap
 	main()
-	return (realTimeMap, robotCurMovement)
+	return (realTimeMap, robotCurMovement, alignmentAction)

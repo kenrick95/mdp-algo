@@ -1,6 +1,7 @@
 realTimeMap = []
 sensorList = []
 pathTaken = []
+alignmentAction = []
 repeatedArea = 0
 robotPrevMovement = "O"
 robotCurMovement = "O"
@@ -34,7 +35,7 @@ def explorationMain(exploredPercentage):
 	#	print()
 	exploredArea = 0
 	indexing = 1
-	while repeatedArea <= 20 and (exploredArea/300*100) < exploredPercentage:
+	while repeatedArea <= 20 and (exploredArea*100) < (exploredPercentage*300):
 		print ("Index:", indexing)
 		indexing = indexing + 1
 		exploredArea = 0
@@ -102,6 +103,13 @@ def variableInitialisation():
 	for i in range (0,20):
 		Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		realTimeMap.append(Row)
+	realTimeMap[17][0] = 1
+	realTimeMap[17][2] = 1
+	realTimeMap[18][0] = 1
+	realTimeMap[18][2] = 1
+	realTimeMap[19][0] = 1
+	realTimeMap[19][1] = 1
+	realTimeMap[19][2] = 1
 
 def callAllMethods():
 	global realTimeMap
@@ -114,6 +122,7 @@ def callAllMethods():
 	global robotCenterY
 	global robotDirectionX
 	global robotDirectionY
+	global alignmentAction
 	
 	#sensorString = Get sensor from robot, in string "xx.xx,xx.xx,xx.xx,xx.xx,xx.xx,xx.xx"
 	sensorList = getSensor(sensorString, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
@@ -123,6 +132,7 @@ def callAllMethods():
 	robotPrevMovement = robotCurMovement
 	if robotCurMovement == "W":
 		pathTaken.append((robotCenterY, robotCenterX))
+	alignmentAction = robotAngleAndDistanceAlignment(sensorList)
 	realTimeMap = executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
 	
 	if sensorList[0][0] == "U":
@@ -400,23 +410,20 @@ def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sen
 			resultMovement = "D"
 		else:
 			resultMovement = "A"
-	print (resultMovement)
 	return resultMovement
 	
 def robotAngleAndDistanceAlignment(sensorList):
-	# 0 = no alignment
 	# L = left angle alignment
+	# Q = left distance alignment (Includes rotate left and right back)
 	# F = front angle alignment
-	# Y = front distance alignment
-	# A = turn left
-	# D = turn right
-	# return tuple of alignment actions
+	# W = front distance alignment
+	# return list of alignment actions. Empty list means no alignment required
 	if (sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3)  and (sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ["Y","A","Y","D","L"]
+		return ["W","Q","L"]
 	elif(sensorList[1][0] == 2 or sensorList[1][0] == 3) and (sensorList[3][0] == 2 or sensorList[3][0] == 3):
-		return ["F", "Y"]
+		return ["F","W"]
 	elif(sensorList[4][0] == 2 or sensorList[4][0] == 3) and (sensorList[6][0] == 2 or sensorList[6][0] == 3):
-		return ["L"]
+		return ["Q","L"]
 	else:
 		return []
 	
@@ -532,12 +539,8 @@ def getSensor(sensorString, centerX, centerY, directionX, directionY):
 		returnValue.append(["R"])
 	
 	sensors = sensorString.split(",")
-	returnValue.append(convertShortSensorDistance(sensors[0]))
-	returnValue.append(convertShortSensorDistance(sensors[1]))
-	returnValue.append(convertShortSensorDistance(sensors[2]))
-	returnValue.append(convertShortSensorDistance(sensors[3]))
-	returnValue.append(convertShortSensorDistance(sensors[4]))
-	returnValue.append(convertShortSensorDistance(sensors[5]))
+	for i in range (0,6):
+		returnValue.append(convertShortSensorDistance(sensors[i]))
 	
 	if returnValue[0][0] == "U":			
 		if outOfBoundUp>=4:
@@ -700,46 +703,22 @@ def getSensor(sensorString, centerX, centerY, directionX, directionY):
 def convertShortSensorDistance(sensorValueStr):
 	if RepresentsFloat(sensorValueStr):
 		sensorValue = float(sensorValueStr)
-		if ((sensorValue >=  0) and (sensorValue <  6)):
-			return [2,0,0,0] #5-14
-		elif ((sensorValue >=  6) and (sensorValue <  16)):
-			return [1,2,0,0] #15-24
-		elif ((sensorValue >=  16) and (sensorValue <  26)):
-			return [1,1,2,0] #25-34
-		elif ((sensorValue >=  26) and (sensorValue <  36)):
-			return [1,1,1,2] #35-44
-		elif (sensorValue >=  36):
-			return [1,1,1,1] #45
-		
-def convertLongSensorDistance( sensorOffset, sensorValue, centerX, centerY, directionX, directionY):
-	if ((sensorValue >=  sensorOffset-2+0*10) and (sensorValue <  sensorOffset+8+0*10)):
-		return [2,0,0,0,0,0,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+1*10) and (sensorValue <  sensorOffset+8+1*10)):
-		return [1,2,0,0,0,0,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+2*10) and (sensorValue <  sensorOffset+8+2*10)):
-		return [1,1,2,0,0,0,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+3*10) and (sensorValue <  sensorOffset+8+3*10)):
-		return [1,1,1,2,0,0,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+4*10) and (sensorValue <  sensorOffset+8+4*10)):
-		return [1,1,1,1,2,0,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+5*10) and (sensorValue <  sensorOffset+8+5*10)):
-		return [1,1,1,1,1,2,0,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+6*10) and (sensorValue <  sensorOffset+8+6*10)):
-		return [1,1,1,1,1,1,2,0,0,0]
-	elif ((sensorValue >=  sensorOffset-2+7*10) and (sensorValue <  sensorOffset+8+7*10)):
-		return [1,1,1,1,1,1,1,2,0,0]
-	elif ((sensorValue >=  sensorOffset-2+8*10) and (sensorValue <  sensorOffset+8+8*10)):
-		return [1,1,1,1,1,1,1,1,2,0]
-	elif ((sensorValue >=  sensorOffset-2+9*10) and (sensorValue <  sensorOffset+8+9*10)):
-		return [1,1,1,1,1,1,1,1,1,2]
-	elif (sensorValue >=  sensorOffset-2+10*10):
-		return [1,1,1,1,1,1,1,1,1,1]
+		if ((sensorValue >=  0) and (sensorValue <  10)):
+			return [2,0,0,0]
+		elif ((sensorValue >=  10) and (sensorValue <  20)):
+			return [1,2,0,0]
+		elif ((sensorValue >=  20) and (sensorValue <  30)):
+			return [1,1,2,0]
+		elif ((sensorValue >=  30) and (sensorValue <  40)):
+			return [1,1,1,2] 
+		elif (sensorValue >=  40):
+			return [1,1,1,1] 
 	
 def getRealTimeMap():
 	global robotCurMovement
 	global realTimeMap
 	main()
-	return (realTimeMap, robotCurMovement)
+	return (realTimeMap, robotCurMovement, alignmentAction)
 	
 def RepresentsFloat(s):
     try: 
