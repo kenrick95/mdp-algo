@@ -143,11 +143,26 @@ def inform(string):
         message['info'] = string
         clients[key]['object'].write_message(json.dumps(message))
 
+def do_alignment(actions):
+    global started
+    if not started:
+        return False
+    if len(actions) > 0:
+        choice = actions[0]
+        actions = [1:]
+        send_cmd(choice)
+        gevent.joinall([
+            gevent.spawn(delay_call, do_alignment, actions)
+        ])
+
+
 def exploration(exp):
     global started
     if not started:
         return False
     
+    do_alignment(robot.alignment())
+
     global sensors
     cur = exp.getRealTimeMap(sensors)
     if not cur[1]:
@@ -198,6 +213,9 @@ def sp_to_start(sequence):
         ])
 
         return False
+    
+    do_alignment(robot.alignment())
+
     choice = sequence.pop()
     robot.action(choice, -1)
     send_cmd(choice)
@@ -218,6 +236,10 @@ def sp_to_goal(sequence):
         inform("ShortestPath done!")
         started = False
         return False
+    
+    
+    do_alignment(robot.alignment())
+
     choice = sequence.pop()
     robot.action(choice, 9)
     send_cmd(choice)

@@ -124,6 +124,17 @@ class Robot(object):
                 self.direction = SOUTH
         self.__mark_robot()
 
+    def alignment():
+        # return list of alignment actions. Empty list means no alignment required
+        if (self.sensors[0][0] == 2 or self.sensors[0][0] == 3) and (self.sensors[2][0] == 2 or self.sensors[2][0] == 3)  and (self.sensors[3][0] == 2 or self.sensors[3][0] == 3) and (self.sensors[5][0] == 2 or self.sensors[5][0] == 3):
+            return [FD_ALIGN, LD_ALIGN, LA_ALIGN]
+        elif(self.sensors[0][0] == 2 or self.sensors[0][0] == 3) and (self.sensors[2][0] == 2 or self.sensors[2][0] == 3):
+            return [FA_ALIGN, FD_ALIGN]
+        elif(self.sensors[3][0] == 2 or self.sensors[3][0] == 3) and (self.sensors[5][0] == 2 or self.sensors[5][0] == 3):
+            return [LD_ALIGN, LA_ALIGN]
+        else:
+            return []
+
     def parse_sensors(self, sensorString):
         def represent_float(s):
             try: 
