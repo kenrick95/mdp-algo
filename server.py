@@ -142,6 +142,7 @@ def translate(action):
         return LEFT
     elif action == "D":
         return RIGHT
+    return action
 
 
 def exploration(exp):
@@ -166,7 +167,7 @@ def exploration(exp):
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['sequence']
-        sp_sequence.reverse()
+        sp_sequence.reverse() # will pop from the back
         inform(sp_sequence)
         
         # call sp to start
@@ -183,7 +184,7 @@ def sp_to_start(sequence):
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
         sp_list = sp.shortest_path()
         sp_sequence = sp_list['sequence']
-        sp_sequence.reverse()
+        sp_sequence.reverse() # will pop from the back
         inform(sp_sequence)
         delay_call(sp_to_goal, sp_sequence)
 

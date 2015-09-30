@@ -195,8 +195,12 @@ class ShortestPath(object):
             cur_dir = self.direction(cur, next_coord)
             cur = next_coord
 
-        # return sequence of actions and the map
+        print(self.start)
+        print(self.goal)
+        print(ret_seq)
+
+        # return sequence of actions ### and the map
         return {
-            "sequence": ret_seq,
-            "map": ret_map
+            "sequence": ret_seq#,
+        #    "map": ret_map
         }

@@ -6,7 +6,6 @@ class Exploration(object):
     """docstring for Exploration"""
 
     realTimeMap = []
-    simulatorMap = []
     sensorList = []
     pathTaken = []
     repeatedArea = 0
@@ -28,7 +27,6 @@ class Exploration(object):
         cnt = 0
 
         global realTimeMap
-        global simulatorMap
         global sensorList
         global pathTaken
         global robotPrevMovement
@@ -55,10 +53,6 @@ class Exploration(object):
         # realTimeMap[0] = bottom row
         # realTimeMap[19] = top row
         realTimeMap = []
-        
-        # simulatorMap[0] = bottom row
-        # simulatorMap[19] = top row
-        simulatorMap = []
         
         # sensorList[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
         # sensorList[1] = frontleft
@@ -87,9 +81,6 @@ class Exploration(object):
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
             realTimeMap[robotCenterY + direction[0]][robotCenterX + direction[1]] = 1
-
-
-        simulatorMap = self.simulatorReadMap()
 
 
     def main(self, sensors):
@@ -133,7 +124,6 @@ class Exploration(object):
 
 
         global realTimeMap
-        global simulatorMap
         global sensorList
         global pathTaken
         global robotCenterX
@@ -213,7 +203,7 @@ class Exploration(object):
                 sp = ShortestPath(realTimeMap, rdirection, rcurrent, dest)
                 sp_list = sp.shortest_path(8)
                 sp_sequence = sp_list['sequence']
-                #sp_sequence.reverse()
+                sp_sequence.reverse()
                 spList = sp_sequence
                 """
                 print("--------------")
@@ -237,7 +227,6 @@ class Exploration(object):
 
     def callAllMethods(self, sensors):
         global realTimeMap
-        global simulatorMap
         global sensorList
         global pathTaken
         global robotCenterX
@@ -248,7 +237,7 @@ class Exploration(object):
         global robotDirectionX
         global robotDirectionY
         
-        sensorList = self.getSensor(simulatorMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
+        sensorList = self.getSensor(robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
         sensors.insert(0, sensorList[0])
         sensorList = sensors
 
@@ -303,7 +292,7 @@ class Exploration(object):
                 robotDirectionY = robotDirectionY - 1
 
             
-    def getSensor(self, simMap, centerX, centerY, directionX, directionY):
+    def getSensor(self, centerX, centerY, directionX, directionY):
         # returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
         # returnValue[1] = frontleft
         # returnValue[2] = frontcenter
@@ -328,20 +317,6 @@ class Exploration(object):
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
         return realTimeMap
-        
-    def simulatorReadMap(self):
-        simulatorMap = []
-        for line in list(open("Simulator Real Map.txt","r")):
-            oneRow = []
-            count = 1
-            for num in line:
-                if count > 15:
-                    break
-                oneRow.append(int(num))
-                count = count + 1
-            simulatorMap.append(oneRow)
-        print("Done")
-        return simulatorMap
         
     def updateRealTimeMap(self, realTimeMap, sensorList, centerX, centerY):
         if sensorList[0][0] == NORTH:
@@ -551,8 +526,7 @@ class Exploration(object):
 
         global spList
         if len(spList) > 0:
-            resultMovement = translate_back(spList[0])
-            spList = spList[1:]
+            resultMovement = translate_back(spList.pop())
             return resultMovement
 
 
