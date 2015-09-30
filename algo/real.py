@@ -135,13 +135,15 @@ class Robot(object):
         self.__mark_robot()
 
     def alignment(self):
+        # return []
+        # TODO: use self.explored_map rather than self.sensors cause self.sensors may be last updates in the previous step
         # return list of alignment actions. Empty list means no alignment required
-        if (self.sensors[0][0] == 2 or self.sensors[0][0] == 3) and (self.sensors[2][0] == 2 or self.sensors[2][0] == 3)  and (self.sensors[3][0] == 2 or self.sensors[3][0] == 3) and (self.sensors[5][0] == 2 or self.sensors[5][0] == 3):
-            return [FD_ALIGN, LD_ALIGN, LA_ALIGN]
-        elif(self.sensors[0][0] == 2 or self.sensors[0][0] == 3) and (self.sensors[2][0] == 2 or self.sensors[2][0] == 3):
+        if (self.sensors[0][0] == 2 or self.sensors[0][0] == None) and (self.sensors[2][0] == 2 or self.sensors[2][0] == None)  and (self.sensors[3][0] == 2 or self.sensors[3][0] == None) and (self.sensors[5][0] == 2 or self.sensors[5][0] == None):
+            return [FD_ALIGN, LA_ALIGN]
+        elif(self.sensors[0][0] == 2 or self.sensors[0][0] == None) and (self.sensors[2][0] == 2 or self.sensors[2][0] == None):
             return [FA_ALIGN, FD_ALIGN]
-        elif(self.sensors[3][0] == 2 or self.sensors[3][0] == 3) and (self.sensors[5][0] == 2 or self.sensors[5][0] == 3):
-            return [LD_ALIGN, LA_ALIGN]
+        elif(self.sensors[3][0] == 2 or self.sensors[3][0] == None) and (self.sensors[5][0] == 2 or self.sensors[5][0] == None):
+            return [LA_ALIGN]
         else:
             return []
 

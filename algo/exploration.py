@@ -321,7 +321,7 @@ class Exploration(object):
     def updateRealTimeMap(self, realTimeMap, sensorList, centerX, centerY):
         def upd(y, x, sensorValue):
             global realTimeMap
-            if sensorValue:
+            if sensorValue and 0 <= x < 15 and 0 <= y < 20:
                 realTimeMap[y][x] = sensorValue
 
         # FL
