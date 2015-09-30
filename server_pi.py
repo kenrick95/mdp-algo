@@ -149,7 +149,7 @@ def do_alignment(actions):
         return False
     if len(actions) > 0:
         choice = actions[0]
-        actions = [1:]
+        actions = actions[1:]
         send_cmd(choice)
         gevent.joinall([
             gevent.spawn(delay_call, do_alignment, actions)
