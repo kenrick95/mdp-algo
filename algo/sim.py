@@ -72,7 +72,7 @@ class Robot(object):
     def __get_map(self):
         start = []
         goal = []
-        with open("Simulator Real Map.txt") as f:
+        with open("map.txt") as f:
             content = f.readlines()
             for line in content:
                 temp = []

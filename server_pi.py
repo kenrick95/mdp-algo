@@ -21,10 +21,10 @@ from gevent.event import Event
 from collections import deque
 
 
-from constants import *
-import real
-from exploration import Exploration
-from shortest_path import ShortestPath
+from algo.constants import *
+import algo.real
+from algo.exploration import Exploration
+from algo.shortest_path import ShortestPath
 
 clients = dict()
 started = False
@@ -237,7 +237,7 @@ def sp_to_goal(sequence):
         started = False
         return False
     
-    
+
     do_alignment(robot.alignment())
 
     choice = sequence.pop()
@@ -358,7 +358,7 @@ def parse_msg(msg):
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    robot = real.Robot()
+    robot = algo.real.Robot()
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)

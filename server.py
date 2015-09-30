@@ -11,10 +11,10 @@ import json
 import zope.event
 import random
 
-from constants import *
-import sim
-from exploration import Exploration
-from shortest_path import ShortestPath
+from algo.constants import *
+import algo.sim
+from algo.exploration import Exploration
+from algo.shortest_path import ShortestPath
 
 clients = dict()
 started = False
@@ -80,7 +80,7 @@ class StartHandler(tornado.web.RequestHandler):
         if started:
             return
         started = True
-        robot = sim.Robot()
+        robot = algo.sim.Robot()
         delay_time = float(delay)
 
         exp = Exploration(int(percentage))
@@ -202,7 +202,7 @@ def sp_to_goal(sequence):
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    robot = sim.Robot()
+    robot = algo.sim.Robot()
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
