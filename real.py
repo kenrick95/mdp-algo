@@ -226,61 +226,61 @@ class Robot(object):
         # FM
         for i in range(4):
             if self.direction == NORTH:
-                upd(self.current[0] - i - 2, self.current[1], sensors[1][i])
+                upd(self.current[0] - i - 2, self.current[1], self.sensors[1][i])
             elif self.direction == EAST:
-                upd(self.current[0], self.current[1] + i + 2, sensors[1][i])
+                upd(self.current[0], self.current[1] + i + 2, self.sensors[1][i])
             elif self.direction == WEST:
-                upd(self.current[0], self.current[1] - i - 2, sensors[1][i])
+                upd(self.current[0], self.current[1] - i - 2, self.sensors[1][i])
             else: # self.direction == SOUTH:
-                upd(self.current[0] + i + 2, self.current[1], sensors[1][i])
+                upd(self.current[0] + i + 2, self.current[1], self.sensors[1][i])
 
         # FR
         for i in range(4):
             if self.direction == NORTH:
-                upd(self.current[0] - i - 2, self.current[1] + 1, sensors[2][i])
+                upd(self.current[0] - i - 2, self.current[1] + 1, self.sensors[2][i])
             elif self.direction == EAST:
-                upd(self.current[0] + 1, self.current[1] + i + 2, sensors[2][i])
+                upd(self.current[0] + 1, self.current[1] + i + 2, self.sensors[2][i])
             elif self.direction == WEST:
-                upd(self.current[0] - 1, self.current[1] - i - 2, sensors[2][i])
+                upd(self.current[0] - 1, self.current[1] - i - 2, self.sensors[2][i])
             else: # self.direction == SOUTH:
-                upd(self.current[0] + i + 2, self.current[1] - 1, sensors[2][i])
+                upd(self.current[0] + i + 2, self.current[1] - 1, self.sensors[2][i])
 
         
         # LT
         for i in range(4):
             if self.direction == NORTH:
-                upd(self.current[0] - 1, self.current[1] - i - 2, sensors[3][i])
+                upd(self.current[0] - 1, self.current[1] - i - 2, self.sensors[3][i])
             elif self.direction == EAST:
-                upd(self.current[0] - i - 2, self.current[1] + 1, sensors[3][i])
+                upd(self.current[0] - i - 2, self.current[1] + 1, self.sensors[3][i])
             elif self.direction == WEST:
-                upd(self.current[0] + i + 2, self.current[1] - 1, sensors[3][i])
+                upd(self.current[0] + i + 2, self.current[1] - 1, self.sensors[3][i])
             else: # self.direction == SOUTH:
-                upd(self.current[0] + 1, self.current[1] + i + 2, sensors[3][i])
+                upd(self.current[0] + 1, self.current[1] + i + 2, self.sensors[3][i])
 
 
         # RT
         for i in range(4):
             if self.direction == NORTH:
-                upd(self.current[0] - 1, self.current[1] + i + 2, sensors[4][i])
+                upd(self.current[0] - 1, self.current[1] + i + 2, self.sensors[4][i])
             elif self.direction == EAST:
-                upd(self.current[0] + i + 2, self.current[1] + 1, sensors[4][i])
+                upd(self.current[0] + i + 2, self.current[1] + 1, self.sensors[4][i])
             elif self.direction == WEST:
-                upd(self.current[0] - i - 2, self.current[1] - 1, sensors[4][i])
+                upd(self.current[0] - i - 2, self.current[1] - 1, self.sensors[4][i])
             else: # self.direction == SOUTH:
-                upd(self.current[0] + 1, self.current[1] - i - 2, sensors[4][i])
+                upd(self.current[0] + 1, self.current[1] - i - 2, self.sensors[4][i])
 
 
         
         # LB
         for i in range(4):
             if self.direction == NORTH:
-                upd(self.current[0] + 1, self.current[1] - i - 2, sensors[5][i])
+                upd(self.current[0] + 1, self.current[1] - i - 2, self.sensors[5][i])
             elif self.direction == EAST:
-                upd(self.current[0] - i - 2, self.current[1] - 1, sensors[5][i])
+                upd(self.current[0] - i - 2, self.current[1] - 1, self.sensors[5][i])
             elif self.direction == WEST:
-                upd(self.current[0] + i + 2, self.current[1] + 1, sensors[5][i])
+                upd(self.current[0] + i + 2, self.current[1] + 1, self.sensors[5][i])
             else: # self.direction == SOUTH:
-                upd(self.current[0] - 1, self.current[1] + i + 2, sensors[5][i])
+                upd(self.current[0] - 1, self.current[1] + i + 2, self.sensors[5][i])
 
         zope.event.notify("SENSOR")
         return self.explored_map
