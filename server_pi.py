@@ -16,6 +16,7 @@ import bluetooth
 import gevent
 import serial
 from gevent import socket
+from gevent.event import Event
 
 from collections import deque
 
@@ -27,12 +28,13 @@ from shortest_path import ShortestPath
 
 clients = dict()
 started = False
-delay_time = 0.1
-
+delay_time = 0
+evt = Event()
 
 define("port", default=8888, help="run on the given port", type=int)
 
 def delay_call(f, *args, **kwargs):
+    evt.wait()
     global delay_time
     t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
     t.start()
@@ -93,11 +95,6 @@ class StartHandler(tornado.web.RequestHandler):
         delay_time = float(delay)
 
         exp = Exploration(int(percentage))
-        
-        global sensors
-        sensorString = robot.get_sensors() # from physical robot
-        robot.parse_sensors(sensorString)
-        robot.update_map()
 
 
         t1 = FuncThread(exploration, exp)
@@ -157,13 +154,12 @@ def exploration(exp):
         robot.action(cur[0])
         send_cmd(cur[0])
 
-        # TODO: Wait for ACK before going on.
-
         print(robot.current)
-        sensorString = robot.get_sensors() # from Arduino
-        robot.parse_sensors(sensorString)
-        robot.update_map()
-        delay_call(exploration, exp)
+
+        # delay_call(exploration, exp)
+        gevent.joinall([
+            gevent.spawn(delay_call, exploration, exp)
+        ])
     else:
         inform("Exploration done!")
         
@@ -178,7 +174,10 @@ def exploration(exp):
         inform(sp_sequence)
         
         # call sp to start
-        delay_call(sp_to_start, sp_sequence)
+        # delay_call(sp_to_start, sp_sequence)
+        gevent.joinall([
+            gevent.spawn(sp_to_start, sp_sequence)
+        ])
 
 # @delay(delay_time)
 def sp_to_start(sequence):
@@ -193,16 +192,21 @@ def sp_to_start(sequence):
         sp_sequence = sp_list['sequence']
         sp_sequence.reverse()
         inform(sp_sequence)
-        delay_call(sp_to_goal, sp_sequence)
+        # delay_call(sp_to_goal, sp_sequence)
+        gevent.joinall([
+            gevent.spawn(sp_to_goal, sp_sequence)
+        ])
 
         return False
     choice = sequence.pop()
     robot.action(choice, -1)
     send_cmd(choice)
-    # TODO: Wait for ACK before going on.
 
     print(choice, ': ', robot.direction)
-    delay_call(sp_to_start, sequence)
+    # delay_call(sp_to_start, sequence)
+    gevent.joinall([
+        gevent.spawn(sp_to_start, sp_sequence)
+    ])
 
 
 # @delay(delay_time)
@@ -217,10 +221,12 @@ def sp_to_goal(sequence):
     choice = sequence.pop()
     robot.action(choice, 9)
     send_cmd(choice)
-    # TODO: Wait for ACK before going on.
     
     print(choice, ': ', robot.direction)
-    delay_call(sp_to_goal, sequence)
+    # delay_call(sp_to_goal, sequence)
+    gevent.joinall([
+        gevent.spawn(sp_to_goal, sp_sequence)
+    ])
 
 
 def wifiComm():
@@ -313,10 +319,19 @@ def writeInput():
 
 def send_cmd(cmd):
     serialq.append(cmd)
+    evt.clear()
 
 def parse_msg(msg):
+    print(msg)
+    if (msg == "K"):
+        # alignment acknowledgemnet
+        None
+    else:
+        sensorString = msg
+        robot.parse_sensors(sensorString)
+        robot.update_map()
+    evt.set()
     return
-    # K: acknowledgement of W, A, D;
 
 if __name__ == '__main__':
     parse_command_line()
@@ -328,20 +343,20 @@ if __name__ == '__main__':
 
 
     # wifisock = wifiComm() 
-    btsock = btComm()
+    #btsock = btComm()
     #server = Server('', 5143)
     #asyncore.loop(timeout=1)
     serial = setSerComm()
 
-    btq = deque([])
-    sockq = deque([])
+    #btq = deque([])
+    #sockq = deque([])
     serialq = deque([])
 
     try:
     #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
     #    thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
-        thread1 = gevent.spawn(btWrite, "Thread 1-btWrite", 0.5)
-        thread2 = gevent.spawn(btRead, "Thread 2-btRead", 0.5)
+    #    thread1 = gevent.spawn(btWrite, "Thread 1-btWrite", 0.5)
+    #    thread2 = gevent.spawn(btRead, "Thread 2-btRead", 0.5)
     #    thread3 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
     #    thread4 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5)
         thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
@@ -349,7 +364,8 @@ if __name__ == '__main__':
     #    thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
     #    thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
     #    thread3 = gevent.spawn(writeInput)
-        threads = [thread1, thread2, thread3, thread4]
+    #    threads = [thread1, thread2, thread3, thread4]
+        threads = [thread3, thread4]
         gevent.joinall(threads)
     except:
         print ("Error, cannot create threads.")
