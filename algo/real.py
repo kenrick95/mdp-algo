@@ -10,16 +10,22 @@ class Robot(object):
         self.MAX_ROW = 20
         self.MAX_COL = 15
 
-        temp = []
-        for i in range(self.MAX_COL):
-            temp.append([0])
         for i in range(self.MAX_ROW):
-            self.explored_map.append(temp)
+            self.explored_map.append([])
+            for j in range(self.MAX_COL):
+                self.explored_map[i].append(0)
 
         self.__recolor_later = []
 
         self.start = [18, 1]
         self.goal = [1, 13]
+
+
+        self.sensors = []
+        for i in range(6):
+            self.sensors.append([])
+            for j in range(4):
+                self.sensors[i].append(None)
 
         # mark start & goal area
         self.__mark_surroundings(self.start, 6)
@@ -128,7 +134,7 @@ class Robot(object):
                 self.direction = SOUTH
         self.__mark_robot()
 
-    def alignment():
+    def alignment(self):
         # return list of alignment actions. Empty list means no alignment required
         if (self.sensors[0][0] == 2 or self.sensors[0][0] == 3) and (self.sensors[2][0] == 2 or self.sensors[2][0] == 3)  and (self.sensors[3][0] == 2 or self.sensors[3][0] == 3) and (self.sensors[5][0] == 2 or self.sensors[5][0] == 3):
             return [FD_ALIGN, LD_ALIGN, LA_ALIGN]

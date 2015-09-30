@@ -57,15 +57,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         clients[self.id] = {"id": self.id, "object": self}
         tick("INIT")
 
-    def on_message(self, message):        
-        """
-        when we receive some message we want some message handler..
-        for this example i will just print message to console
-        """
+    def on_message(self, message):
         print ("Client " + str(self.id) + " received a message : " + str(message))
-        #for key in clients:
-        #    if (clients[key]['id'] != self.id):
-        #        clients[key]['object'].write_message(message)
 
     def on_close(self):
         if self.id in clients:
@@ -91,7 +84,7 @@ class StartHandler(tornado.web.RequestHandler):
         if started:
             return
         started = True
-        robot = sim.Robot()
+        robot = algo.real.Robot()
         delay_time = float(delay)
 
         exp = Exploration(int(percentage))
@@ -121,9 +114,6 @@ app = tornado.web.Application([
 ])
 
 
-
-
-
 def tick(action):
     for key in clients:
         message = dict()
@@ -132,7 +122,6 @@ def tick(action):
         message['time'] = str(datetime.datetime.utcnow())
         message['map'] = robot.explored_map
         clients[key]['object'].write_message(json.dumps(message))
-
 
 def inform(string):
     print(string)
@@ -345,12 +334,13 @@ def send_cmd(cmd):
 
 def parse_msg(msg):
     print(msg)
-    if (msg == "K"):
+    if (msg == "K" or len(msg) < 5):
         # alignment acknowledgemnet
         None
     else:
         sensorString = msg
-        robot.parse_sensors(sensorString)
+        global sensors
+        sensors = robot.parse_sensors(sensorString)
         robot.update_map()
     evt.set()
     return
@@ -373,7 +363,8 @@ if __name__ == '__main__':
     #btq = deque([])
     #sockq = deque([])
     serialq = deque([])
-
+    print("Listening to http://localhost:" + str(options.port) + "...")
+    
     try:
     #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
     #    thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
@@ -383,14 +374,15 @@ if __name__ == '__main__':
     #    thread4 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5)
         thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
         thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
+        thread7 = gevent.spawn(tornado.ioloop.IOLoop.instance().start)
     #    thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
     #    thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
     #    thread3 = gevent.spawn(writeInput)
-    #    threads = [thread1, thread2, thread3, thread4]
-        threads = [thread3, thread4]
+    #    threads = [thread1, thread2, thread3, thread4, thread7]
+        threads = [thread3, thread4, thread7]
         gevent.joinall(threads)
     except:
         print ("Error, cannot create threads.")
 
-    print("Listening to http://localhost:" + str(options.port) + "...")
-    tornado.ioloop.IOLoop.instance().start()
+    #print("Listening to http://localhost:" + str(options.port) + "...")
+    #tornado.ioloop.IOLoop.instance().start()
