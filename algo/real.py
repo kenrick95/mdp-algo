@@ -196,6 +196,7 @@ class Robot(object):
         #       sensors[i].append(None)
 
         sensorList = sensorString.split(",")
+        print("sensorString: " + sensorString)
 
         # FL
         sensors.append(convert_short_sensor_distance(sensorList[0]))

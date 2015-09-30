@@ -26,10 +26,14 @@ import algo.real
 from algo.exploration import Exploration
 from algo.shortest_path import ShortestPath
 
+from gevent import monkey
+monkey.patch_all()
+
 clients = dict()
 started = False
 delay_time = 0
 evt = Event()
+sensors = []
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -86,6 +90,10 @@ class StartHandler(tornado.web.RequestHandler):
         started = True
         robot = algo.real.Robot()
         delay_time = float(delay)
+
+        send_cmd("E")
+        evt.wait()
+
 
         exp = Exploration(int(percentage))
 
@@ -290,17 +298,18 @@ def btRead(threadName, delay):
 
 def serRead(threadName, delay):
     while 1:
-        gevent.sleep(delay)
+        #gevent.sleep(delay)
+        time.sleep(delay);
         msg = serial.readline()
         #sockq.append(msg)
         # received "msg" from Arduino
-        parse_msg(msg)
-
         print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
+        parse_msg(msg)
 
 def serWrite(threadName, delay):
     while 1:
-        gevent.sleep(delay)
+        #gevent.sleep(delay)
+        time.sleep(delay)
         if len(serialq) > 0:
             msg = serialq.popleft()
             serial.write(msg)
@@ -334,7 +343,7 @@ def send_cmd(cmd):
 
 def parse_msg(msg):
     print(msg)
-    if (msg == "K" or len(msg) < 5):
+    if (msg == "K" or len(msg) < 5 or msg.startswith("Error")):
         # alignment acknowledgemnet
         None
     else:
@@ -367,20 +376,30 @@ if __name__ == '__main__':
     
     try:
     #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
-    #    thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
+    #   thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
     #    thread1 = gevent.spawn(btWrite, "Thread 1-btWrite", 0.5)
     #    thread2 = gevent.spawn(btRead, "Thread 2-btRead", 0.5)
     #    thread3 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
     #    thread4 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5)
-        thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
-        thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
-        thread7 = gevent.spawn(tornado.ioloop.IOLoop.instance().start)
+         #thread.start_new_thread(serWrite, ("Thread 5-serWrite", 0.5))
+         #thread.start_new_thread(serRead, ("Thread 6-serRead", 0.5))
+         #thread.start_new_thread(tornado.ioloop.IOLoop.instance().start)
+         t1 = FuncThread(serWrite, "Thread 5-serWrite", 0.5)
+         t2 = FuncThread(serRead, "Thread 6-serRead", 0.5)
+         t3 = FuncThread(tornado.ioloop.IOLoop.instance().start)
+         t1.start()
+         t2.start()
+         t3.start()
+         t3.join()
+    #    thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
+    #    thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
+    #    thread7 = gevent.spawn(tornado.ioloop.IOLoop.instance().start)
     #    thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
     #    thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
     #    thread3 = gevent.spawn(writeInput)
     #    threads = [thread1, thread2, thread3, thread4, thread7]
-        threads = [thread3, thread4, thread7]
-        gevent.joinall(threads)
+        #threads = [thread3, thread4, thread7]
+        #gevent.joinall(threads)
     except:
         print ("Error, cannot create threads.")
 
