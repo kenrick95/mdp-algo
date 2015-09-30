@@ -15,3 +15,5 @@ LD_ALIGN = "Q"
 FA_ALIGN = "F"
 # W = front distance alignment
 FD_ALIGN = "W"
+
+REQ_SENSOR = "E"

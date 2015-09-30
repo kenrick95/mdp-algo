@@ -193,7 +193,7 @@ class Robot(object):
 
     def update_map(self):
         def upd(y, x, sensorValue):
-            if sensorValue:
+            if sensorValue and 0 <= x < self.MAX_COL and 0 <= y < self.MAX_ROW:
                 self.explored_map[y][x] = sensorValue
 
         # FL

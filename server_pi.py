@@ -91,7 +91,7 @@ class StartHandler(tornado.web.RequestHandler):
         robot = algo.real.Robot()
         delay_time = float(delay)
 
-        send_cmd("E")
+        send_cmd(REQ_SENSOR)
         evt.wait()
 
 
