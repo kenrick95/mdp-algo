@@ -1,0 +1,300 @@
+    sersock = serial.Serial('/dev/ttyACM0', 9600) # Establish the connection wi$
+
+  File "/usr/lib/python2.7/dist-packages/serial/serialutil.py", line 260, in __i
+nit__
+    self.open()
+  File "/usr/lib/python2.7/dist-packages/serial/serialposix.py", line 276, in op
+en
+    raise SerialException("could not open port %s: %s" % (self._port, msg))
+serial.serialutil.SerialException: could not open port /dev/ttyACM0: [Errno 2] N
+o such file or directory: '/dev/ttyACM0'
+pi@MDPGrp05 ~ $ python server_pi.py
+Listening to http://localhost:8888...
+[I 150930 14:23:23 web:1908] 304 GET / (192.168.5.8) 125.70ms
+Client 162423 received a message : Initializing connection
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 49, in run
+    self._target(*self._args)
+  File "server_pi.py", line 156, in exploration
+    cur = exp.getRealTimeMap(sensors)
+NameError: global name 'sensors' is not defined
+
+Exploration started!
+♥Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 522, in
+ run
+    result = self._run(*self.args, **self.kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 841, in
+start
+    event_pairs = self._impl.poll(poll_timeout)
+KeyboardInterrupt
+<Greenlet at 0x692170: <bound method EPollIOLoop.start of <tornado.platform.epol
+l.EPollIOLoop object at 0x696610>>> failed with KeyboardInterrupt
+
+Error, cannot create threads.
+pi@MDPGrp05 ~ $ python server_pi.py
+Listening to http://localhost:8888...
+[I 150930 14:25:54 web:1908] 304 GET / (192.168.5.8) 113.38ms
+Client 297869 received a message : Initializing connection
+Thread 5-serWrite send msg: E @ Wed Sep 30 14:26:07 2015
+80.00,80.00,62.03,9.98,31.04,11.11
+
+Thread 6-serRead received msg: 80.00,80.00,62.03,9.98,31.04,11.11
+ @ Wed Sep 30 14:26:07 2015
+(1, '1', ': ', 17, 1)
+1
+[17, 1]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 522, in
+ run
+    result = self._run(*self.args, **self.kwargs)
+  File "server_pi.py", line 38, in delay_call
+    evt.wait()
+  File "/usr/local/lib/python2.7/dist-packages/gevent/event.py", line 87, in wai
+t
+    result = self.hub.switch()
+  File "/usr/local/lib/python2.7/dist-packages/gevent/hub.py", line 535, in swit
+ch
+    return greenlet.switch(self)
+error: cannot switch to a different thread
+<Greenlet at 0x16e4210: delay_call(<function exploration at 0x16799f0>, <algo.ex
+ploration.Exploration object at 0x16e8810>)> failed with error
+
+Exploration started!
+♥Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 522, in
+ run
+    result = self._run(*self.args, **self.kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/ioloop.py", line 841, in
+start
+    event_pairs = self._impl.poll(poll_timeout)
+KeyboardInterrupt
+<Greenlet at 0x16e4170: <bound method EPollIOLoop.start of <tornado.platform.epo
+ll.EPollIOLoop object at 0x16e8610>>> failed with KeyboardInterrupt
+
+Error, cannot create threads.
+pi@MDPGrp05 ~ $ python server_pi.py
+Listening to http://localhost:8888...
+Error, cannot create threads.
+pi@MDPGrp05 ~ $ sudo python server_pi.py
+Listening to http://localhost:8888...
+Error, cannot create threads.
+pi@MDPGrp05 ~ $ sudo python server_pi.py
+Listening to http://localhost:8888...
+[I 150930 14:38:54 web:1908] 304 GET / (192.168.5.8) 114.81ms
+Client 981784 received a message : Initializing connection
+[E 150930 14:39:26 web:1496] Uncaught exception GET /start/100/0.1 (192.168.5.8)
+
+    HTTPServerRequest(protocol='http', host='192.168.5.5:8888', method='GET', ur
+i='/start/100/0.1', version='HTTP/1.1', remote_ip='192.168.5.8', headers={'Accep
+t-Language': 'en,en-US;q=0.5', 'Accept-Encoding': 'gzip, deflate', 'Host': '192.
+168.5.5:8888', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,
+*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:42.0) Gecko/2
+0100101 Firefox/42.0', 'Dnt': '1', 'Connection': 'keep-alive', 'Referer': 'http:
+//192.168.5.5:8888/'})
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1369, i
+n _stack_context_handle_exception
+        raise_exc_info((type, value, traceback))
+      File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1572, i
+n wrapper
+        result = method(self, *args, **kwargs)
+      File "server_pi.py", line 92, in get
+        evt.wait()
+      File "/usr/local/lib/python2.7/dist-packages/gevent/event.py", line 87, in
+ wait
+        result = self.hub.switch()
+      File "/usr/local/lib/python2.7/dist-packages/gevent/hub.py", line 535, in
+switch
+        return greenlet.switch(self)
+    error: cannot switch to a different thread
+[E 150930 14:39:26 web:1908] 500 GET /start/100/0.1 (192.168.5.8) 51.19ms
+Thread 5-serWrite send msg: E @ Wed Sep 30 14:39:26 2015
+80.00,80.00,52.18,6.26,24.52,6.00
+
+Thread 6-serRead received msg: 80.00,80.00,52.18,6.26,24.52,6.00
+ @ Wed Sep 30 14:39:26 2015
+♥♥♥♥♥♥→
+[1]+  Stopped                 sudo python server_pi.py
+pi@MDPGrp05 ~ $ python server_pi.py
+Traceback (most recent call last):
+  File "server_pi.py", line 360, in <module>
+    app.listen(options.port)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1788, in li
+sten
+    server.listen(port, address)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/tcpserver.py", line 126,
+in listen
+    sockets = bind_sockets(port, address=address)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/netutil.py", line 187, in
+ bind_sockets
+    sock.bind(sockaddr)
+  File "<string>", line 1, in bind
+socket.error: [Errno 98] Address already in use
+pi@MDPGrp05 ~ $ python server_pi.py
+Traceback (most recent call last):
+  File "server_pi.py", line 360, in <module>
+    app.listen(options.port)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1788, in li
+sten
+    server.listen(port, address)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/tcpserver.py", line 126,
+in listen
+    sockets = bind_sockets(port, address=address)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/netutil.py", line 187, in
+ bind_sockets
+    sock.bind(sockaddr)
+  File "<string>", line 1, in bind
+socket.error: [Errno 98] Address already in use
+pi@MDPGrp05 ~ $ python server_pi.py --port=8000
+Listening to http://localhost:8000...
+[I 150930 14:45:37 web:1908] 200 GET / (192.168.5.8) 107.67ms
+[W 150930 14:45:37 web:1908] 404 GET /favicon.ico (192.168.5.8) 8.81ms
+[W 150930 14:45:37 web:1908] 404 GET /favicon.ico (192.168.5.8) 11.28ms
+Client 347411 received a message : Initializing connection
+Thread 5-serWrite send msg: E @ Wed Sep 30 14:45:39 2015
+80.00,80.00,65.78,6.18,24.17,5.98
+
+Thread 6-serRead received msg: 80.00,80.00,65.78,6.18,24.17,5.98
+ @ Wed Sep 30 14:45:39 2015
+(1, '1', ': ', 17, 1)
+1
+[17, 1]
+Thread 5-serWrite send msg: 1 @ Wed Sep 30 14:45:39 2015
+Error: 0  Required: 1193  MLPos: 0.0000000000  MRPos: 0.0000000000  LSpeed: 0.00
+  RSpeed: 0.00
+
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 53, in run
+    self._target(*self._args)
+  File "server_pi.py", line 306, in serRead
+    parse_msg(msg)
+  File "server_pi.py", line 353, in parse_msg
+    sensors = robot.parse_sensors(sensorString)
+  File "/home/pi/algo/real.py", line 203, in parse_sensors
+    sensors.append(convert_short_sensor_distance(sensorList[1]))
+IndexError: list index out of range
+
+♥KeyboardInterrupt
+Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $ python server_pi.py --port=8000
+Listening to http://localhost:8000...
+Error: 0  Required: 1193  MLPos: 13.0000000000  MRPos: 41.0000000000  LSpeed: -2
+00.00  RSpeed: 200.00
+
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 53, in run
+    self._target(*self._args)
+  File "server_pi.py", line 306, in serRead
+    parse_msg(msg)
+  File "server_pi.py", line 353, in parse_msg
+    sensors = robot.parse_sensors(sensorString)
+  File "/home/pi/algo/real.py", line 203, in parse_sensors
+    sensors.append(convert_short_sensor_distance(sensorList[1]))
+IndexError: list index out of range
+
+[I 150930 14:48:52 web:1908] 304 GET / (192.168.5.8) 111.35ms
+Client 915494 received a message : Initializing connection
+♥KeyboardInterrupt
+Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $ python server_pi.py --port=8000
+Listening to http://localhost:8000...
+Error: -3  Required: 1193  MLPos: 143.0000000000  MRPos: 193.0000000000  LSpeed:
+ -200.00  RSpeed: 200.00
+
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 53, in run
+    self._target(*self._args)
+  File "server_pi.py", line 306, in serRead
+    parse_msg(msg)
+  File "server_pi.py", line 353, in parse_msg
+    sensors = robot.parse_sensors(sensorString)
+  File "/home/pi/algo/real.py", line 203, in parse_sensors
+    sensors.append(convert_short_sensor_distance(sensorList[1]))
+IndexError: list index out of range
+
+[I 150930 14:49:33 web:1908] 304 GET / (192.168.5.8) 108.02ms
+Client 202274 received a message : Initializing connection
+♥KeyboardInterrupt
+Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $ python server_pi.py --port=8000
+Listening to http://localhost:8000...
+Error: -2  Required: 1193  MLPos: 335.0000000000  MRPos: 382.0000000000  LSpeed:
+ -203.00  RSpeed: 197.00
+
+sensorString: Error: -2  Required: 1193  MLPos: 335.0000000000  MRPos: 382.00000
+00000  LSpeed: -203.00  RSpeed: 197.00
+
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 53, in run
+    self._target(*self._args)
+  File "server_pi.py", line 306, in serRead
+    parse_msg(msg)
+  File "server_pi.py", line 353, in parse_msg
+    sensors = robot.parse_sensors(sensorString)
+  File "/home/pi/algo/real.py", line 204, in parse_sensors
+    sensors.append(convert_short_sensor_distance(sensorList[1]))
+IndexError: list index out of range
+
+[I 150930 14:50:37 web:1908] 304 GET / (192.168.5.8) 109.26ms
+Client 387195 received a message : Initializing connection
+Thread 5-serWrite send msg: E @ Wed Sep 30 14:50:42 2015
+♥KeyboardInterrupt
+Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $ python server_pi.py --port=8000
+Listening to http://localhost:8000...
+Error: 1  Required: 1193  MLPos: 541.0000000000  MRPos: 577.0000000000  LSpeed:
+-202.00  RSpeed: 198.00
+
+sensorString: Error: 1  Required: 1193  MLPos: 541.0000000000  MRPos: 577.000000
+0000  LSpeed: -202.00  RSpeed: 198.00
+
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "server_pi.py", line 53, in run
+    self._target(*self._args)
+  File "server_pi.py", line 306, in serRead
+    parse_msg(msg)
+  File "server_pi.py", line 353, in parse_msg
+    sensors = robot.parse_sensors(sensorString)
+  File "/home/pi/algo/real.py", line 204, in parse_sensors
+    sensors.append(convert_short_sensor_distance(sensorList[1]))
+IndexError: list index out of range
+
+♥KeyboardInterrupt
+Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $ Write failed: Connection reset by peer
+
+D:\Cloud\GitHub\mdp-algo>

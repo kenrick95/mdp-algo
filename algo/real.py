@@ -152,42 +152,19 @@ class Robot(object):
                 return True
             except ValueError:
                 return False
-        def convert_long_sensor_distance(sensorOffset, sensorValue):
-            if ((sensorValue >=  sensorOffset - 2 + 0 * 10) and (sensorValue <  sensorOffset + 8 + 0 * 10)):
-                return [2, None, None, None, None, None, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 1 * 10) and (sensorValue <  sensorOffset + 8 + 1 * 10)):
-                return [1, 2, None, None, None, None, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 2 * 10) and (sensorValue <  sensorOffset + 8 + 2 * 10)):
-                return [1, 1, 2, None, None, None, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 3 * 10) and (sensorValue <  sensorOffset + 8 + 3 * 10)):
-                return [1, 1, 1, 2, None, None, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 4 * 10) and (sensorValue <  sensorOffset + 8 + 4 * 10)):
-                return [1, 1, 1, 1, 2, None, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 5 * 10) and (sensorValue <  sensorOffset + 8 + 5 * 10)):
-                return [1, 1, 1, 1, 1, 2, None, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 6 * 10) and (sensorValue <  sensorOffset + 8 + 6 * 10)):
-                return [1, 1, 1, 1, 1, 1, 2, None, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 7 * 10) and (sensorValue <  sensorOffset + 8 + 7 * 10)):
-                return [1, 1, 1, 1, 1, 1, 1, 2, None, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 8 * 10) and (sensorValue <  sensorOffset + 8 + 8 * 10)):
-                return [1, 1, 1, 1, 1, 1, 1, 1, 2, None]
-            elif ((sensorValue >=  sensorOffset - 2 + 9 * 10) and (sensorValue <  sensorOffset + 8 + 9 * 10)):
-                return [1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
-            elif (sensorValue >=  sensorOffset - 2 + 10 * 10):
-                return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         def convert_short_sensor_distance(sensorValueStr):
             if represent_float(sensorValueStr):
                 sensorValue = float(sensorValueStr)
-                if ((sensorValue >=  0) and (sensorValue <  6)):
-                    return [2, None, None, None] #5 - 14
-                elif ((sensorValue >=  6) and (sensorValue <  16)):
-                    return [1, 2, None, None] #15 - 24
-                elif ((sensorValue >=  16) and (sensorValue <  26)):
-                    return [1, 1, 2, 0] #25 - 34
-                elif ((sensorValue >=  26) and (sensorValue <  36)):
-                    return [1, 1, 1, 2] #35 - 44
-                elif (sensorValue >=  36):
-                    return [1, 1, 1, 1] #45
+                if ((sensorValue >=  0) and (sensorValue <  10)):
+                    return [2, None, None, None]
+                elif ((sensorValue >=  10) and (sensorValue <  20)):
+                    return [1, 2, None, None]
+                elif ((sensorValue >=  20) and (sensorValue <  30)):
+                    return [1, 1, 2, None]
+                elif ((sensorValue >=  30) and (sensorValue <  40)):
+                    return [1, 1, 1, 2] 
+                elif (sensorValue >=  40):
+                    return [1, 1, 1, 1] 
 
         sensors = []
         #for i in range(6):
