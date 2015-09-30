@@ -135,16 +135,6 @@ def inform(string):
         message['info'] = string
         clients[key]['object'].write_message(json.dumps(message))
 
-def translate(action):
-    if action == "W":
-        return FORWARD
-    elif action == "A":
-        return LEFT
-    elif action == "D":
-        return RIGHT
-    return action
-
-
 def exploration(exp):
     global started
     if not started:
@@ -153,7 +143,7 @@ def exploration(exp):
     global sensors
     cur = exp.getRealTimeMap(sensors)
     if not cur[1]:
-        robot.action(translate(cur[0]))
+        robot.action(cur[0])
         print(robot.current)
         sensors = robot.get_sensors()
         delay_call(exploration, exp)
@@ -166,7 +156,7 @@ def exploration(exp):
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
-        sp_sequence = sp_list['sequence']
+        sp_sequence = sp_list['trim_seq']
         sp_sequence.reverse() # will pop from the back
         inform(sp_sequence)
         
@@ -183,7 +173,7 @@ def sp_to_start(sequence):
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
         sp_list = sp.shortest_path()
-        sp_sequence = sp_list['sequence']
+        sp_sequence = sp_list['trim_seq']
         sp_sequence.reverse() # will pop from the back
         inform(sp_sequence)
         delay_call(sp_to_goal, sp_sequence)

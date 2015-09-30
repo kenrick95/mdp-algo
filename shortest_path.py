@@ -185,22 +185,36 @@ class ShortestPath(object):
         # consruct direction from start
         cur = self.start
         cur_dir = self.directon
-        ret_seq = []
+        seq = []
         while cur[0] != self.goal[0] or cur[1] != self.goal[1]:
             next_coord = next_post[cur[0]][cur[1]]
             # print(cur, next_coord, cur_dir)
             for x in self.action(cur, next_coord, cur_dir):
-                ret_seq.append(x)
+                seq.append(x)
                 # print(x)
             cur_dir = self.direction(cur, next_coord)
             cur = next_coord
 
-        print(self.start)
-        print(self.goal)
-        print(ret_seq)
+        trim_seq = []
+        ch_cnt = 0
+        for ch in seq:
+            if ch == '1':
+                ch_cnt += 1
+                if ch_cnt == 15:
+                    trim_seq.append(str(hex(ch_cnt))[2:])
+                    ch_cnt = 0
+            else:
+                if 0 < ch_cnt:
+                    trim_seq.append(str(hex(ch_cnt))[2:])
+                    ch_cnt = 0
+                trim_seq.append(ch)
+        if (ch_cnt > 0):
+            trim_seq.append(str(hex(ch_cnt))[2:])
+        #print(trim_seq)
 
         # return sequence of actions ### and the map
         return {
-            "sequence": ret_seq#,
+            "sequence": seq,
+            "trim_seq": trim_seq#,
         #    "map": ret_map
         }

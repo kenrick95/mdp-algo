@@ -516,19 +516,10 @@ class Exploration(object):
 
         
     def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
-        def translate_back(action):
-            if action == FORWARD:
-                return FORWARD
-            elif action == LEFT:
-                return LEFT
-            elif action == RIGHT:
-                return RIGHT
-
         global spList
         if len(spList) > 0:
-            resultMovement = translate_back(spList.pop())
+            resultMovement = spList.pop()
             return resultMovement
-
 
         if direction == NORTH:
             if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != LEFT:

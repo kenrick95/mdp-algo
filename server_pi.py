@@ -184,7 +184,7 @@ def exploration(exp):
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
-        sp_sequence = sp_list['sequence']
+        sp_sequence = sp_list['trim_seq']
         sp_sequence.reverse()
         inform(sp_sequence)
         
@@ -204,7 +204,7 @@ def sp_to_start(sequence):
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
         sp_list = sp.shortest_path()
-        sp_sequence = sp_list['sequence']
+        sp_sequence = sp_list['trim_seq']
         sp_sequence.reverse()
         inform(sp_sequence)
         # delay_call(sp_to_goal, sp_sequence)

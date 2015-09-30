@@ -86,10 +86,14 @@ class Robot(object):
                 self.explored_map.append(temp0)
 
     def action(self, action, mark_value = 8):
-        if action == FORWARD:
-            self.forward(mark_value)
-        elif action == LEFT or action == RIGHT:
-            self.rotate(action)
+        if action:
+            if action == FORWARD or action.isdigit() or action.islower():
+                times = int(action, 16)
+                print(times)
+                for i in range(times):
+                    self.forward(mark_value)
+            elif action == LEFT or action == RIGHT:
+                self.rotate(action)
         zope.event.notify(action)
 
     def forward(self, mark_value = 8):
