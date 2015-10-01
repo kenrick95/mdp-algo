@@ -165,7 +165,9 @@ def callAllMethods():
 	#-add
 	
 	realTimeMap = updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
-	
+	#add
+	mapStateAnalysis(oldMapTemp)
+	#-add
 	robotCurMovement = robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
 	robotPrevMovement = robotCurMovement
 	if robotCurMovement == "W":
