@@ -34,6 +34,7 @@ started = False
 delay_time = 0
 evt = Event()
 sensors = []
+android_ok = False
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -135,6 +136,8 @@ app = tornado.web.Application([
 
 
 def tick(action):
+    if android_ok:
+        btWrite(robot.msg_for_android())
     for key in clients:
         message = dict()
         message['type'] = 'map'
@@ -281,6 +284,7 @@ def btComm():
     btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     btsock.connect((btaddr, port))
     print ("Connected BT")
+    android_ok = True
     return btsock
 
 def setSerComm():

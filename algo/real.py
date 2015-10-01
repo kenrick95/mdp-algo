@@ -1,4 +1,5 @@
 from constants import *
+import json
 import zope.event
 
 class Robot(object):
@@ -424,3 +425,85 @@ class Robot(object):
         # print(len(hex_ret))
 
         return ''.join([h for h in hex_ret])
+
+    def msg_for_android(self):
+        # descriptor
+        # 1: obstacle
+        # 0: otherwise
+        # return in hex
+        # in JSON
+        # 
+        # robot coordinate
+        # X, Y;
+        # in Android, map is 15x20 (row x col); (0, 0) is top left;
+        # robot is placed according to robot body's top-left corner (i.e. (0, 0) is meant to be on top-left)
+        # 
+        
+        ret = {"grid": "", "coordinate": dict(), "direction": ""}
+
+
+
+        transformed_map = []
+        for i in range(self.MAX_COL):
+            transformed_map.append([])
+            for j in range(self.MAX_ROW):
+                transformed_map[i].append(0)
+
+        col = 0
+        for i in range(self.MAX_ROW - 1, -1, -1):
+            for j in range(self.MAX_COL):
+                transformed_map[j][col] = self.explored_map[i][j]
+            col += 1
+        # print(transformed_map)
+
+        grid_seq = []
+        cnt = 0
+        for row in reversed(transformed_map):
+            for col in row:
+                cnt += 1
+                if col == 2:
+                    grid_seq.append(1)
+                else:
+                    grid_seq.append(0)
+        while cnt % 8 != 0:
+            grid_seq.append(0)
+            cnt += 1
+        
+        hex_val = []
+        temp = []
+        for bit in grid_seq:
+            if len(temp) < 4:
+                temp.append(bit)
+            else:
+                temp_str = ''.join([str(b) for b in temp])
+                hex_val.append(str(hex(int(temp_str, 2)))[2:])
+                temp = [bit]
+        if len(temp) > 0:
+            temp_str = ''.join([str(b) for b in temp])
+            hex_val.append(str(hex(int(temp_str, 2)))[2:])
+        
+        ret['grid'] = ''.join([h for h in hex_val])
+
+        coord = [0, 0]
+        for i in range(self.MAX_COL):
+            for j in range(self.MAX_ROW):
+                if transformed_map[i][j] == 5:
+                    coord = [i, j]
+                    break
+
+        ret['coordinate']['y'] = coord[0] - 1
+        ret['coordinate']['x'] = coord[1] - 1
+
+        direction = EAST
+        if self.direction == NORTH:
+            direction = EAST
+        elif self.direction == EAST:
+            direction = SOUTH
+        elif self.direction == SOUTH:
+            direction = WEST
+        else: # self.direction == WEST:
+            direction = NORTH
+
+        ret['direction'] = direction
+
+        return json.dumps(ret)
