@@ -40,9 +40,12 @@ define("port", default=8888, help="run on the given port", type=int)
 
 def delay_call(f, *args, **kwargs):
     evt.wait()
-    global delay_time
-    t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
-    t.start()
+    # ignore delay_time, don't spawn new thread
+
+    f(*args, **kwargs)
+    # global delay_time
+    # t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
+    # t.start()
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -63,7 +66,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         tick("INIT")
 
     def on_message(self, message):
-        print ("Client " + str(self.id) + " received a message : " + str(message))
+        print ("[Tornado] WSHandler > Client " + str(self.id) + " received a message : " + str(message))
 
     def on_close(self):
         if self.id in clients:
@@ -147,7 +150,7 @@ def tick(action):
         clients[key]['object'].write_message(json.dumps(message))
 
 def inform(string):
-    print(string)
+    print("[Tornado] inform > %s " %(string))
     for key in clients:
         message = dict()
         message['type'] = 'info'
@@ -177,12 +180,12 @@ def exploration(exp):
     do_alignment(robot.alignment())
 
     global sensors
-    cur = exp.getRealTimeMap(sensors)
+    cur = exp.getRealTimeMap(sensors, robot.explored_map)
     if not cur[1]:
         robot.action(cur[0])
         send_cmd(cur[0])
 
-        print(robot.current)
+        print("[Tornado] exploration > %s" %(robot.current))
 
         # delay_call(exploration, exp)
         gevent.joinall([
@@ -234,7 +237,7 @@ def sp_to_start(sequence):
     robot.action(choice, -1)
     send_cmd(choice)
 
-    print(choice, ': ', robot.direction)
+    print("[Tornado] sp_to_start > %s : %s" %(choice, robot.direction))
     # delay_call(sp_to_start, sequence)
     gevent.joinall([
         gevent.spawn(sp_to_start, sp_sequence)
@@ -258,7 +261,7 @@ def sp_to_goal(sequence):
     robot.action(choice, 9)
     send_cmd(choice)
     
-    print(choice, ': ', robot.direction)
+    print("[Tornado] sp_to_goal > %s : %s" %(choice, robot.direction))
     # delay_call(sp_to_goal, sequence)
     gevent.joinall([
         gevent.spawn(sp_to_goal, sp_sequence)
@@ -283,12 +286,12 @@ def btComm():
     port = 4
     btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     btsock.connect((btaddr, port))
-    print ("Connected BT")
+    print ("[Android] btComm > Connected BT")
     android_ok = True
     return btsock
 
 def setSerComm():
-    sersock = serial.Serial('/dev/ttyACM0', 11520) # Establish the connection wi$
+    sersock = serial.Serial('/dev/ttyACM0', 115200) # Establish the connection wi$
     return sersock
 
 
@@ -301,7 +304,7 @@ def btWrite(threadName, delay):
         if len(btq) > 0:
             msg = btq.popleft()
             btsock.send(msg)
-            print ("%s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+            print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
 
 def btRead(threadName, delay):
     stop_flag = 0
@@ -309,7 +312,7 @@ def btRead(threadName, delay):
         gevent.sleep(delay)
 #        time.sleep(delay)
         msg = btsock.recv(1024)
-        print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
+        print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
         serialq.append(msg)
        
 
@@ -320,7 +323,7 @@ def serRead(threadName, delay):
         msg = serial.readline()
         #sockq.append(msg)
         # received "msg" from Arduino
-        print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
+        print ("[Arduino] serRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
         parse_msg(msg)
 
 def serWrite(threadName, delay):
@@ -330,14 +333,14 @@ def serWrite(threadName, delay):
         if len(serialq) > 0:
             msg = serialq.popleft()
             serial.write(msg)
-            print ("%s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+            print ("[Arduino] serWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
 
 
 def sockRead(threadName, delay):
     while 1:
         gevent.sleep(delay)
         msg  = wifisock.recv(1024)
-        print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+        print ("[Wi-Fi] sockRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
          
 def sockWrite(threadName, delay):
     while 1:
@@ -345,7 +348,7 @@ def sockWrite(threadName, delay):
         if len(sockq) > 0:
             msg = sockq.popleft()
             wifisock.send(msg)
-            print ("%s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+            print ("[Wi-Fi] sockWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
 
 
 def writeInput():
@@ -360,7 +363,7 @@ def send_cmd(cmd):
 
 def parse_msg(msg):
     global started
-    print(msg)
+    print("[Arduino-Ser] parse_msg > %s"%(msg))
 
     if (msg == "K" or len(msg) < 5 or msg.startswith("Error")):
         # alignment acknowledgemnet
@@ -391,7 +394,7 @@ if __name__ == '__main__':
     #btq = deque([])
     #sockq = deque([])
     serialq = deque([])
-    print("Listening to http://localhost:" + str(options.port) + "...")
+    print("[Tornado] > Listening to http://localhost:" + str(options.port) + "...")
     
     try:
     #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
@@ -420,7 +423,7 @@ if __name__ == '__main__':
         #threads = [thread3, thread4, thread7]
         #gevent.joinall(threads)
     except:
-        print ("Error, cannot create threads.")
+        print ("[Main] > Error, cannot create threads.")
 
     #print("Listening to http://localhost:" + str(options.port) + "...")
     #tornado.ioloop.IOLoop.instance().start()

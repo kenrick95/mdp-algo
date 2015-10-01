@@ -83,7 +83,7 @@ class Exploration(object):
             realTimeMap[robotCenterY + direction[0]][robotCenterX + direction[1]] = 1
 
 
-    def main(self, sensors):
+    def main(self, sensors, explored_map):
         def normalizeY(i):
             if 0 <= i <= 19:
                 return i
@@ -142,6 +142,15 @@ class Exploration(object):
         global spCounter
         global repeatedTreshold
         
+        """
+        for i in range(20):
+            for j in range(15):
+                val = explored_map[i][j]
+                if val >= 3:
+                    val = 1
+
+                realTimeMap[i][j] = val
+        """
         #set robot starting position
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
@@ -150,7 +159,7 @@ class Exploration(object):
         if repeatedArea <= repeatedTreshold and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
             exploredArea = 0
 
-            self.callAllMethods(sensors)
+            self.callAllMethods(sensors, explored_map)
             if len(spList) <= 0:
                 for tup in pathTaken:
                     if tup == (robotCenterY, robotCenterX):
@@ -189,9 +198,9 @@ class Exploration(object):
                 for i in range(1, 19):
                     for j in range(1, 14):
                         v = okay(i, j)
-                        if v > -100000007:
+                        if v > -INF:
                             dest_candidate.append([[i, j], v])
-                best_candidate_v = -100000007
+                best_candidate_v = -INF
                 best_candidate = [10, 8]
                 for cand in dest_candidate:
                     if cand[1] > best_candidate_v:
@@ -225,7 +234,7 @@ class Exploration(object):
 
     
 
-    def callAllMethods(self, sensors):
+    def callAllMethods(self, sensors, explored_map):
         global realTimeMap
         global sensorList
         global pathTaken
@@ -241,7 +250,19 @@ class Exploration(object):
         sensors.insert(0, sensorList[0])
         sensorList = sensors
 
-        realTimeMap = self.updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
+
+        for i in range(20):
+            for j in range(15):
+                val = explored_map[i][j]
+                if val >= 3:
+                    val = 1
+
+                realTimeMap[i][j] = val
+
+        #set robot starting position
+        realTimeMap[robotCenterY][robotCenterX] = 5
+        realTimeMap[robotDirectionY][robotDirectionX] = 4
+        # realTimeMap = self.updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
         
         robotCurMovement = self.robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
         robotPrevMovement = robotCurMovement
@@ -311,85 +332,6 @@ class Exploration(object):
         elif (centerY == directionY) and (directionX > centerX):
             returnValue.append([EAST])
         return returnValue
-
-        
-    def updateRobotPosition(self, realTimeMap, robotCenterX, robotCenterY, robotDirectionX, robotDirectionY):
-        realTimeMap[robotCenterY][robotCenterX] = 5
-        realTimeMap[robotDirectionY][robotDirectionX] = 4
-        return realTimeMap
-        
-    def updateRealTimeMap(self, realTimeMap, sensorList, centerX, centerY):
-        def upd(y, x, sensorValue):
-            global realTimeMap
-            if sensorValue and 0 <= x < 15 and 0 <= y < 20:
-                realTimeMap[y][x] = sensorValue
-
-        # FL
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY - i - 2, centerX - 1, sensorList[1][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY - 1 , centerX + i + 2, sensorList[1][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY + 1, centerX - i - 2, sensorList[1][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY + i + 2, centerX + 1, sensorList[1][i])
-
-        # FM
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY - i - 2, centerX, sensorList[2][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY, centerX + i + 2, sensorList[2][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY, centerX - i - 2, sensorList[2][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY + i + 2, centerX, sensorList[2][i])
-
-        # FR
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY - i - 2, centerX + 1, sensorList[3][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY + 1, centerX + i + 2, sensorList[3][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY - 1, centerX - i - 2, sensorList[3][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY + i + 2, centerX - 1, sensorList[3][i])
-      
-        # LT
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY - 1, centerX - i - 2, sensorList[4][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY - i - 2, centerX + 1, sensorList[4][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY + i + 2, centerX - 1, sensorList[4][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY + 1, centerX + i + 2, sensorList[4][i])
-
-        # RT
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY - 1, centerX + i + 2, sensorList[5][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY + i + 2, centerX + 1, sensorList[5][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY - i - 2, centerX - 1, sensorList[5][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY + 1, centerX - i - 2, sensorList[5][i])
-
-        # LB
-        for i in range(4):
-            if sensorList[0][0] == NORTH:
-                upd(centerY + 1, centerX - i - 2, sensorList[6][i])
-            elif sensorList[0][0] == EAST:
-                upd(centerY - i - 2, centerX - 1, sensorList[6][i])
-            elif sensorList[0][0] == WEST:
-                upd(centerY + i + 2, centerX + 1, sensorList[6][i])
-            else: # sensorList[0][0] == SOUTH:
-                upd(centerY - 1, centerX + i + 2, sensorList[6][i])
-        return realTimeMap
 
     def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
         global spList
@@ -483,7 +425,7 @@ class Exploration(object):
         return realTimeMap
     
 
-    def getRealTimeMap(self, sensors):
+    def getRealTimeMap(self, sensors, explored_map):
         global cnt
         global realTimeMap
         global robotCurMovement
@@ -491,7 +433,7 @@ class Exploration(object):
         global robotCenterX
         global robotCenterY
         #print(cnt + 1, "before: ",  robotCurMovement)
-        self.main(sensors)
-        print(cnt + 1, robotCurMovement, ': ', robotCenterY, robotCenterX)
+        self.main(sensors, explored_map)
+        print("[Tornado] Exporation.py > ", cnt + 1, robotCurMovement, ': ', robotCenterY, robotCenterX)
         cnt += 1
         return (robotCurMovement, robotBreak)

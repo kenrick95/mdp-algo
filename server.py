@@ -141,7 +141,7 @@ def exploration(exp):
         return False
     
     global sensors
-    cur = exp.getRealTimeMap(sensors)
+    cur = exp.getRealTimeMap(sensors, robot.explored_map)
     if not cur[1]:
         robot.action(cur[0])
         print(robot.current)

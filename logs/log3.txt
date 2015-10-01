@@ -1,0 +1,300 @@
+[Arduino] serWrite > Thread 5-serWrite send msg: A @ Wed Sep 30 16:24:46 2015
+[Arduino] serRead > Thread 6-serRead received msg: 40.69,59.48,9.13,37.44,26.75,
+80.00
+ @ Wed Sep 30 16:24:47 2015
+[Arduino-Ser] parse_msg > 40.69,59.48,9.13,37.44,26.75,80.00
+
+sensorString: 40.69,59.48,9.13,37.44,26.75,80.00
+
+(33, 'D', ': ', 10, 3)
+[Tornado] exploration > [10, 3]
+[Arduino] serWrite > Thread 5-serWrite send msg: D @ Wed Sep 30 16:24:48 2015
+[Arduino] serRead > Thread 6-serRead received msg: 21.98,30.83,23.73,9.90,126.38
+,45.48
+ @ Wed Sep 30 16:24:49 2015
+[Arduino-Ser] parse_msg > 21.98,30.83,23.73,9.90,126.38,45.48
+
+sensorString: 21.98,30.83,23.73,9.90,126.38,45.48
+
+(34, '1', ': ', 10, 2)
+1
+[Tornado] exploration > [10, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:24:50 2015
+[Arduino] serRead > Thread 6-serRead received msg: 15.82,20.65,16.42,16.16,98.11
+,80.00
+ @ Wed Sep 30 16:24:51 2015
+[Arduino-Ser] parse_msg > 15.82,20.65,16.42,16.16,98.11,80.00
+
+sensorString: 15.82,20.65,16.42,16.16,98.11,80.00
+
+[Arduino] serWrite > Thread 5-serWrite send msg: F @ Wed Sep 30 16:24:51 2015
+[Arduino] serRead > Thread 6-serRead received msg: 15.99,20.87,16.33,12.12,103.7
+1,80.00
+ @ Wed Sep 30 16:24:51 2015
+[Arduino-Ser] parse_msg > 15.99,20.87,16.33,12.12,103.71,80.00
+
+sensorString: 15.99,20.87,16.33,12.12,103.71,80.00
+
+[Arduino] serWrite > Thread 5-serWrite send msg: W @ Wed Sep 30 16:24:52 2015
+[Arduino] serRead > Thread 6-serRead received msg: 5.83,6.09,5.89,76.67,94.23,8.
+43
+ @ Wed Sep 30 16:25:06 2015
+[Arduino-Ser] parse_msg > 5.83,6.09,5.89,76.67,94.23,8.43
+
+sensorString: 5.83,6.09,5.89,76.67,94.23,8.43
+
+(35, 'D', ': ', 10, 2)
+[Tornado] exploration > [10, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: D @ Wed Sep 30 16:25:06 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,55.11,80.00,5.71,150.00
+,6.01
+ @ Wed Sep 30 16:25:08 2015
+[Arduino-Ser] parse_msg > 80.00,55.11,80.00,5.71,150.00,6.01
+
+sensorString: 80.00,55.11,80.00,5.71,150.00,6.01
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:08 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,53.33,80.00,5.86,150.00
+,5.98
+ @ Wed Sep 30 16:25:09 2015
+[Arduino-Ser] parse_msg > 80.00,53.33,80.00,5.86,150.00,5.98
+
+sensorString: 80.00,53.33,80.00,5.86,150.00,5.98
+
+(36, '1', ': ', 9, 2)
+1
+[Tornado] exploration > [9, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:09 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,80.00,80.00,5.71,150.00
+,6.09
+ @ Wed Sep 30 16:25:10 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,80.00,5.71,150.00,6.09
+
+sensorString: 80.00,80.00,80.00,5.71,150.00,6.09
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:10 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,64.46,80.00,5.84,150.00
+,5.85
+ @ Wed Sep 30 16:25:11 2015
+[Arduino-Ser] parse_msg > 80.00,64.46,80.00,5.84,150.00,5.85
+
+sensorString: 80.00,64.46,80.00,5.84,150.00,5.85
+
+(37, '1', ': ', 8, 2)
+1
+[Tornado] exploration > [8, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:11 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,67.54,59.42,6.19,150.00
+,6.17
+ @ Wed Sep 30 16:25:12 2015
+[Arduino-Ser] parse_msg > 80.00,67.54,59.42,6.19,150.00,6.17
+
+sensorString: 80.00,67.54,59.42,6.19,150.00,6.17
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:12 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,74.50,80.00,6.04,150.00
+,5.88
+ @ Wed Sep 30 16:25:13 2015
+[Arduino-Ser] parse_msg > 80.00,74.50,80.00,6.04,150.00,5.88
+
+sensorString: 80.00,74.50,80.00,6.04,150.00,5.88
+
+(38, '1', ': ', 7, 2)
+1
+[Tornado] exploration > [7, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:13 2015
+[Arduino] serRead > Thread 6-serRead received msg: 40.29,52.48,37.34,6.27,57.41,
+6.34
+ @ Wed Sep 30 16:25:14 2015
+[Arduino-Ser] parse_msg > 40.29,52.48,37.34,6.27,57.41,6.34
+
+sensorString: 40.29,52.48,37.34,6.27,57.41,6.34
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:14 2015
+[Arduino] serRead > Thread 6-serRead received msg: 26.49,60.00,37.69,6.36,61.24,
+6.31
+ @ Wed Sep 30 16:25:15 2015
+[Arduino-Ser] parse_msg > 26.49,60.00,37.69,6.36,61.24,6.31
+
+sensorString: 26.49,60.00,37.69,6.36,61.24,6.31
+
+(39, '1', ': ', 6, 2)
+1
+[Tornado] exploration > [6, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:15 2015
+[Arduino] serRead > Thread 6-serRead received msg: 28.13,53.33,27.79,6.33,150.00
+,6.48
+ @ Wed Sep 30 16:25:16 2015
+[Arduino-Ser] parse_msg > 28.13,53.33,27.79,6.33,150.00,6.48
+
+sensorString: 28.13,53.33,27.79,6.33,150.00,6.48
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:16 2015
+[Arduino] serRead > Thread 6-serRead received msg: 28.57,49.27,29.33,6.41,150.00
+,6.57
+ @ Wed Sep 30 16:25:17 2015
+[Arduino-Ser] parse_msg > 28.57,49.27,29.33,6.41,150.00,6.57
+
+sensorString: 28.57,49.27,29.33,6.41,150.00,6.57
+
+(40, '1', ': ', 5, 2)
+1
+[Tornado] exploration > [5, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:17 2015
+[Arduino] serRead > Thread 6-serRead received msg: 27.29,46.36,28.88,6.22,100.84
+,6.84
+ @ Wed Sep 30 16:25:18 2015
+[Arduino-Ser] parse_msg > 27.29,46.36,28.88,6.22,100.84,6.84
+
+sensorString: 27.29,46.36,28.88,6.22,100.84,6.84
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:18 2015
+[Arduino] serRead > Thread 6-serRead received msg: 27.92,47.06,31.55,6.55,150.00
+,6.42
+ @ Wed Sep 30 16:25:19 2015
+[Arduino-Ser] parse_msg > 27.92,47.06,31.55,6.55,150.00,6.42
+
+sensorString: 27.92,47.06,31.55,6.55,150.00,6.42
+
+(41, '1', ': ', 4, 2)
+1
+[Tornado] exploration > [4, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:19 2015
+[Arduino] serRead > Thread 6-serRead received msg: 27.09,35.85,25.08,6.66,51.47,
+6.57
+ @ Wed Sep 30 16:25:20 2015
+[Arduino-Ser] parse_msg > 27.09,35.85,25.08,6.66,51.47,6.57
+
+sensorString: 27.09,35.85,25.08,6.66,51.47,6.57
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:20 2015
+[Arduino] serRead > Thread 6-serRead received msg: 27.50,33.20,25.08,6.69,51.23,
+6.68
+ @ Wed Sep 30 16:25:21 2015
+[Arduino-Ser] parse_msg > 27.50,33.20,25.08,6.69,51.23,6.68
+
+sensorString: 27.50,33.20,25.08,6.69,51.23,6.68
+
+(42, '1', ': ', 3, 2)
+1
+[Tornado] exploration > [3, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:21 2015
+[Arduino] serRead > Thread 6-serRead received msg: 19.99,24.58,19.13,6.90,52.43,
+7.22
+ @ Wed Sep 30 16:25:22 2015
+[Arduino-Ser] parse_msg > 19.99,24.58,19.13,6.90,52.43,7.22
+
+sensorString: 19.99,24.58,19.13,6.90,52.43,7.22
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:22 2015
+[Arduino] serRead > Thread 6-serRead received msg: 19.51,24.04,19.24,7.17,51.94,
+7.12
+ @ Wed Sep 30 16:25:23 2015
+[Arduino-Ser] parse_msg > 19.51,24.04,19.24,7.17,51.94,7.12
+
+sensorString: 19.51,24.04,19.24,7.17,51.94,7.12
+
+(43, '1', ': ', 2, 2)
+1
+[Tornado] exploration > [2, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:23 2015
+[Arduino] serRead > Thread 6-serRead received msg: 10.77,13.45,11.04,7.49,54.18,
+7.41
+ @ Wed Sep 30 16:25:24 2015
+[Arduino-Ser] parse_msg > 10.77,13.45,11.04,7.49,54.18,7.41
+
+sensorString: 10.77,13.45,11.04,7.49,54.18,7.41
+
+[Arduino] serWrite > Thread 5-serWrite send msg: W @ Wed Sep 30 16:25:24 2015
+[Arduino] serRead > Thread 6-serRead received msg: 5.46,5.49,5.38,7.52,114.08,7.
+62
+ @ Wed Sep 30 16:25:27 2015
+[Arduino-Ser] parse_msg > 5.46,5.49,5.38,7.52,114.08,7.62
+
+sensorString: 5.46,5.49,5.38,7.52,114.08,7.62
+
+[Arduino] serWrite > Thread 5-serWrite send msg: Q @ Wed Sep 30 16:25:27 2015
+[Arduino] serRead > Thread 6-serRead received msg: 5.61,5.86,5.61,5.79,117.64,5.
+88
+ @ Wed Sep 30 16:25:47 2015
+[Arduino-Ser] parse_msg > 5.61,5.86,5.61,5.79,117.64,5.88
+
+sensorString: 5.61,5.86,5.61,5.79,117.64,5.88
+
+[Arduino] serWrite > Thread 5-serWrite send msg: D @ Wed Sep 30 16:25:47 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,57.96,43.86,5.74,82.00,
+5.62
+ @ Wed Sep 30 16:25:49 2015
+[Arduino-Ser] parse_msg > 80.00,57.96,43.86,5.74,82.00,5.62
+
+sensorString: 80.00,57.96,43.86,5.74,82.00,5.62
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:25:49 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,62.17,50.88,5.64,85.59,
+5.67
+ @ Wed Sep 30 16:25:50 2015
+[Arduino-Ser] parse_msg > 80.00,62.17,50.88,5.64,85.59,5.67
+
+sensorString: 80.00,62.17,50.88,5.64,85.59,5.67
+
+(44, '1', ': ', 1, 2)
+1
+[Tornado] exploration > [1, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:25:50 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,47.78,37.69,5.69,150.00
+,5.88
+ @ Wed Sep 30 16:25:51 2015
+[Arduino-Ser] parse_msg > 80.00,47.78,37.69,5.69,150.00,5.88
+
+sensorString: 80.00,47.78,37.69,5.69,150.00,5.88
+
+[Arduino] serWrite > Thread 5-serWrite send msg: W @ Wed Sep 30 16:25:51 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,47.78,38.06,5.69,150.00
+,5.90
+ @ Wed Sep 30 16:25:52 2015
+[Arduino-Ser] parse_msg > 80.00,47.78,38.06,5.69,150.00,5.90
+
+sensorString: 80.00,47.78,38.06,5.69,150.00,5.90
+
+[Arduino] serWrite > Thread 5-serWrite send msg: Q @ Wed Sep 30 16:25:52 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,40.17,31.29,5.74,150.00
+,5.65
+ @ Wed Sep 30 16:26:14 2015
+[Arduino-Ser] parse_msg > 80.00,40.17,31.29,5.74,150.00,5.65
+
+sensorString: 80.00,40.17,31.29,5.74,150.00,5.65
+
+[Arduino] serWrite > Thread 5-serWrite send msg: D @ Wed Sep 30 16:26:14 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,80.00,80.00,29.18,16.57
+,80.00
+ @ Wed Sep 30 16:26:16 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,80.00,29.18,16.57,80.00
+
+sensorString: 80.00,80.00,80.00,29.18,16.57,80.00
+
+[Arduino] serWrite > Thread 5-serWrite send msg: L @ Wed Sep 30 16:26:16 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,80.00,80.00,34.38,16.69
+,80.00
+ @ Wed Sep 30 16:26:16 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,80.00,34.38,16.69,80.00
+
+sensorString: 80.00,80.00,80.00,34.38,16.69,80.00
+
+(45, '1', ': ', 0, 2)
+1
+[Tornado] exploration > [1, 2]
+[Arduino] serWrite > Thread 5-serWrite send msg: 1 @ Wed Sep 30 16:26:17 2015
+[Arduino] serRead > Thread 6-serRead received msg: 80.00,80.00,80.00,34.38,16.40
+,31.50
+ @ Wed Sep 30 16:26:18 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,80.00,34.38,16.40,31.50
+
+sensorString: 80.00,80.00,80.00,34.38,16.40,31.50
+
+[Arduino] serWrite > Thread 5-serWrite send msg: W @ Wed Sep 30 16:26:18 2015
+♥KeyboardInterrupt
+[Main] > Error, cannot create threads.
+♥KeyboardInterrupt
+Exception KeyboardInterrupt: KeyboardInterrupt() in <module 'threading' from '/u
+sr/lib/python2.7/threading.pyc'> ignored
+pi@MDPGrp05 ~ $
