@@ -11,7 +11,7 @@ class Robot(object):
         self.__map_state_changed = []
         self.__old_map = []
         self.__recolor_later = []
-        
+
         self.MAX_ROW = 20
         self.MAX_COL = 15
         self.start = [18, 1]
@@ -155,39 +155,39 @@ class Robot(object):
 
         # front
         if self.direction == NORTH:
-            front = is_okay(self.current[0] - 3, self.current[1] - 1) and \
-            is_okay(self.current[0] - 3, self.current[1]) and \
-            is_okay(self.current[0] - 3, self.current[1] + 1)
+            front = is_okay(self.current[0] - 2, self.current[1] - 1) and \
+            is_okay(self.current[0] - 2, self.current[1]) and \
+            is_okay(self.current[0] - 2, self.current[1] + 1)
         elif self.direction == EAST:
-            front = is_okay(self.current[0] - 1 , self.current[1] + 3) and \
-            is_okay(self.current[0], self.current[1] + 3) and \
-            is_okay(self.current[0] + 1, self.current[1] + 3)
+            front = is_okay(self.current[0] - 1 , self.current[1] + 2) and \
+            is_okay(self.current[0], self.current[1] + 2) and \
+            is_okay(self.current[0] + 1, self.current[1] + 2)
         elif self.direction == WEST:
-            front = is_okay(self.current[0] + 1, self.current[1] - 3) and \
-            is_okay(self.current[0], self.current[1] - 3) and \
-            is_okay(self.current[0] - 1, self.current[1] - 3)
+            front = is_okay(self.current[0] + 1, self.current[1] - 2) and \
+            is_okay(self.current[0], self.current[1] - 2) and \
+            is_okay(self.current[0] - 1, self.current[1] - 2)
         else: # self.direction == SOUTH:
-            front = is_okay(self.current[0] + 3, self.current[1] + 1) and \
-            is_okay(self.current[0] + 3, self.current[1]) and \
-            is_okay(self.current[0] + 3, self.current[1] - 1)
+            front = is_okay(self.current[0] + 2, self.current[1] + 1) and \
+            is_okay(self.current[0] + 2, self.current[1]) and \
+            is_okay(self.current[0] + 2, self.current[1] - 1)
 
         # left
         if self.direction == NORTH:
-            left = is_okay(self.current[0] - 1, self.current[1] - 3) and \
-            is_okay(self.current[0], self.current[1] - 3) and \
-            is_okay(self.current[0] + 1, self.current[1] - 3)
+            left = is_okay(self.current[0] - 1, self.current[1] - 2) and \
+            is_okay(self.current[0], self.current[1] - 2) and \
+            is_okay(self.current[0] + 1, self.current[1] - 2)
         elif self.direction == EAST:
-            left = is_okay(self.current[0] - 3, self.current[1] + 1) and \
-            is_okay(self.current[0] - 3, self.current[1]) and \
-            is_okay(self.current[0] - 3, self.current[1] - 1)
+            left = is_okay(self.current[0] - 2, self.current[1] + 1) and \
+            is_okay(self.current[0] - 2, self.current[1]) and \
+            is_okay(self.current[0] - 2, self.current[1] - 1)
         elif self.direction == WEST:
-            left = is_okay(self.current[0] + 3, self.current[1] - 1) and \
-            is_okay(self.current[0] + 3, self.current[1]) and \
-            is_okay(self.current[0] + 3, self.current[1] + 1)
+            left = is_okay(self.current[0] + 2, self.current[1] - 1) and \
+            is_okay(self.current[0] + 2, self.current[1]) and \
+            is_okay(self.current[0] + 2, self.current[1] + 1)
         else: # self.direction == SOUTH:
-            left = is_okay(self.current[0] + 1, self.current[1] + 3) and \
-            is_okay(self.current[0], self.current[1] + 3) and \
-            is_okay(self.current[0] - 1, self.current[1] + 3)
+            left = is_okay(self.current[0] + 1, self.current[1] + 2) and \
+            is_okay(self.current[0], self.current[1] + 2) and \
+            is_okay(self.current[0] - 1, self.current[1] + 2)
 
         if front and left:
             return [FD_ALIGN, LD_ALIGN, RIGHT, LA_ALIGN]
@@ -250,8 +250,12 @@ class Robot(object):
                 self.__old_map[i].append(self.explored_map[i][j])
                 self.__map_state_changed[i].append("N")
 
+
         def upd(y, x, sensorValue):
-            if sensorValue and 0 <= x < self.MAX_COL and 0 <= y < self.MAX_ROW:
+            if sensorValue and \
+            0 <= x < self.MAX_COL and\
+            0 <= y < self.MAX_ROW and\
+            self.explored_map[y][x] < 3:
                 self.explored_map[y][x] = sensorValue
                 self.__map_state_changed[y][x] = "C"
 
@@ -326,8 +330,25 @@ class Robot(object):
                 upd(self.current[0] - 1, self.current[1] + i + 2, self.sensors[5][i])
 
 
+
+        for i in range(self.MAX_ROW):
+            for j in range(self.MAX_COL):
+                if self.explored_map[i][j] >= 3:
+                    directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+                    for direction in directions:
+                        if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:
+                            self.__map_state_changed[i + direction[0]][j + direction[1]] = "F"
+
+
+
         self.update_map_state()
 
+        ## TODO ... see x.avi
+
+        self.__mark_surroundings(self.start, 6)
+        self.__mark_surroundings(self.goal, 7)
+        self.__mark_robot()
+        
         zope.event.notify("SENSOR")
         return self.explored_map
 
@@ -335,7 +356,12 @@ class Robot(object):
     def update_map_state(self):
         for i in range(0, self.MAX_ROW):
             for j in range(0, self.MAX_COL):
-                if self.explored_map[i][j] != 4 and self.explored_map[i][j] != 5 and self.__map_state_changed[i][j] == "C":
+
+                if self.__map_state_changed[i][j] == "F":
+                    if self.map_state[i][j] == 2 or self.map_state[i][j] == 1:
+                        self.map_state[i][j] = 1
+                        self.explored_map[i][j] = 1
+                elif self.explored_map[i][j] != 4 and self.explored_map[i][j] != 5 and self.__map_state_changed[i][j] == "C":
                     if self.explored_map[i][j] == 2 and self.__old_map[i][j] == 0:
                         self.map_state[i][j] = 3 #assign new state
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 0:
@@ -358,6 +384,7 @@ class Robot(object):
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 3:
                         self.map_state[i][j] = self.map_state[i][j] - 1 #changed in state and current state in middle
                         self.explored_map[i][j] = 1
+        print(self.map_state)
         return self.map_state
 
     def descriptor_one(self):

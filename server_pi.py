@@ -166,6 +166,9 @@ def do_alignment(actions):
         choice = actions[0]
         actions = actions[1:]
         send_cmd(choice)
+        if choice == RIGHT:
+            robot.action(choice)
+
         gevent.joinall([
             gevent.spawn(delay_call, do_alignment, actions)
         ])
