@@ -92,7 +92,7 @@ class Robot(object):
         if action:
             if action == FORWARD or action.isdigit() or action.islower():
                 times = int(action, 16)
-                print(times)
+                print("[Tornado] real.py > action > %d " % (times))
                 for i in range(times):
                     self.forward(mark_value)
             elif action == LEFT or action == RIGHT:
@@ -226,7 +226,7 @@ class Robot(object):
         #       sensors[i].append(None)
 
         sensorList = sensorString.split(",")
-        print("sensorString: " + sensorString)
+        print("[Tornado] real.py > sensorString > %s " %(sensorString))
 
         # FL
         # FM

@@ -206,7 +206,9 @@ class Exploration(object):
                     if cand[1] > best_candidate_v:
                         best_candidate_v = cand[1]
                         best_candidate = cand[0]
-                print(dest_candidate)
+                #print(dest_candidate)
+
+                print("[Tornado] exploration.py > dest_candidate > %s" % (dest_candidate))
                 dest = best_candidate
 
                 sp = ShortestPath(realTimeMap, rdirection, rcurrent, dest)
@@ -222,7 +224,8 @@ class Exploration(object):
                 print(spList)
                 print("--------------")
                 """
-                print(spList)
+                #print(spList)
+                print("[Tornado] exploration.py > spList > %s" % (spList))
                 spCounter += 1
                 repeatedArea = 0
                 repeatedTreshold = 3
@@ -269,7 +272,7 @@ class Exploration(object):
         if robotCurMovement == FORWARD:
             pathTaken.append((robotCenterY, robotCenterX))
         #print (robotCurMovement)
-        realTimeMap = self.executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
+        # realTimeMap = self.executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
         
         if sensorList[0][0] == NORTH:
             if robotCurMovement == RIGHT:
@@ -434,6 +437,6 @@ class Exploration(object):
         global robotCenterY
         #print(cnt + 1, "before: ",  robotCurMovement)
         self.main(sensors, explored_map)
-        print("[Tornado] Exporation.py > ", cnt + 1, robotCurMovement, ': ', robotCenterY, robotCenterX)
+        print("[Tornado] exploration.py > %d - %s : (%d, %d)" %(cnt + 1, robotCurMovement, robotCenterY, robotCenterX))
         cnt += 1
         return (robotCurMovement, robotBreak)
