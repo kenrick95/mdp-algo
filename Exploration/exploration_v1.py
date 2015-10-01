@@ -125,15 +125,15 @@ def variableInitialisation():
 	for i in range (0,20):
 		Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		mapState.append(Row)
-	mapState[17][0] = 2
-	mapState[17][1] = 2
-	mapState[17][2] = 2
-	mapState[18][0] = 2
-	mapState[18][1] = 2
-	mapState[18][2] = 2
-	mapState[19][0] = 2
-	mapState[19][1] = 2
-	mapState[19][2] = 2
+	mapState[17][0] = 1
+	mapState[17][1] = 1
+	mapState[17][2] = 1
+	mapState[18][0] = 1
+	mapState[18][1] = 1
+	mapState[18][2] = 1
+	mapState[19][0] = 1
+	mapState[19][1] = 1
+	mapState[19][2] = 1
 
 def callAllMethods():
 	global realTimeMap
@@ -170,7 +170,7 @@ def callAllMethods():
 	#	print()
 	for i in range(0,20):
 		for j in range(0,15):
-			print (mapState[i][j],end="")
+			print (mapStateChanged[i][j],end="")
 		print()
 	print("2------------------------------------------2")
 	mapStateAnalysis(oldMapTemp)
@@ -535,6 +535,18 @@ def updateRealTimeMap(realTimeMap, sensorList, centerX, centerY):
 				if sensorList[6][2] != 3 :realTimeMap[centerY-4][centerX-1] = sensorList[6][2]; mapStateChanged[centerY-4][centerX-1] = "C"
 				if sensorList[6][2] != 2:
 					if sensorList[6][3] != 3 :realTimeMap[centerY-5][centerX-1] = sensorList[6][3]; mapStateChanged[centerY-5][centerX-1] = "C"
+					
+	for tup in pathTaken:
+		if tup == (robotCenterY, robotCenterX):
+			mapStateChanged[robotCenterY,robotCenterX] = "F"
+			mapStateChanged[robotCenterY+1,robotCenterX+1] = "F"
+			mapStateChanged[robotCenterY-1,robotCenterX-1] = "F"
+			mapStateChanged[robotCenterY+1,robotCenterX-1] = "F"
+			mapStateChanged[robotCenterY-1,robotCenterX+1] = "F"
+			mapStateChanged[robotCenterY,robotCenterX+1] = "F"
+			mapStateChanged[robotCenterY,robotCenterX-1] = "F"
+			mapStateChanged[robotCenterY+1,robotCenterX] = "F"
+			mapStateChanged[robotCenterY-1,robotCenterX] = "F"
 	return realTimeMap
 	
 def robotMovementAnalyses(realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
@@ -648,7 +660,10 @@ def mapStateAnalysis(oldMap):
 		
 	for i in range(0,20):
 		for j in range(0,15):
-			if realTimeMap[i][j] != 4 and realTimeMap[i][j] != 5 and mapStateChanged[i][j] == "C":
+			if mapStateChanged[i][j] == "F":
+				if mapState[i][j] == 2 or mapState[i][j] == 1:
+					mapState[i][j] = 1
+			elif realTimeMap[i][j] != 4 and realTimeMap[i][j] != 5 and mapStateChanged[i][j] == "C":
 				if realTimeMap[i][j] == 2 and oldMap[i][j] == 0:
 					mapState[i][j] = 3 #assign new state
 				elif realTimeMap[i][j] == 1 and oldMap[i][j] == 0:
@@ -671,7 +686,7 @@ def mapStateAnalysis(oldMap):
 				elif realTimeMap[i][j] == 1 and oldMap[i][j] == 2 and mapState[i][j] == 3:
 					mapState[i][j] = mapState[i][j] - 1 #changed in state and current state in middle
 					realTimeMap[i][j] = 1
-					
+			
 def getRealTimeMap():
 	global robotCurMovement
 	global realTimeMap
