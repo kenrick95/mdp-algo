@@ -136,13 +136,55 @@ class Robot(object):
 
     def alignment(self):
         # return []
-        # TODO: use self.explored_map rather than self.sensors cause self.sensors may be last updates in the previous step
-        # return list of alignment actions. Empty list means no alignment required
-        if (self.sensors[0][0] == 2 or self.sensors[0][0] == None) and (self.sensors[2][0] == 2 or self.sensors[2][0] == None)  and (self.sensors[3][0] == 2 or self.sensors[3][0] == None) and (self.sensors[5][0] == 2 or self.sensors[5][0] == None):
-            return [FD_ALIGN, LA_ALIGN]
-        elif(self.sensors[0][0] == 2 or self.sensors[0][0] == None) and (self.sensors[2][0] == 2 or self.sensors[2][0] == None):
+        def is_okay(y, x):
+            if 0 <= x < self.MAX_COL and 0 <= y < self.MAX_ROW:
+                if self.explored_map[y][x] == 2:
+                    return True
+                return False
+            else:
+                return True
+
+        # front
+        if self.direction == NORTH:
+            front = is_okay(self.current[0] - 3, self.current[1] - 1) and \
+            is_okay(self.current[0] - 3, self.current[1]) and \
+            is_okay(self.current[0] - 3, self.current[1] + 1)
+        elif self.direction == EAST:
+            front = is_okay(self.current[0] - 1 , self.current[1] + 3) and \
+            is_okay(self.current[0], self.current[1] + 3) and \
+            is_okay(self.current[0] + 1, self.current[1] + 3)
+        elif self.direction == WEST:
+            front = is_okay(self.current[0] + 1, self.current[1] - 3) and \
+            is_okay(self.current[0], self.current[1] - 3) and \
+            is_okay(self.current[0] - 1, self.current[1] - 3)
+        else: # self.direction == SOUTH:
+            front = is_okay(self.current[0] + 3, self.current[1] + 1) and \
+            is_okay(self.current[0] + 3, self.current[1]) and \
+            is_okay(self.current[0] + 3, self.current[1] - 1)
+
+        # left
+        if self.direction == NORTH:
+            left = is_okay(self.current[0] - 1, self.current[1] - 3) and \
+            is_okay(self.current[0], self.current[1] - 3) and \
+            is_okay(self.current[0] + 1, self.current[1] - 3)
+        elif self.direction == EAST:
+            left = is_okay(self.current[0] - 3, self.current[1] + 1) and \
+            is_okay(self.current[0] - 3, self.current[1]) and \
+            is_okay(self.current[0] - 3, self.current[1] - 1)
+        elif self.direction == WEST:
+            left = is_okay(self.current[0] + 3, self.current[1] - 1) and \
+            is_okay(self.current[0] + 3, self.current[1]) and \
+            is_okay(self.current[0] + 3, self.current[1] + 1)
+        else: # self.direction == SOUTH:
+            left = is_okay(self.current[0] + 1, self.current[1] + 3) and \
+            is_okay(self.current[0], self.current[1] + 3) and \
+            is_okay(self.current[0] - 1, self.current[1] + 3)
+
+        if front and left:
+            return [FD_ALIGN, LD_ALIGN, RIGHT, LA_ALIGN]
+        elif front:
             return [FA_ALIGN, FD_ALIGN]
-        elif(self.sensors[3][0] == 2 or self.sensors[3][0] == None) and (self.sensors[5][0] == 2 or self.sensors[5][0] == None):
+        elif left:
             return [LA_ALIGN]
         else:
             return []
@@ -178,17 +220,13 @@ class Robot(object):
         print("sensorString: " + sensorString)
 
         # FL
-        sensors.append(convert_short_sensor_distance(sensorList[0]))
         # FM
-        sensors.append(convert_short_sensor_distance(sensorList[1]))
         # FR
-        sensors.append(convert_short_sensor_distance(sensorList[2]))
         # LT
-        sensors.append(convert_short_sensor_distance(sensorList[3]))
         # RT
-        sensors.append(convert_short_sensor_distance(sensorList[4]))
         # LB
-        sensors.append(convert_short_sensor_distance(sensorList[5]))
+        for i in range(6):
+            sensors.append(convert_short_sensor_distance(sensorList[i]))
 
         self.sensors = sensors
         return sensors

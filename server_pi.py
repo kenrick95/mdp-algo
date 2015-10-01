@@ -87,21 +87,23 @@ class StartHandler(tornado.web.RequestHandler):
         global delay_time
         if started:
             return
-        started = True
         robot = algo.real.Robot()
         delay_time = float(delay)
 
 
 
-        send_cmd("W")
+        send_cmd(FD_ALIGN) # W
         evt.wait()
-        send_cmd("Q")
+        send_cmd(LD_ALIGN) # Q
         evt.wait()
-        send_cmd("D")
+        send_cmd(RIGHT) # D
         evt.wait()
-        send_cmd("L")
+        send_cmd(LA_ALIGN) # L
         evt.wait()
-        send_cmd(REQ_SENSOR)
+
+
+        started = True
+        send_cmd(REQ_SENSOR) # E
         evt.wait()
 
 
@@ -233,7 +235,6 @@ def sp_to_start(sequence):
         gevent.spawn(sp_to_start, sp_sequence)
     ])
 
-
 # @delay(delay_time)
 def sp_to_goal(sequence):
     global started
@@ -256,7 +257,6 @@ def sp_to_goal(sequence):
     gevent.joinall([
         gevent.spawn(sp_to_goal, sp_sequence)
     ])
-
 
 def wifiComm():
     host = "192.168.5.10"
@@ -281,7 +281,7 @@ def btComm():
     return btsock
 
 def setSerComm():
-    sersock = serial.Serial('/dev/ttyACM0', 9600) # Establish the connection wi$
+    sersock = serial.Serial('/dev/ttyACM0', 11520) # Establish the connection wi$
     return sersock
 
 
@@ -352,11 +352,13 @@ def send_cmd(cmd):
     evt.clear()
 
 def parse_msg(msg):
+    global started
     print(msg)
+
     if (msg == "K" or len(msg) < 5 or msg.startswith("Error")):
         # alignment acknowledgemnet
         None
-    else:
+    elif started:
         sensorString = msg
         global sensors
         sensors = robot.parse_sensors(sensorString)
