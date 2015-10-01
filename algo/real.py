@@ -6,19 +6,27 @@ class Robot(object):
     def __init__(self):
         super(Robot, self).__init__()
         self.explored_map = []
+        self.map_state = []
+        self.__map_state_changed = []
+        self.__old_map = []
+        self.__recolor_later = []
         
         self.MAX_ROW = 20
         self.MAX_COL = 15
+        self.start = [18, 1]
+        self.goal = [1, 13]
 
         for i in range(self.MAX_ROW):
             self.explored_map.append([])
+            self.map_state.append([])
             for j in range(self.MAX_COL):
                 self.explored_map[i].append(0)
+                self.map_state[i].append(0)
 
-        self.__recolor_later = []
-
-        self.start = [18, 1]
-        self.goal = [1, 13]
+        directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+        for direction in directions:
+            self.map_state[self.start[0] + direction[0]][self.start[1] + direction[1]] = 1
+            self.map_state[self.goal[0] + direction[0]][self.goal[1] + direction[1]] = 1
 
 
         self.sensors = []
@@ -232,9 +240,19 @@ class Robot(object):
         return sensors
 
     def update_map(self):
+        self.__old_map = []
+        self.__map_state_changed = []
+        for i in range(self.MAX_ROW):
+            self.__old_map.append([])
+            self.__map_state_changed.append([])
+            for j in range(self.MAX_COL):
+                self.__old_map[i].append(self.explored_map[i][j])
+                self.__map_state_changed[i].append("N")
+
         def upd(y, x, sensorValue):
             if sensorValue and 0 <= x < self.MAX_COL and 0 <= y < self.MAX_ROW:
                 self.explored_map[y][x] = sensorValue
+                self.__map_state_changed[y][x] = "C"
 
         # FL
         for i in range(4):
@@ -306,8 +324,40 @@ class Robot(object):
             else: # self.direction == SOUTH:
                 upd(self.current[0] - 1, self.current[1] + i + 2, self.sensors[5][i])
 
+
+        self.update_map_state()
+
         zope.event.notify("SENSOR")
         return self.explored_map
+
+
+    def update_map_state(self):
+        for i in range(0, self.MAX_ROW):
+            for j in range(0, self.MAX_COL):
+                if self.explored_map[i][j] != 4 and self.explored_map[i][j] != 5 and self.__map_state_changed[i][j] == "C":
+                    if self.explored_map[i][j] == 2 and self.__old_map[i][j] == 0:
+                        self.map_state[i][j] = 3 #assign new state
+                    elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 0:
+                        self.map_state[i][j] = 2 #assign new state
+                    elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 2:
+                        self.map_state[i][j] = 1 #(-1)
+                    elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 1:
+                        self.map_state[i][j] = 1 #constant
+                    elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 3:
+                        self.map_state[i][j] = 4 #(+1)
+                    elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 4:
+                        self.map_state[i][j] = 4 #constant
+                    elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 1:
+                        self.map_state[i][j] = self.map_state[i][j] + 1 #changed in state but current state at extreme end
+                    elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 4:
+                        self.map_state[i][j] = self.map_state[i][j] - 1 #changed in state but current state at extreme end
+                    elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 2:
+                        self.map_state[i][j] = self.map_state[i][j] + 1 #changed in state and current state in middle
+                        self.explored_map[i][j] = 2
+                    elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 3:
+                        self.map_state[i][j] = self.map_state[i][j] - 1 #changed in state and current state in middle
+                        self.explored_map[i][j] = 1
+        return self.map_state
 
     def descriptor_one(self):
         ret = [1, 1]

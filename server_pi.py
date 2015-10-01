@@ -170,6 +170,7 @@ def exploration(exp):
     if not started:
         return False
     
+    evt.wait()
     do_alignment(robot.alignment())
 
     global sensors
@@ -223,6 +224,7 @@ def sp_to_start(sequence):
 
         return False
     
+    evt.wait()
     do_alignment(robot.alignment())
 
     choice = sequence.pop()
@@ -246,6 +248,7 @@ def sp_to_goal(sequence):
         return False
     
 
+    evt.wait()
     do_alignment(robot.alignment())
 
     choice = sequence.pop()
