@@ -333,7 +333,7 @@ class Robot(object):
 
         for i in range(self.MAX_ROW):
             for j in range(self.MAX_COL):
-                if self.explored_map[i][j] >= 3:
+                if [5, 8, 9].count(self.explored_map[i][j]) > 0:
                     directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
                     for direction in directions:
                         if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:
@@ -342,8 +342,6 @@ class Robot(object):
 
 
         self.update_map_state()
-
-        ## TODO ... see x.avi
 
         self.__mark_surroundings(self.start, 6)
         self.__mark_surroundings(self.goal, 7)
@@ -354,37 +352,60 @@ class Robot(object):
 
 
     def update_map_state(self):
-        for i in range(0, self.MAX_ROW):
-            for j in range(0, self.MAX_COL):
+        for i in range(self.MAX_ROW):
+            for j in range(self.MAX_COL):
 
                 if self.__map_state_changed[i][j] == "F":
                     if self.map_state[i][j] == 2 or self.map_state[i][j] == 1:
                         self.map_state[i][j] = 1
                         self.explored_map[i][j] = 1
-                elif self.explored_map[i][j] != 4 and self.explored_map[i][j] != 5 and self.__map_state_changed[i][j] == "C":
+
+                elif self.__map_state_changed[i][j] == "C":
                     if self.explored_map[i][j] == 2 and self.__old_map[i][j] == 0:
                         self.map_state[i][j] = 3 #assign new state
+
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 0:
                         self.map_state[i][j] = 2 #assign new state
+
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 2:
                         self.map_state[i][j] = 1 #(-1)
+
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 1:
                         self.map_state[i][j] = 1 #constant
+
                     elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 3:
                         self.map_state[i][j] = 4 #(+1)
+
                     elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 4:
                         self.map_state[i][j] = 4 #constant
+
                     elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 1:
                         self.map_state[i][j] = self.map_state[i][j] + 1 #changed in state but current state at extreme end
+
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 4:
                         self.map_state[i][j] = self.map_state[i][j] - 1 #changed in state but current state at extreme end
+
                     elif self.explored_map[i][j] == 2 and self.__old_map[i][j] == 1 and self.map_state[i][j] == 2:
                         self.map_state[i][j] = self.map_state[i][j] + 1 #changed in state and current state in middle
                         self.explored_map[i][j] = 2
+
                     elif self.explored_map[i][j] == 1 and self.__old_map[i][j] == 2 and self.map_state[i][j] == 3:
                         self.map_state[i][j] = self.map_state[i][j] - 1 #changed in state and current state in middle
                         self.explored_map[i][j] = 1
-        print(self.map_state)
+
+        # print("explored_map:")
+        # for r in self.explored_map:
+        #     print(r)
+        # print("map_state:")
+        # for r in self.map_state:
+        #     print(r)
+        # print("__map_state_changed:")
+        # for r in self.__map_state_changed:
+        #     print(r)
+        # print("__old_map:")
+        # for r in self.__old_map:
+        #     print(r)
+
         return self.map_state
 
     def descriptor_one(self):
