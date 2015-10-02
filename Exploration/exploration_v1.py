@@ -170,10 +170,15 @@ def callAllMethods():
 	#	print()
 	for i in range(0,20):
 		for j in range(0,15):
-			print (mapStateChanged[i][j],end="")
+			print (realTimeMap[i][j],end="")
+		print()
+	print("1------------------------------------------1")
+	mapStateAnalysis(oldMapTemp)
+	for i in range(0,20):
+		for j in range(0,15):
+			print (mapState[i][j],end="")
 		print()
 	print("2------------------------------------------2")
-	mapStateAnalysis(oldMapTemp)
 	
 	#for i in range(0,20):
 	#	for j in range(0,15):
@@ -659,10 +664,11 @@ def mapStateAnalysis(oldMap):
 	global mapStateChanged
 		
 	for i in range(0,20):
-		for j in range(0,15):
+		for j in range(0,15):  
 			if mapStateChanged[i][j] == "F":
 				if mapState[i][j] == 2 or mapState[i][j] == 1:
 					mapState[i][j] = 1
+					realTimeMap[i][j] = 1
 			elif realTimeMap[i][j] != 4 and realTimeMap[i][j] != 5 and mapStateChanged[i][j] == "C":
 				if realTimeMap[i][j] == 2 and oldMap[i][j] == 0:
 					mapState[i][j] = 3 #assign new state
