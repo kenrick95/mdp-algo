@@ -111,11 +111,13 @@ class StartHandler(tornado.web.RequestHandler):
         started = True
         send_cmd(REQ_SENSOR) # E
         evt.wait()
-        send_cmd(RIGHT) # E
+        send_cmd(RIGHT)
+        robot.action(RIGHT)
         evt.wait()
         send_cmd(REQ_SENSOR) # E
         evt.wait()
-        send_cmd(LEFT) # E
+        send_cmd(LEFT)
+        robot.action(LEFT)
         evt.wait()
 
 

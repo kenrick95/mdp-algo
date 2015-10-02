@@ -17,6 +17,8 @@ class Robot(object):
         self.start = [18, 1]
         self.goal = [1, 13]
 
+        self.path_taken = []
+
         for i in range(self.MAX_ROW):
             self.explored_map.append([])
             self.map_state.append([])
@@ -106,9 +108,8 @@ class Robot(object):
         if mark_value >= 0:
             self.explored_map[self.current[0]][self.current[1]] = mark_value
 
-        next_coords = []
-        next_coords.append(self.current[0])
-        next_coords.append(self.current[1])
+        self.path_taken.append([self.current[0], self.current[1]])
+        next_coords = [self.current[0], self.current[1]]
         if self.direction == NORTH:
             next_coords[0] += -1
         elif self.direction == EAST:
@@ -343,9 +344,19 @@ class Robot(object):
 
         self.update_map_state()
 
+        for coord in self.path_taken:
+            self.explored_map[coord[0]][coord[1]] = 8
+            directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
+            for direction in directions:
+                if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:
+                    self.__map_state_changed[i + direction[0]][j + direction[1]] = "F"
         self.__mark_surroundings(self.start, 6)
         self.__mark_surroundings(self.goal, 7)
         self.__mark_robot()
+
+
+
+        print("[Tornado] real.py > update_map > %s " %(self.current))
         
         zope.event.notify("SENSOR")
         return self.explored_map
