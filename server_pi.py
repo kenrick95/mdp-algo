@@ -35,6 +35,7 @@ delay_time = 0
 evt = Event()
 sensors = []
 android_ok = False
+# doing_sp = True
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -94,7 +95,8 @@ class StartHandler(tornado.web.RequestHandler):
         robot = algo.real.Robot()
         delay_time = float(delay)
 
-
+        #global doing_sp
+        #doing_sp = False
 
         send_cmd(FD_ALIGN) # W
         evt.wait()
@@ -109,8 +111,37 @@ class StartHandler(tornado.web.RequestHandler):
         started = True
         send_cmd(REQ_SENSOR) # E
         evt.wait()
+        send_cmd(RIGHT) # E
+        evt.wait()
+        send_cmd(REQ_SENSOR) # E
+        evt.wait()
+        send_cmd(LEFT) # E
+        evt.wait()
 
 
+        ### TESTING
+        # for i in range(robot.MAX_ROW):
+        #     for j in range(robot.MAX_COL):
+        #         robot.explored_map[i][j] = 1
+        # for i in range(7):
+        #     robot.explored_map[4][i] = 2
+        # for i in range(5):
+        #     robot.explored_map[i][6] = 2
+
+
+        # # doing_sp = True
+        # sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+        # sp_list = sp.shortest_path(-1)
+        # sp_sequence = sp_list['trim_seq']
+        # sp_sequence.reverse()
+        # inform(sp_sequence)
+        
+        # gevent.joinall([
+        #     gevent.spawn(sp_to_goal, sp_sequence)
+        # ])
+        ### END TESTING
+        
+        
         exp = Exploration(int(percentage))
 
 
@@ -119,6 +150,9 @@ class StartHandler(tornado.web.RequestHandler):
         t1.join()
 
         inform("Exploration started!")
+        
+
+
         self.flush()
 
 
@@ -160,6 +194,7 @@ def inform(string):
 
 def do_alignment(actions):
     global started
+    #global doing_sp
     if not started:
         return False
     if len(actions) > 0:
@@ -167,7 +202,11 @@ def do_alignment(actions):
         actions = actions[1:]
         send_cmd(choice)
         if choice == RIGHT:
+            #if doing_sp:
+            #    actions.push(LEFT)
             robot.action(choice)
+        #elif choice == LEFT:
+        #    robot.action(choice)
 
         gevent.joinall([
             gevent.spawn(delay_call, do_alignment, actions)
@@ -185,8 +224,9 @@ def exploration(exp):
     global sensors
     cur = exp.getRealTimeMap(sensors, robot.explored_map)
     if not cur[1]:
-        robot.action(cur[0])
-        send_cmd(cur[0])
+        if cur[0]:
+            robot.action(cur[0])
+            send_cmd(cur[0])
 
         print("[Tornado] exploration > %s" %(robot.current))
 
@@ -200,6 +240,7 @@ def exploration(exp):
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
 
+        # doing_sp = True
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
@@ -219,6 +260,9 @@ def sp_to_start(sequence):
     if not started:
         return False
     if len(sequence) == 0:
+        evt.wait()
+        send_cmd("W")
+        evt.wait()
         inform("Gone back to start!")
 
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
@@ -243,7 +287,7 @@ def sp_to_start(sequence):
     print("[Tornado] sp_to_start > %s : %s" %(choice, robot.direction))
     # delay_call(sp_to_start, sequence)
     gevent.joinall([
-        gevent.spawn(sp_to_start, sp_sequence)
+        gevent.spawn(sp_to_start, sequence)
     ])
 
 # @delay(delay_time)
@@ -252,6 +296,10 @@ def sp_to_goal(sequence):
     if not started:
         return False
     if len(sequence) == 0:
+
+        evt.wait()
+        send_cmd("W")
+        evt.wait()
         inform("ShortestPath done!")
         started = False
         return False
@@ -267,7 +315,7 @@ def sp_to_goal(sequence):
     print("[Tornado] sp_to_goal > %s : %s" %(choice, robot.direction))
     # delay_call(sp_to_goal, sequence)
     gevent.joinall([
-        gevent.spawn(sp_to_goal, sp_sequence)
+        gevent.spawn(sp_to_goal, sequence)
     ])
 
 def wifiComm():

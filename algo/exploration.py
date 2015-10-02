@@ -42,7 +42,7 @@ class Exploration(object):
         global spCounter
         global spList
         global repeatedTreshold
-        repeatedTreshold = 30
+        repeatedTreshold = 10# 30
 
         spList = []
         spCounter = 0
@@ -142,7 +142,17 @@ class Exploration(object):
         global spCounter
         global repeatedTreshold
         
-        """
+
+        
+        for i in range(20):
+            for j in range(15):
+                if explored_map[i][j] == 4:
+                    robotDirectionY = i
+                    robotDirectionX = j
+                elif explored_map[i][j] == 5:
+                    robotCenterY = i
+                    robotCenterX = j
+
         for i in range(20):
             for j in range(15):
                 val = explored_map[i][j]
@@ -150,7 +160,7 @@ class Exploration(object):
                     val = 1
 
                 realTimeMap[i][j] = val
-        """
+        
         #set robot starting position
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
@@ -337,44 +347,50 @@ class Exploration(object):
         return returnValue
 
     def robotMovementAnalyses(self, realTimeMap, CenterX, CenterY, direction, prevMov, sensorList):
+
+        def checkRealTimeMap(y, x):
+            if 0 <= y < 20 and 0 <= x < 15 and realTimeMap[y][x] == 1:
+                return True
+            return False
+
         global spList
         if len(spList) > 0:
             resultMovement = spList.pop()
             return resultMovement
 
         if direction == NORTH:
-            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1 and prevMov != LEFT:
+            if sensorList[4][0] != None and checkRealTimeMap(CenterY-1, CenterX-2) and checkRealTimeMap(CenterY, CenterX-2) and checkRealTimeMap(CenterY+1, CenterX-2) and prevMov != LEFT:
                 resultMovement = LEFT
-            elif sensorList[1][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
+            elif sensorList[1][0] != None and checkRealTimeMap(CenterY-2, CenterX-1) and checkRealTimeMap(CenterY-2, CenterX) and checkRealTimeMap(CenterY-2, CenterX+1):
                 resultMovement = FORWARD
-            elif sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
+            elif sensorList[5][0] != None and checkRealTimeMap(CenterY-1, CenterX+2) and checkRealTimeMap(CenterY, CenterX+2) and checkRealTimeMap(CenterY+1, CenterX+2):
                 resultMovement = RIGHT
             else:
                 resultMovement = LEFT
         elif direction == SOUTH:
-            if sensorList[4][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1 and prevMov != LEFT:
+            if sensorList[4][0] != None and checkRealTimeMap(CenterY-1, CenterX+2) and checkRealTimeMap(CenterY, CenterX+2) and checkRealTimeMap(CenterY+1, CenterX+2) and prevMov != LEFT:
                 resultMovement = LEFT
-            elif sensorList[1][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
+            elif sensorList[1][0] != None and checkRealTimeMap(CenterY+2, CenterX-1) and checkRealTimeMap(CenterY+2, CenterX) and checkRealTimeMap(CenterY+2, CenterX+1):
                 resultMovement = FORWARD
-            elif sensorList[5][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
+            elif sensorList[5][0] != None and checkRealTimeMap(CenterY-1, CenterX-2) and checkRealTimeMap(CenterY, CenterX-2) and checkRealTimeMap(CenterY+1, CenterX-2):
                 resultMovement = RIGHT
             else:
                 resultMovement = LEFT
         elif direction == WEST:
-            if sensorList[4][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1 and prevMov != LEFT:
+            if sensorList[4][0] != None and checkRealTimeMap(CenterY+2, CenterX-1) and checkRealTimeMap(CenterY+2, CenterX) and checkRealTimeMap(CenterY+2, CenterX+1) and prevMov != LEFT:
                 resultMovement = LEFT
-            elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX-2] == 1 and realTimeMap[CenterY][CenterX-2] == 1 and realTimeMap[CenterY+1][CenterX-2] == 1:
+            elif sensorList[1][0] != None and checkRealTimeMap(CenterY-1, CenterX-2) and checkRealTimeMap(CenterY, CenterX-2) and checkRealTimeMap(CenterY+1, CenterX-2):
                 resultMovement = FORWARD
-            elif sensorList[5][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1:
+            elif sensorList[5][0] != None and checkRealTimeMap(CenterY-2, CenterX-1) and checkRealTimeMap(CenterY-2, CenterX) and checkRealTimeMap(CenterY-2, CenterX+1):
                 resultMovement = RIGHT
             else:
                 resultMovement = LEFT
         elif direction == EAST:
-            if sensorList[4][0] != None and realTimeMap[CenterY-2][CenterX-1] == 1 and realTimeMap[CenterY-2][CenterX] == 1 and realTimeMap[CenterY-2][CenterX+1] == 1 and prevMov != LEFT:
+            if sensorList[4][0] != None and checkRealTimeMap(CenterY-2, CenterX-1) and checkRealTimeMap(CenterY-2, CenterX) and checkRealTimeMap(CenterY-2, CenterX+1) and prevMov != LEFT:
                 resultMovement = LEFT
-            elif sensorList[1][0] != None and realTimeMap[CenterY-1][CenterX+2] == 1 and realTimeMap[CenterY][CenterX+2] == 1 and realTimeMap[CenterY+1][CenterX+2] == 1:
+            elif sensorList[1][0] != None and checkRealTimeMap(CenterY-1, CenterX+2) and checkRealTimeMap(CenterY, CenterX+2) and checkRealTimeMap(CenterY+1, CenterX+2):
                 resultMovement = FORWARD
-            elif sensorList[5][0] != None and realTimeMap[CenterY+2][CenterX-1] == 1 and realTimeMap[CenterY+2][CenterX] == 1 and realTimeMap[CenterY+2][CenterX+1] == 1:
+            elif sensorList[5][0] != None and checkRealTimeMap(CenterY+2, CenterX-1) and checkRealTimeMap(CenterY+2, CenterX) and checkRealTimeMap(CenterY+2, CenterX+1):
                 resultMovement = RIGHT
             else:
                 resultMovement = LEFT

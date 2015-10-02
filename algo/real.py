@@ -190,7 +190,7 @@ class Robot(object):
             is_okay(self.current[0] - 1, self.current[1] + 2)
 
         if front and left:
-            return [FD_ALIGN, LD_ALIGN, RIGHT, LA_ALIGN]
+            return [FD_ALIGN, LD_ALIGN]#, RIGHT, LA_ALIGN]
         elif front:
             return [FA_ALIGN, FD_ALIGN]
         elif left:
