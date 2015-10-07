@@ -35,6 +35,8 @@ delay_time = 0
 evt = Event()
 sensors = []
 android_ok = False
+mark_value = 8
+exp_done = False
 # doing_sp = True
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -43,7 +45,13 @@ def delay_call(f, *args, **kwargs):
     evt.wait()
     # ignore delay_time, don't spawn new thread
 
-    f(*args, **kwargs)
+    t1 = FuncThread(f, *args)
+    t1.start()
+    # t1.join()
+
+    # f(*args, **kwargs)
+    
+
     # global delay_time
     # t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
     # t.start()
@@ -82,79 +90,105 @@ class IndexHandler(tornado.web.RequestHandler):
         #self.finish()
 
 
+
+def start_exploration(percentage, delay):
+    global robot
+    global started
+    global delay_time
+    if started:
+        return
+    robot = algo.real.Robot()
+    delay_time = float(delay)
+
+    #global doing_sp
+    #doing_sp = False
+
+    send_cmd(FD_ALIGN) # W
+    evt.wait()
+    send_cmd(LD_ALIGN) # Q
+    evt.wait()
+    send_cmd(RIGHT) # D
+    evt.wait()
+    send_cmd(LA_ALIGN) # L
+    evt.wait()
+
+
+    started = True
+    send_cmd(REQ_SENSOR) # E
+    evt.wait()
+    send_cmd(RIGHT)
+    robot.action(RIGHT)
+    evt.wait()
+    send_cmd(REQ_SENSOR) # E
+    evt.wait()
+    send_cmd(LEFT)
+    robot.action(LEFT)
+    evt.wait()
+
+
+    ### TESTING
+    # for i in range(robot.MAX_ROW):
+    #     for j in range(robot.MAX_COL):
+    #         robot.explored_map[i][j] = 1
+    # for i in range(7):
+    #     robot.explored_map[4][i] = 2
+    # for i in range(5):
+    #     robot.explored_map[i][6] = 2
+
+
+    # # doing_sp = True
+    # sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+    # sp_list = sp.shortest_path(-1)
+    # sp_sequence = sp_list['trim_seq']
+    # sp_sequence.reverse()
+    # inform(sp_sequence)
+    
+    # gevent.joinall([
+    #     gevent.spawn(sp_to_goal, sp_sequence)
+    # ])
+    ### END TESTING
+    
+    
+    exp = Exploration(int(percentage))
+
+
+    t1 = FuncThread(exploration, exp)
+    t1.start()
+    t1.join()
+
+    inform("Exploration started!")
+    
+
+def start_sp_to_goal():  
+    global robot
+    if not exp_done:
+        return False
+
+    sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+    sp_list = sp.shortest_path()
+    sp_sequence = sp_list['trim_seq']
+    sp_sequence.reverse()
+    inform(sp_sequence)
+    # delay_call(sp_to_goal, sp_sequence)
+    gevent.joinall([
+        gevent.spawn(sp_to_goal, sp_sequence)
+    ])
+    inform("ShortestPath started!")
+
+
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
-        global robot
-
-        global started
-        global delay_time
-        if started:
-            return
-        robot = algo.real.Robot()
-        delay_time = float(delay)
-
-        #global doing_sp
-        #doing_sp = False
-
-        send_cmd(FD_ALIGN) # W
-        evt.wait()
-        send_cmd(LD_ALIGN) # Q
-        evt.wait()
-        send_cmd(RIGHT) # D
-        evt.wait()
-        send_cmd(LA_ALIGN) # L
-        evt.wait()
+        start_exploration(percentage, delay)
+        self.flush()
 
 
-        started = True
-        send_cmd(REQ_SENSOR) # E
-        evt.wait()
-        send_cmd(RIGHT)
-        robot.action(RIGHT)
-        evt.wait()
-        send_cmd(REQ_SENSOR) # E
-        evt.wait()
-        send_cmd(LEFT)
-        robot.action(LEFT)
-        evt.wait()
-
-
-        ### TESTING
-        # for i in range(robot.MAX_ROW):
-        #     for j in range(robot.MAX_COL):
-        #         robot.explored_map[i][j] = 1
-        # for i in range(7):
-        #     robot.explored_map[4][i] = 2
-        # for i in range(5):
-        #     robot.explored_map[i][6] = 2
-
-
-        # # doing_sp = True
-        # sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
-        # sp_list = sp.shortest_path(-1)
-        # sp_sequence = sp_list['trim_seq']
-        # sp_sequence.reverse()
-        # inform(sp_sequence)
-        
-        # gevent.joinall([
-        #     gevent.spawn(sp_to_goal, sp_sequence)
-        # ])
-        ### END TESTING
-        
-        
-        exp = Exploration(int(percentage))
-
-
-        t1 = FuncThread(exploration, exp)
-        t1.start()
-        t1.join()
-
-        inform("Exploration started!")
-        
-
-
+class StartSpHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self):
+        self.write("Starting...")
+        start_sp_to_goal()
         self.flush()
 
 
@@ -170,7 +204,8 @@ app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
     (r'/start/(.*)/(.*)', StartHandler),
-    (r'/stop/(.*)', StopHandler)
+    (r'/start_sp/', StartSpHandler),
+    (r'/stop/', StopHandler)
 ])
 
 
@@ -203,7 +238,7 @@ def do_alignment(actions):
         choice = actions[0]
         actions = actions[1:]
         send_cmd(choice)
-        if choice == RIGHT:
+        if choice == RIGHT or choice == LEFT:
             #if doing_sp:
             #    actions.push(LEFT)
             robot.action(choice)
@@ -217,6 +252,7 @@ def do_alignment(actions):
 
 def exploration(exp):
     global started
+    global mark_value
     if not started:
         return False
     
@@ -241,9 +277,10 @@ def exploration(exp):
         
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
+        inform(robot.msg_for_android())
 
         # doing_sp = True
-
+        mark_value = 9
         sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
         sp_list = sp.shortest_path(-1)
         sp_sequence = sp_list['trim_seq']
@@ -259,23 +296,45 @@ def exploration(exp):
 # @delay(delay_time)
 def sp_to_start(sequence):
     global started
+    global exp_done
     if not started:
         return False
     if len(sequence) == 0:
         evt.wait()
         send_cmd("W")
         evt.wait()
-        inform("Gone back to start!")
 
-        sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
-        sp_list = sp.shortest_path()
-        sp_sequence = sp_list['trim_seq']
-        sp_sequence.reverse()
-        inform(sp_sequence)
-        # delay_call(sp_to_goal, sp_sequence)
-        gevent.joinall([
-            gevent.spawn(sp_to_goal, sp_sequence)
-        ])
+
+        # Calibrate first!
+        if robot.direction == NORTH:
+            robot.action(LEFT)
+            send_cmd(LEFT)
+            evt.wait()
+        elif robot.direction == SOUTH:
+            robot.action(RIGHT)
+            send_cmd(RIGHT)
+            evt.wait()
+        elif robot.direction == EAST:
+            robot.action(LEFT)
+            send_cmd(LEFT)
+            evt.wait()
+            robot.action(LEFT)
+            send_cmd(LEFT)
+            evt.wait()
+
+        send_cmd(FD_ALIGN) # W
+        evt.wait()
+        send_cmd(LD_ALIGN) # Q
+        evt.wait()
+        robot.action(LEFT)
+        send_cmd(RIGHT) # D
+        evt.wait()
+        send_cmd(LA_ALIGN) # L
+        evt.wait()
+
+
+        exp_done = True
+        inform("Gone back to start!")
 
         return False
     
@@ -416,6 +475,7 @@ def send_cmd(cmd):
 
 def parse_msg(msg):
     global started
+    global mark_value
     print("[Arduino-Ser] parse_msg > %s"%(msg))
 
     if (msg == "K" or len(msg) < 5 or msg.startswith("Error")):
@@ -425,7 +485,7 @@ def parse_msg(msg):
         sensorString = msg
         global sensors
         sensors = robot.parse_sensors(sensorString)
-        robot.update_map()
+        robot.update_map(mark_value)
     evt.set()
     return
 

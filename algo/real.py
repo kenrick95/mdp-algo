@@ -98,6 +98,7 @@ class Robot(object):
                 for i in range(times):
                     self.forward(mark_value)
             elif action == LEFT or action == RIGHT:
+                print("[Tornado] real.py > action > %s " % (action))
                 self.rotate(action)
         zope.event.notify(action)
 
@@ -241,7 +242,7 @@ class Robot(object):
         self.sensors = sensors
         return sensors
 
-    def update_map(self):
+    def update_map(self, mark_value = 8):
         self.__old_map = []
         self.__map_state_changed = []
         for i in range(self.MAX_ROW):
@@ -345,7 +346,7 @@ class Robot(object):
         self.update_map_state()
 
         for coord in self.path_taken:
-            self.explored_map[coord[0]][coord[1]] = 8
+            self.explored_map[coord[0]][coord[1]] = mark_value
             directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
             for direction in directions:
                 if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:

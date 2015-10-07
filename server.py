@@ -19,7 +19,7 @@ from algo.shortest_path import ShortestPath
 clients = dict()
 started = False
 delay_time = 0.1
-
+exp_done = False
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -68,38 +68,59 @@ class IndexHandler(tornado.web.RequestHandler):
         #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
         #self.finish()
 
+def start_exploration(percentage, delay):
+    global robot
+    global started
+    global delay_time
+    if started:
+        return
+    started = True
+    robot = algo.sim.Robot()
+    delay_time = float(delay)
+
+    exp = Exploration(int(percentage))
+
+    global sensors
+    sensors = robot.get_sensors()
+
+    t1 = FuncThread(exploration, exp)
+    t1.start()
+    t1.join()
+
+    inform("Exploration started!")
+
+def start_sp_to_goal():  
+    global robot
+    if not exp_done:
+        return False
+    sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+    sp_list = sp.shortest_path()
+    sp_sequence = sp_list['trim_seq']
+    sp_sequence.reverse() # will pop from the back
+    inform(sp_sequence)
+    delay_call(sp_to_goal, sp_sequence)
+
+    inform("ShortestPath started!")
 
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
-        global robot
-
-        global started
-        global delay_time
-        if started:
-            return
-        started = True
-        robot = algo.sim.Robot()
-        delay_time = float(delay)
-
-        exp = Exploration(int(percentage))
-        
-        global sensors
-        sensors = robot.get_sensors()
-
-
-        t1 = FuncThread(exploration, exp)
-        t1.start()
-        t1.join()
-
-        inform("Exploration started!")
+        start_exploration(percentage, delay)
         self.flush()
+
+class StartSpHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self):
+        self.write("Starting...")
+        start_sp_to_goal()
+        self.flush()
+
 
 
 class StopHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self, delay):
+    def get(self):
         global started
         inform("Exploration stopped!")
         started = False
@@ -109,7 +130,8 @@ app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
     (r'/start/(.*)/(.*)', StartHandler),
-    (r'/stop/(.*)', StopHandler)
+    (r'/start_sp/', StartSpHandler),
+    (r'/stop/', StopHandler)
 ])
 
 
@@ -166,18 +188,12 @@ def exploration(exp):
 # @delay(delay_time)
 def sp_to_start(sequence):
     global started
+    global exp_done
     if not started:
         return False
     if len(sequence) == 0:
+        exp_done = True
         inform("Gone back to start!")
-
-        sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
-        sp_list = sp.shortest_path()
-        sp_sequence = sp_list['trim_seq']
-        sp_sequence.reverse() # will pop from the back
-        inform(sp_sequence)
-        delay_call(sp_to_goal, sp_sequence)
-
         return False
     choice = sequence.pop()
     robot.action(choice, -1)
@@ -208,4 +224,7 @@ if __name__ == '__main__':
     zope.event.subscribers.append(tick)
 
     print("Listening to http://localhost:" + str(options.port) + "...")
-    tornado.ioloop.IOLoop.instance().start()
+    # tornado.ioloop.IOLoop.instance().start()
+    t3 = FuncThread(tornado.ioloop.IOLoop.instance().start)
+    t3.start()
+    t3.join()
