@@ -109,7 +109,7 @@ class Robot(object):
         if mark_value >= 0:
             self.explored_map[self.current[0]][self.current[1]] = mark_value
 
-        self.path_taken.append([self.current[0], self.current[1]])
+        self.path_taken.append([self.current[0], self.current[1], mark_value])
         next_coords = [self.current[0], self.current[1]]
         if self.direction == NORTH:
             next_coords[0] += -1
@@ -242,7 +242,7 @@ class Robot(object):
         self.sensors = sensors
         return sensors
 
-    def update_map(self, mark_value = 8):
+    def update_map(self):
         self.__old_map = []
         self.__map_state_changed = []
         for i in range(self.MAX_ROW):
@@ -346,7 +346,7 @@ class Robot(object):
         self.update_map_state()
 
         for coord in self.path_taken:
-            self.explored_map[coord[0]][coord[1]] = mark_value
+            self.explored_map[coord[0]][coord[1]] = coord[2]
             directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
             for direction in directions:
                 if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:

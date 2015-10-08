@@ -38,10 +38,8 @@ delay_time = 0
 evt = Event()
 sensors = []
 android_ok = False
-mark_value = 8
 exp_done = False
 io_loop = False
-# doing_sp = True
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -178,9 +176,6 @@ def start_exploration(percentage, delay):
     robot = algo.real.Robot()
     delay_time = float(delay)
 
-    #global doing_sp
-    #doing_sp = False
-
     send_cmd(FD_ALIGN) # W
     evt.wait()
     send_cmd(LD_ALIGN) # Q
@@ -264,17 +259,14 @@ def exploration(exp):
 
 def done_exploration():
     global started
-    global mark_value
     inform("Exploration done!")
 
     started = False
     
     inform(robot.descriptor_one())
     inform(robot.descriptor_two())
-    inform(robot.msg_for_android())
+    # inform(robot.msg_for_android())
 
-    # doing_sp = True
-    mark_value = 9
     sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
     sp_list = sp.shortest_path(-1)
     sp_sequence = sp_list['trim_seq']
@@ -396,8 +388,8 @@ def sp_to_goal(sequence):
         done_sp_to_goal()
         return False
     
+    evt.wait()
     # DON'T DO ALIGNMENT WHILE DOING FASTEST PATH RACE
-    # evt.wait()
     # do_alignment(robot.alignment())
 
     choice = sequence.pop()
@@ -452,26 +444,13 @@ def btCommListen():
     return btsock
 
 def btWrite(threadName, delay):
-    # stop_flag = 0
-    # gevent.sleep(delay)
-    # while stop_flag == 0:
-    #    gevent.sleep(delay)
     if len(btq) > 0:
         msg = btq.popleft()
-       # try:
         btsock.send(msg)
-       # except:
-       #   btq.appendleft(msg)
-       #   btsock = btComm()
         print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
     real_delay_call(btWrite, delay, threadName, delay)
 
 def btRead(threadName, delay):
-    # stop_flag = 0
-    # while stop_flag == 0:
-    # gevent.sleep(delay)
-    # try:
-    #print(dir(btsock))
     try:
         msg = btsock.recv(1024)
         print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
@@ -487,10 +466,6 @@ def btRead(threadName, delay):
             started = False
     except:
         None
-    # except:
-    # btsock = btComm()
-    #print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
-    # serialq.append(msg)
     real_delay_call(btRead, delay, threadName, delay)
 
 #####################
@@ -502,24 +477,13 @@ def setSerComm():
     return sersock
 
 def serRead(threadName, delay):
-    # print("sR")
-
-    #while 1:
-        #gevent.sleep(delay)
-    #    time.sleep(delay);
     if serial.inWaiting() > 0:
         msg = serial.readline()
-        #sockq.append(msg)
-        # received "msg" from Arduino
         print ("[Arduino] serRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
         parse_msg(msg)
     real_delay_call(serRead, delay, threadName, delay)
 
 def serWrite(threadName, delay):
-    # print("sW")
-    #while 1:
-        #gevent.sleep(delay)
-    #    time.sleep(delay)
     if len(serialq) > 0:
         msg = serialq.popleft()
         serial.write(msg)
@@ -533,7 +497,6 @@ def send_cmd(cmd):
 
 def parse_msg(msg):
     global started
-    global mark_value
     print("[Arduino-Ser] parse_msg > %s"%(msg))
 
     if (msg == "K" or len(msg) < 5 or msg.startswith("Error")):
@@ -543,7 +506,7 @@ def parse_msg(msg):
         sensorString = msg
         global sensors
         sensors = robot.parse_sensors(sensorString)
-        robot.update_map(mark_value)
+        robot.update_map()
     evt.set()
     return
 
@@ -576,6 +539,7 @@ if __name__ == '__main__':
     t2.start()
     t4.start()
     t5.start()
+    
     t3.start()
     
     #t1.join()
