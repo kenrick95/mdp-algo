@@ -48,14 +48,8 @@ define("port", default=8888, help="run on the given port", type=int)
 def delay_call(f, *args, **kwargs):
     evt.wait()
     # ignore delay_time, don't spawn new thread
-
-    # t1 = FuncThread(f, *args)
-    # t1.start()
-    # t1.join()
-
     f(*args, **kwargs)
     
-
     # global delay_time
     # t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
     # t.start()
@@ -72,7 +66,6 @@ class FuncThread(threading.Thread):
  
     def run(self):
         self._target(*self._args)
-
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -92,125 +85,26 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
-        #self.write("This is your response")
         self.render("display.html")
-        #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
-        #self.finish()
-
-
-
-def start_exploration(percentage, delay):
-    global robot
-    global started
-    global delay_time
-    if started:
-        return
-    robot = algo.real.Robot()
-    delay_time = float(delay)
-
-    #global doing_sp
-    #doing_sp = False
-
-    send_cmd(FD_ALIGN) # W
-    evt.wait()
-    send_cmd(LD_ALIGN) # Q
-    evt.wait()
-    send_cmd(RIGHT) # D
-    evt.wait()
-    send_cmd(LA_ALIGN) # L
-    evt.wait()
-
-
-    started = True
-    send_cmd(REQ_SENSOR) # E
-    evt.wait()
-    send_cmd(RIGHT)
-    robot.action(RIGHT)
-    evt.wait()
-    send_cmd(REQ_SENSOR) # E
-    evt.wait()
-    send_cmd(LEFT)
-    robot.action(LEFT)
-    evt.wait()
-
-
-    ### TESTING
-    # for i in range(robot.MAX_ROW):
-    #     for j in range(robot.MAX_COL):
-    #         robot.explored_map[i][j] = 1
-    # for i in range(7):
-    #     robot.explored_map[4][i] = 2
-    # for i in range(5):
-    #     robot.explored_map[i][6] = 2
-
-
-    # # doing_sp = True
-    # sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
-    # sp_list = sp.shortest_path(-1)
-    # sp_sequence = sp_list['trim_seq']
-    # sp_sequence.reverse()
-    # inform(sp_sequence)
-    
-    # gevent.joinall([
-    #     gevent.spawn(sp_to_goal, sp_sequence)
-    # ])
-    ### END TESTING
-    
-    
-    exp = Exploration(int(percentage))
-
-    inform("Exploration started!")
-    t1 = FuncThread(exploration, exp)
-    t1.start()
-    t1.join()
-    
-
-def start_sp_to_goal():  
-    global robot
-    global started
-
-    # # TESTING
-    # exp_done = True
-    # started = True
-    # for i in range(robot.MAX_ROW):
-    #     for j in range(robot.MAX_COL):
-    #         robot.explored_map[i][j] = 1
-    # for i in range(6):
-    #     robot.explored_map[13][i] = 2
-    # robot.explored_map[0][8] = 2
-    # robot.direction = NORTH
-    # send_cmd(REQ_SENSOR) 
-    # # END TESTING
-
-    if not exp_done:
-        return False
-
-    sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
-    sp_list = sp.shortest_path()
-    sp_sequence = sp_list['trim_seq']
-    sp_sequence.reverse()
-    inform(sp_sequence)
-    # delay_call(sp_to_goal, sp_sequence)
-    gevent.joinall([
-        gevent.spawn(sp_to_goal, sp_sequence)
-    ])
-    inform("ShortestPath started!")
-
 
 class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
+        
         t = FuncThread(start_exploration, 100, 0.0)
         t.start()
+        
         self.flush()
 
 class StartSpHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         self.write("Starting...")
+        
         t = FuncThread(start_sp_to_goal)
         t.start()
+        
         self.flush()
 
 
@@ -218,7 +112,7 @@ class StopHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         global started
-        inform("Exploration stopped!")
+        inform("Halted!")
         started = False
         self.flush()
 
@@ -254,27 +148,97 @@ def inform(string):
 def do_alignment(actions):
     global started
     #global doing_sp
-    if not started:
+    if not started or len(actions) <= 0:
         return False
-    if len(actions) > 0:
-        choice = actions[0]
-        actions = actions[1:]
-        send_cmd(choice)
-        if choice == RIGHT or choice == LEFT:
-            #if doing_sp:
-            #    actions.push(LEFT)
-            robot.action(choice)
-        #elif choice == LEFT:
-        #    robot.action(choice)
+    choice = actions[0]
+    actions = actions[1:]
+    send_cmd(choice)
+    if choice == RIGHT or choice == LEFT:
+        #if doing_sp:
+        #    actions.push(LEFT)
+        robot.action(choice)
+    #elif choice == LEFT:
+    #    robot.action(choice)
 
-        gevent.joinall([
-            gevent.spawn(delay_call, do_alignment, actions)
-        ])
+    gevent.joinall([
+        gevent.spawn(delay_call, do_alignment, actions)
+    ])
+
+#####################
+###    exploration
+#####################
+
+def start_exploration(percentage, delay):
+    global robot
+    global started
+    global delay_time
+    if started:
+        return
+    inform("Exploration started: Alignment!")
+    robot = algo.real.Robot()
+    delay_time = float(delay)
+
+    #global doing_sp
+    #doing_sp = False
+
+    send_cmd(FD_ALIGN) # W
+    evt.wait()
+    send_cmd(LD_ALIGN) # Q
+    evt.wait()
+    send_cmd(RIGHT) # D
+    evt.wait()
+    send_cmd(LA_ALIGN) # L
+    evt.wait()
 
 
+    started = True
+    send_cmd(REQ_SENSOR) # E
+    evt.wait()
+
+    send_cmd(RIGHT)
+    robot.action(RIGHT)
+    evt.wait()
+
+    send_cmd(REQ_SENSOR) # E
+    evt.wait()
+
+    send_cmd(LEFT)
+    robot.action(LEFT)
+    evt.wait()
+
+
+    ### TESTING
+    # for i in range(robot.MAX_ROW):
+    #     for j in range(robot.MAX_COL):
+    #         robot.explored_map[i][j] = 1
+    # for i in range(7):
+    #     robot.explored_map[4][i] = 2
+    # for i in range(5):
+    #     robot.explored_map[i][6] = 2
+
+
+    # # doing_sp = True
+    # sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+    # sp_list = sp.shortest_path(-1)
+    # sp_sequence = sp_list['trim_seq']
+    # sp_sequence.reverse()
+    # inform(sp_sequence)
+    
+    # gevent.joinall([
+    #     gevent.spawn(sp_to_goal, sp_sequence)
+    # ])
+    ### END TESTING
+    
+    
+    exp = Exploration(int(percentage))
+
+    inform("Exploration started, for real!")
+    t1 = FuncThread(exploration, exp)
+    t1.start()
+    t1.join()
+    
 def exploration(exp):
     global started
-    global mark_value
     if not started:
         return False
     
@@ -283,81 +247,56 @@ def exploration(exp):
 
     global sensors
     cur = exp.getRealTimeMap(sensors, robot.explored_map)
-    if not cur[1]:
-        if cur[0]:
-            robot.action(cur[0])
-            send_cmd(cur[0])
+    if cur[1]:
+        done_exploration()
+        return False
 
-        print("[Tornado] exploration > %s" %(robot.current))
+    if cur[0]:
+        robot.action(cur[0])
+        send_cmd(cur[0])
 
-        # delay_call(exploration, exp)
-        gevent.joinall([
-            gevent.spawn(delay_call, exploration, exp)
-        ])
-    else:
-        inform("Exploration done!")
-        
-        inform(robot.descriptor_one())
-        inform(robot.descriptor_two())
-        inform(robot.msg_for_android())
+    print("[Tornado] exploration > %s" %(robot.current))
 
-        # doing_sp = True
-        mark_value = 9
-        sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
-        sp_list = sp.shortest_path(-1)
-        sp_sequence = sp_list['trim_seq']
-        sp_sequence.reverse()
-        inform(sp_sequence)
-        
-        # call sp to start
-        # delay_call(sp_to_start, sp_sequence)
-        gevent.joinall([
-            gevent.spawn(sp_to_start, sp_sequence)
-        ])
+    # delay_call(exploration, exp)
+    gevent.joinall([
+        gevent.spawn(delay_call, exploration, exp)
+    ])
 
-# @delay(delay_time)
+def done_exploration():
+    global started
+    global mark_value
+    inform("Exploration done!")
+
+    started = False
+    
+    inform(robot.descriptor_one())
+    inform(robot.descriptor_two())
+    inform(robot.msg_for_android())
+
+    # doing_sp = True
+    mark_value = 9
+    sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.start)
+    sp_list = sp.shortest_path(-1)
+    sp_sequence = sp_list['trim_seq']
+    sp_sequence.reverse()
+    inform(sp_sequence)
+    
+    # call sp to start
+    # delay_call(sp_to_start, sp_sequence)
+    gevent.joinall([
+        gevent.spawn(sp_to_start, sp_sequence)
+    ])
+
+#####################
+###    sp_to_start
+#####################
+
 def sp_to_start(sequence):
     global started
-    global exp_done
-    if not started:
-        return False
+    #if not started:
+    #    return False
     if len(sequence) == 0:
-        evt.wait()
-        send_cmd("W")
-        evt.wait()
-
-
-        # Calibrate first!
-        if robot.direction == NORTH:
-            robot.action(LEFT)
-            send_cmd(LEFT)
-            evt.wait()
-        elif robot.direction == SOUTH:
-            robot.action(RIGHT)
-            send_cmd(RIGHT)
-            evt.wait()
-        elif robot.direction == EAST:
-            robot.action(LEFT)
-            send_cmd(LEFT)
-            evt.wait()
-            robot.action(LEFT)
-            send_cmd(LEFT)
-            evt.wait()
-
-        send_cmd(FD_ALIGN) # W
-        evt.wait()
-        send_cmd(LD_ALIGN) # Q
-        evt.wait()
-        robot.action(LEFT)
-        send_cmd(RIGHT) # D
-        evt.wait()
-        send_cmd(LA_ALIGN) # L
-        evt.wait()
-
-
-        exp_done = True
-        inform("Gone back to start!")
-
+        done_sp_to_start()
         return False
     
     evt.wait()
@@ -373,19 +312,90 @@ def sp_to_start(sequence):
         gevent.spawn(sp_to_start, sequence)
     ])
 
-# @delay(delay_time)
+def done_sp_to_start():
+    global exp_done
+    inform("Gone back to start: Alignment!")
+
+    evt.wait()
+    send_cmd("W")
+    evt.wait()
+
+    # Calibrate first!
+    if robot.direction == NORTH:
+        robot.action(LEFT)
+        send_cmd(LEFT)
+        evt.wait()
+    elif robot.direction == SOUTH:
+        robot.action(RIGHT)
+        send_cmd(RIGHT)
+        evt.wait()
+    elif robot.direction == EAST:
+        robot.action(LEFT)
+        send_cmd(LEFT)
+        evt.wait()
+        robot.action(LEFT)
+        send_cmd(LEFT)
+        evt.wait()
+
+    send_cmd(FD_ALIGN) # W
+    evt.wait()
+
+    send_cmd(LD_ALIGN) # Q
+    evt.wait()
+
+    robot.action(RIGHT)
+    send_cmd(RIGHT) # D
+    evt.wait()
+
+    send_cmd(LA_ALIGN) # L
+    evt.wait()
+
+
+    exp_done = True
+    inform("Gone back to start, for real!")
+
+#####################
+###    sp_to_goal
+#####################
+
+def start_sp_to_goal():  
+    global robot
+    global started
+
+    # # TESTING
+    # exp_done = True
+    # started = True
+    # for i in range(robot.MAX_ROW):
+    #     for j in range(robot.MAX_COL):
+    #         robot.explored_map[i][j] = 1
+    # for i in range(6):
+    #     robot.explored_map[13][i] = 2
+    # robot.explored_map[0][8] = 2
+    # robot.direction = NORTH
+    # send_cmd(REQ_SENSOR) 
+    # # END TESTING
+
+    if not exp_done:
+        return False
+    started = True
+    inform("ShortestPath started!")
+
+    sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
+    sp_list = sp.shortest_path()
+    sp_sequence = sp_list['trim_seq']
+    sp_sequence.reverse()
+    inform(sp_sequence)
+    # delay_call(sp_to_goal, sp_sequence)
+    gevent.joinall([
+        gevent.spawn(sp_to_goal, sp_sequence)
+    ])
+
 def sp_to_goal(sequence):
     global started
     if len(sequence) == 0:
-
-        evt.wait()
-        send_cmd("W")
-        evt.wait()
-        inform("ShortestPath done!")
-        started = False
+        done_sp_to_goal()
         return False
     
-
     evt.wait()
     do_alignment(robot.alignment())
 
@@ -399,21 +409,22 @@ def sp_to_goal(sequence):
         gevent.spawn(sp_to_goal, sequence)
     ])
 
-def wifiComm():
-    host = "192.168.5.10"
-    port = 5143
-    wifisoc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#    wifisoc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-#    wifisoc.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)
-#    wifisoc.bind((host, port))
-#    wifisoc.listen(5)
-#    conn, address = wifisoc.accept()
-#    return wifisoc, address
-    wifisoc.connect((host, port))
-    return wifisoc
+def done_sp_to_goal():
+    global started
+    inform("ShortestPath done: Alignment!")
+    evt.wait()
+    send_cmd("W")
+    evt.wait()
+    inform("ShortestPath done, for real!")
+    started = False
+
+
+#####################
+###    BLUETOOTH
+#####################
 
 def btComm():
-#    btaddr = "00:E3:B2:A1:8F:65" #note3
+    # btaddr = "00:E3:B2:A1:8F:65" #note3
     btaddr = "08:60:6E:A5:89:46" #nexus
     uuid = "00001101-0000-1000-8000-00805f9b34fb"
     service_matches = bluetooth.find_service(uuid=uuid, address= btaddr)
@@ -439,56 +450,33 @@ def btCommListen():
     print ("Accepted BT connection from %s" %address)    
     return btsock
 
+def btWrite(threadName, delay):
+    # stop_flag = 0
+    # gevent.sleep(delay)
+    # while stop_flag == 0:
+    #    gevent.sleep(delay)
+    if len(btq) > 0:
+        msg = btq.popleft()
+        btsock.send(msg)
+        print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+    real_delay_call(btWrite, delay, threadName, delay)
+
+def btRead(threadName, delay):
+    # stop_flag = 0
+    # while stop_flag == 0:
+    gevent.sleep(delay)
+    msg = btsock.recv(1024)
+    print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
+    # serialq.append(msg)
+    real_delay_call(btRead, delay, threadName, delay)
+
+#####################
+###    ARDUINO
+#####################
 
 def setSerComm():
     sersock = serial.Serial('/dev/ttyACM0', 115200) # Establish the connection wi$
     return sersock
-
-
-
-def btWrite(threadName, delay):
-    stop_flag = 0
-#    gevent.sleep(delay)
-    while stop_flag == 0:
-        gevent.sleep(delay)
-        #time.sleep(delay)
-        if len(btq) > 0:
-            msg = btq.popleft()
-            btsock.send(msg)
-            print ("%s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
-
-def btRead(threadName, delay):
-    stop_flag = 0
-    while stop_flag == 0:
-        gevent.sleep(delay)
-#        time.sleep(delay)
-        msg = btsock.recv(1024)
-        print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
-        serialq.append(msg)
-       
-"""
-
-
-def btWrite(threadName, delay):
-    stop_flag = 0
-#    gevent.sleep(delay)
-    while stop_flag == 0:
-        gevent.sleep(delay)
-        #time.sleep(delay)
-        if len(btq) > 0:
-            msg = btq.popleft()
-            btsock.send(msg)
-            print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
-
-def btRead(threadName, delay):
-    stop_flag = 0
-    while stop_flag == 0:
-        gevent.sleep(delay)
-#        time.sleep(delay)
-        msg = btsock.recv(1024)
-        print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
-        serialq.append(msg)
-"""
 
 def serRead(threadName, delay):
     # print("sR")
@@ -515,27 +503,6 @@ def serWrite(threadName, delay):
         print ("[Arduino] serWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
 
     real_delay_call(serWrite, delay, threadName, delay)
-"""
-def sockRead(threadName, delay):
-    while 1:
-        gevent.sleep(delay)
-        msg  = wifisock.recv(1024)
-        print ("[Wi-Fi] sockRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
-         
-def sockWrite(threadName, delay):
-    while 1:
-        gevent.sleep(delay)
-        if len(sockq) > 0:
-            msg = sockq.popleft()
-            wifisock.send(msg)
-            print ("[Wi-Fi] sockWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
-"""
-
-def writeInput():
-    while 1:
-        gevent.sleep(1)
-        test = raw_input("Enter Command: ")
-        btq.append(test)
 
 def send_cmd(cmd):
     serialq.append(cmd)
@@ -557,6 +524,7 @@ def parse_msg(msg):
     evt.set()
     return
 
+
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
@@ -565,31 +533,16 @@ if __name__ == '__main__':
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
     io_loop = tornado.ioloop.IOLoop.instance()
-    #scheduler = tornado.ioloop.PeriodicCallback(checkResults, 10, io_loop = io_loop)
-    #scheduler.start()
 
-    # wifisock = wifiComm() 
-    #btsock = btComm()
-    #server = Server('', 5143)
-    #asyncore.loop(timeout=1)
-    
+    # btsock = btComm()
+    # asyncore.loop(timeout=1)
     serial = setSerComm()
 
     btq = deque([])
-    #sockq = deque([])
     serialq = deque([])
     print("[Tornado] > Listening to http://localhost:" + str(options.port) + "...")
     
-    #try:
-    #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
-    #   thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
-    #    thread1 = gevent.spawn(btWrite, "Thread 1-btWrite", 0.5)
-    #    thread2 = gevent.spawn(btRead, "Thread 2-btRead", 0.5)
-    #    thread3 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
-    #    thread4 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5)
-         #thread.start_new_thread(serWrite, ("Thread 5-serWrite", 0.5))
-         #thread.start_new_thread(serRead, ("Thread 6-serRead", 0.5))
-         #thread.start_new_thread(tornado.ioloop.IOLoop.instance().start)
+
     t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.5)
     t2 = FuncThread(serRead, "Thread 2-serRead", 0.5)
     t3 = FuncThread(io_loop.start)
@@ -605,17 +558,3 @@ if __name__ == '__main__':
     # t1.join()
     # t2.join()
     t3.join()
-    #    thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
-    #    thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
-    #    thread7 = gevent.spawn(tornado.ioloop.IOLoop.instance().start)
-    #    thread5 = gevent.spawn(sockWrite, "Thread 3-sockWrite", 0.5)
-    #    thread6 = gevent.spawn(sockRead, "Thread 4-sockRead", 0.5) 
-    #    thread3 = gevent.spawn(writeInput)
-    #    threads = [thread1, thread2, thread3, thread4, thread7]
-        #threads = [thread3, thread4, thread7]
-        #gevent.joinall(threads)
-    #except:
-    #    print ("[Main] > Error, cannot create threads.")
-
-    #print("Listening to http://localhost:" + str(options.port) + "...")
-    #tornado.ioloop.IOLoop.instance().start()
