@@ -78,6 +78,14 @@ def start_exploration(percentage, delay):
     robot = algo.sim.Robot()
     delay_time = float(delay)
 
+    robot.get_sensors()
+    robot.action(RIGHT)
+    robot.get_sensors()
+    robot.action(LEFT)
+    robot.get_sensors()
+
+
+
     exp = Exploration(int(percentage))
 
     global sensors

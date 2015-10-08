@@ -1,6 +1,9 @@
+import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import tornado.gen
+import multiprocessing
 
 import threading
 from functools import wraps
@@ -37,6 +40,7 @@ sensors = []
 android_ok = False
 mark_value = 8
 exp_done = False
+io_loop = False
 # doing_sp = True
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -45,16 +49,20 @@ def delay_call(f, *args, **kwargs):
     evt.wait()
     # ignore delay_time, don't spawn new thread
 
-    t1 = FuncThread(f, *args)
-    t1.start()
+    # t1 = FuncThread(f, *args)
+    # t1.start()
     # t1.join()
 
-    # f(*args, **kwargs)
+    f(*args, **kwargs)
     
 
     # global delay_time
     # t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
     # t.start()
+
+def real_delay_call(f, delay_time, *args, **kwargs):
+    t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
+    t.start()
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
@@ -151,16 +159,29 @@ def start_exploration(percentage, delay):
     
     exp = Exploration(int(percentage))
 
-
+    inform("Exploration started!")
     t1 = FuncThread(exploration, exp)
     t1.start()
     t1.join()
-
-    inform("Exploration started!")
     
 
 def start_sp_to_goal():  
     global robot
+    global started
+
+    # # TESTING
+    # exp_done = True
+    # started = True
+    # for i in range(robot.MAX_ROW):
+    #     for j in range(robot.MAX_COL):
+    #         robot.explored_map[i][j] = 1
+    # for i in range(6):
+    #     robot.explored_map[13][i] = 2
+    # robot.explored_map[0][8] = 2
+    # robot.direction = NORTH
+    # send_cmd(REQ_SENSOR) 
+    # # END TESTING
+
     if not exp_done:
         return False
 
@@ -180,21 +201,22 @@ class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
-        start_exploration(percentage, delay)
+        t = FuncThread(start_exploration, 100, 0.0)
+        t.start()
         self.flush()
-
 
 class StartSpHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         self.write("Starting...")
-        start_sp_to_goal()
+        t = FuncThread(start_sp_to_goal)
+        t.start()
         self.flush()
 
 
 class StopHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self, delay):
+    def get(self):
         global started
         inform("Exploration stopped!")
         started = False
@@ -354,8 +376,6 @@ def sp_to_start(sequence):
 # @delay(delay_time)
 def sp_to_goal(sequence):
     global started
-    if not started:
-        return False
     if len(sequence) == 0:
 
         evt.wait()
@@ -395,16 +415,58 @@ def wifiComm():
 def btComm():
 #    btaddr = "00:E3:B2:A1:8F:65" #note3
     btaddr = "08:60:6E:A5:89:46" #nexus
-    port = 4
+    uuid = "00001101-0000-1000-8000-00805f9b34fb"
+    service_matches = bluetooth.find_service(uuid=uuid, address= btaddr)
+    if len(service_matches) == 0:
+        print("Couldn't find service")
+    first_match = service_matches[0]
+    port = first_match["port"]
+    name = first_match["name"]
+    host = first_match["host"]    
+    #port = 4
     btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    btsock.connect((btaddr, port))
+    btsock.connect((host, port))
     print ("[Android] btComm > Connected BT")
     android_ok = True
     return btsock
 
+def btCommListen():
+    print ("Listening for incoming BT")
+    btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    btsock.bind(("", 4))
+    btsock.listen(1) #listen for a device
+    client_sock, address = btsock.accept()
+    print ("Accepted BT connection from %s" %address)    
+    return btsock
+
+
 def setSerComm():
     sersock = serial.Serial('/dev/ttyACM0', 115200) # Establish the connection wi$
     return sersock
+
+
+
+def btWrite(threadName, delay):
+    stop_flag = 0
+#    gevent.sleep(delay)
+    while stop_flag == 0:
+        gevent.sleep(delay)
+        #time.sleep(delay)
+        if len(btq) > 0:
+            msg = btq.popleft()
+            btsock.send(msg)
+            print ("%s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+
+def btRead(threadName, delay):
+    stop_flag = 0
+    while stop_flag == 0:
+        gevent.sleep(delay)
+#        time.sleep(delay)
+        msg = btsock.recv(1024)
+        print ("%s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
+        serialq.append(msg)
+       
+"""
 
 
 def btWrite(threadName, delay):
@@ -426,28 +488,34 @@ def btRead(threadName, delay):
         msg = btsock.recv(1024)
         print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
         serialq.append(msg)
-       
+"""
 
 def serRead(threadName, delay):
-    while 1:
+    # print("sR")
+
+    #while 1:
         #gevent.sleep(delay)
-        time.sleep(delay);
+    #    time.sleep(delay);
+    if serial.inWaiting() > 0:
         msg = serial.readline()
         #sockq.append(msg)
         # received "msg" from Arduino
         print ("[Arduino] serRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))  )
         parse_msg(msg)
+    real_delay_call(serRead, delay, threadName, delay)
 
 def serWrite(threadName, delay):
-    while 1:
+    # print("sW")
+    #while 1:
         #gevent.sleep(delay)
-        time.sleep(delay)
-        if len(serialq) > 0:
-            msg = serialq.popleft()
-            serial.write(msg)
-            print ("[Arduino] serWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+    #    time.sleep(delay)
+    if len(serialq) > 0:
+        msg = serialq.popleft()
+        serial.write(msg)
+        print ("[Arduino] serWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
 
-
+    real_delay_call(serWrite, delay, threadName, delay)
+"""
 def sockRead(threadName, delay):
     while 1:
         gevent.sleep(delay)
@@ -461,7 +529,7 @@ def sockWrite(threadName, delay):
             msg = sockq.popleft()
             wifisock.send(msg)
             print ("[Wi-Fi] sockWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
-
+"""
 
 def writeInput():
     while 1:
@@ -496,20 +564,23 @@ if __name__ == '__main__':
     old_subscribers = zope.event.subscribers[:]
     del zope.event.subscribers[:]
     zope.event.subscribers.append(tick)
-
+    io_loop = tornado.ioloop.IOLoop.instance()
+    #scheduler = tornado.ioloop.PeriodicCallback(checkResults, 10, io_loop = io_loop)
+    #scheduler.start()
 
     # wifisock = wifiComm() 
     #btsock = btComm()
     #server = Server('', 5143)
     #asyncore.loop(timeout=1)
+    
     serial = setSerComm()
 
-    #btq = deque([])
+    btq = deque([])
     #sockq = deque([])
     serialq = deque([])
     print("[Tornado] > Listening to http://localhost:" + str(options.port) + "...")
     
-    try:
+    #try:
     #    thread.start_new_thread(btWrite, ("Thread 1-btWrite", 0.5))
     #   thread.start_new_thread(btRead, ("Thread 2-btRead", 0.5))
     #    thread1 = gevent.spawn(btWrite, "Thread 1-btWrite", 0.5)
@@ -519,13 +590,21 @@ if __name__ == '__main__':
          #thread.start_new_thread(serWrite, ("Thread 5-serWrite", 0.5))
          #thread.start_new_thread(serRead, ("Thread 6-serRead", 0.5))
          #thread.start_new_thread(tornado.ioloop.IOLoop.instance().start)
-         t1 = FuncThread(serWrite, "Thread 5-serWrite", 0.5)
-         t2 = FuncThread(serRead, "Thread 6-serRead", 0.5)
-         t3 = FuncThread(tornado.ioloop.IOLoop.instance().start)
-         t1.start()
-         t2.start()
-         t3.start()
-         t3.join()
+    t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.5)
+    t2 = FuncThread(serRead, "Thread 2-serRead", 0.5)
+    t3 = FuncThread(io_loop.start)
+    #t4 = FuncThread(btWrite, "Thread 4-btWrite", 0.5)
+    #t5 = FuncThread(btRead, "Thread 5-btRead", 0.5)
+
+    t1.start()
+    t2.start()
+    t3.start()
+    #t4.start()
+    #t5.start()
+    
+    # t1.join()
+    # t2.join()
+    t3.join()
     #    thread3 = gevent.spawn(serWrite, "Thread 5-serWrite", 0.5)
     #    thread4 = gevent.spawn(serRead, "Thread 6-serRead", 0.5)
     #    thread7 = gevent.spawn(tornado.ioloop.IOLoop.instance().start)
@@ -535,8 +614,8 @@ if __name__ == '__main__':
     #    threads = [thread1, thread2, thread3, thread4, thread7]
         #threads = [thread3, thread4, thread7]
         #gevent.joinall(threads)
-    except:
-        print ("[Main] > Error, cannot create threads.")
+    #except:
+    #    print ("[Main] > Error, cannot create threads.")
 
     #print("Listening to http://localhost:" + str(options.port) + "...")
     #tornado.ioloop.IOLoop.instance().start()

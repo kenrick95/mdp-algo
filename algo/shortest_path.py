@@ -200,7 +200,7 @@ class ShortestPath(object):
         for ch in seq:
             if ch == '1':
                 ch_cnt += 1
-                if ch_cnt == 15:
+                if ch_cnt == 7:
                     trim_seq.append(str(hex(ch_cnt))[2:])
                     ch_cnt = 0
             else:

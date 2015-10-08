@@ -194,6 +194,8 @@
                 r.onreadystatechange = function () {
                   if (r.readyState != 4 || r.status != 200) return;
                     //messageContainer.innerHTML += "<br>" + r.responseText;
+                    console.log(r.responseText);
+
                     var d = JSON.parse(r.responseText);
                     logInfo({
                         time: d.time,
