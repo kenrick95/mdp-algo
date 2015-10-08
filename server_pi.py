@@ -396,8 +396,9 @@ def sp_to_goal(sequence):
         done_sp_to_goal()
         return False
     
-    evt.wait()
-    do_alignment(robot.alignment())
+    # DON'T DO ALIGNMENT WHILE DOING FASTEST PATH RACE
+    # evt.wait()
+    # do_alignment(robot.alignment())
 
     choice = sequence.pop()
     robot.action(choice, 9)
@@ -457,16 +458,38 @@ def btWrite(threadName, delay):
     #    gevent.sleep(delay)
     if len(btq) > 0:
         msg = btq.popleft()
+       # try:
         btsock.send(msg)
+       # except:
+       #   btq.appendleft(msg)
+       #   btsock = btComm()
         print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
     real_delay_call(btWrite, delay, threadName, delay)
 
 def btRead(threadName, delay):
     # stop_flag = 0
     # while stop_flag == 0:
-    gevent.sleep(delay)
-    msg = btsock.recv(1024)
-    print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
+    # gevent.sleep(delay)
+    # try:
+    #print(dir(btsock))
+    try:
+        msg = btsock.recv(1024)
+        print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
+        if msg == "beginExplore":
+            t = FuncThread(start_exploration, 100, 0.0)
+            t.start()
+        elif msg == "beginFastest":
+            t = FuncThread(start_sp_to_goal)
+            t.start()
+        elif msg == "beginManual":
+            global started
+            inform("Halted!")
+            started = False
+    except:
+        None
+    # except:
+    # btsock = btComm()
+    #print ("[Android] btRead > %s received msg: %s @ %s" %(threadName, msg, time.ctime(time.time()))   )
     # serialq.append(msg)
     real_delay_call(btRead, delay, threadName, delay)
 
@@ -534,8 +557,8 @@ if __name__ == '__main__':
     zope.event.subscribers.append(tick)
     io_loop = tornado.ioloop.IOLoop.instance()
 
-    # btsock = btComm()
-    # asyncore.loop(timeout=1)
+    btsock = btComm()
+    btsock.setblocking(0)
     serial = setSerComm()
 
     btq = deque([])
@@ -543,18 +566,20 @@ if __name__ == '__main__':
     print("[Tornado] > Listening to http://localhost:" + str(options.port) + "...")
     
 
-    t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.5)
-    t2 = FuncThread(serRead, "Thread 2-serRead", 0.5)
+    t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.1)
+    t2 = FuncThread(serRead, "Thread 2-serRead", 0.1)
     t3 = FuncThread(io_loop.start)
-    #t4 = FuncThread(btWrite, "Thread 4-btWrite", 0.5)
-    #t5 = FuncThread(btRead, "Thread 5-btRead", 0.5)
+    t4 = FuncThread(btWrite, "Thread 4-btWrite", 0.1)
+    t5 = FuncThread(btRead, "Thread 5-btRead", 0.1)
 
     t1.start()
     t2.start()
+    t4.start()
+    t5.start()
     t3.start()
-    #t4.start()
-    #t5.start()
     
-    # t1.join()
-    # t2.join()
+    #t1.join()
+    #t2.join()
     t3.join()
+    #t4.join()
+    #t5.join()

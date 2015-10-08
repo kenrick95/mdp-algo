@@ -190,6 +190,9 @@ class Exploration(object):
                 # good enough, break
                 robotBreak = True
             else:
+                #### JUST GIVE UP AND GO BACK HOME :')
+                robotBreak = True
+
                 # don't give up!
                 rcurrent = [robotCenterY, robotCenterX]
                 rdirection = NORTH
