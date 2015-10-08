@@ -1,4 +1,24 @@
-# Map display on PC
+# The One Program to Rule Them All!
+## Dependencies
+```
+pip install tornado
+pip install zope.event
+pip install gevent
+pip install gevent.event
+```
+- Raspberry Pi
+- Bluetooth (`bluetooth`)
+- Arduino (`serial`)
+
+## Running at RPi
+```
+python server_pi.py
+```
+and then open browser and navigate to `192.168.5.5:8888`
+
+
+
+# Simulator
 ## Dependencies
 ```
 pip install tornado
