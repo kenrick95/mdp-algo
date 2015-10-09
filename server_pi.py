@@ -40,6 +40,8 @@ sensors = []
 android_ok = False
 exp_done = False
 io_loop = False
+exploration_started = False
+sp_to_goal_started = False
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -124,8 +126,8 @@ app = tornado.web.Application([
 
 
 def tick(action):
-    if android_ok:
-        btWrite(robot.msg_for_android())
+    #if android_ok:
+    #    btWrite(robot.msg_for_android())
     for key in clients:
         message = dict()
         message['type'] = 'map'
@@ -170,8 +172,16 @@ def start_exploration(percentage, delay):
     global robot
     global started
     global delay_time
+    global exploration_started
+
+    if exploration_started:
+        return
+    exploration_started = True
+
     if started:
         return
+    
+
     inform("Exploration started: Alignment!")
     robot = algo.real.Robot()
     delay_time = float(delay)
@@ -343,7 +353,13 @@ def done_sp_to_start():
     evt.wait()
 
 
+    inform(robot.descriptor_one())
+    inform(robot.descriptor_two())
+
+
     exp_done = True
+    global exploration_started
+    exploration_started = False
     inform("Gone back to start, for real!")
 
 #####################
@@ -353,6 +369,11 @@ def done_sp_to_start():
 def start_sp_to_goal():  
     global robot
     global started
+    global started
+    global sp_to_goal_started
+    if sp_to_goal_started:
+        return
+    sp_to_goal_started = True
 
     # # TESTING
     # exp_done = True
@@ -383,7 +404,7 @@ def start_sp_to_goal():
     ])
 
 def sp_to_goal(sequence):
-    global started
+
     if len(sequence) == 0:
         done_sp_to_goal()
         return False
@@ -410,6 +431,8 @@ def done_sp_to_goal():
     evt.wait()
     inform("ShortestPath done, for real!")
     started = False
+    global sp_to_goal_started
+    sp_to_goal_started = False
 
 
 #####################
@@ -420,18 +443,21 @@ def btComm():
     # btaddr = "00:E3:B2:A1:8F:65" #note3
     btaddr = "08:60:6E:A5:89:46" #nexus
     uuid = "00001101-0000-1000-8000-00805f9b34fb"
-    service_matches = bluetooth.find_service(uuid=uuid, address= btaddr)
-    if len(service_matches) == 0:
-        print("Couldn't find service")
-    first_match = service_matches[0]
-    port = first_match["port"]
-    name = first_match["name"]
-    host = first_match["host"]    
-    #port = 4
-    btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    btsock.connect((host, port))
-    print ("[Android] btComm > Connected BT")
-    android_ok = True
+    global android_ok
+    while not android_ok:
+        service_matches = bluetooth.find_service(uuid=uuid, address= btaddr)
+        if len(service_matches) == 0:
+            print("Couldn't find service")
+            continue
+        first_match = service_matches[0]
+        port = first_match["port"]
+        name = first_match["name"]
+        host = first_match["host"]    
+        #port = 4
+        btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        btsock.connect((host, port))
+        print ("[Android] btComm > Connected BT")
+        android_ok = True
     return btsock
 
 def btCommListen():
@@ -462,8 +488,13 @@ def btRead(threadName, delay):
             t.start()
         elif msg == "beginManual":
             global started
+            global sp_to_goal_started
+            global exploration_started
             inform("Halted!")
+            robot.direction = NORTH
             started = False
+            sp_to_goal_started = False
+            exploration_started = False
     except:
         None
     real_delay_call(btRead, delay, threadName, delay)

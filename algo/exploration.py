@@ -42,7 +42,7 @@ class Exploration(object):
         global spCounter
         global spList
         global repeatedTreshold
-        repeatedTreshold = 10# 30
+        repeatedTreshold = 15#10# 30
 
         spList = []
         spCounter = 0
@@ -191,7 +191,7 @@ class Exploration(object):
                 robotBreak = True
             else:
                 #### JUST GIVE UP AND GO BACK HOME :')
-                robotBreak = True
+                #robotBreak = True
 
                 # don't give up!
                 rcurrent = [robotCenterY, robotCenterX]

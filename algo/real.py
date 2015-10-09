@@ -17,6 +17,8 @@ class Robot(object):
         self.start = [18, 1]
         self.goal = [1, 13]
 
+        self.try_left = False
+
         self.path_taken = []
 
         for i in range(self.MAX_ROW):
@@ -196,7 +198,11 @@ class Robot(object):
         elif front:
             return [FA_ALIGN, FD_ALIGN]
         elif left:
-            return [LA_ALIGN]
+            if self.try_left:
+                self.try_left = False
+                return [LD_ALIGN]
+            else:
+                return [LA_ALIGN]
         else:
             return []
 
@@ -238,6 +244,12 @@ class Robot(object):
         # LB
         for i in range(6):
             sensors.append(convert_short_sensor_distance(sensorList[i]))
+
+        if abs((sensorList[3] + sensorList[5]) / 2.0 - 5.5) >= 2.0:
+            self.try_left = True
+        else:
+            self.try_left = False
+
 
         self.sensors = sensors
         return sensors

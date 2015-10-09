@@ -1,0 +1,34 @@
+2015-10-09T02:59:22.516Z
+Connection opened.
+
+
+2015-10-08 09:13:53.868683
+Exploration started: Alignment!
+2015-10-08 09:14:01.963814
+Exploration started, for real!
+2015-10-08 09:16:38.566401
+Exploration done!
+2015-10-08 09:16:38.582062
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+2015-10-08 09:16:38.598119
+04000000000007003800003800100000000402080010fe300400000000c10100200040008000
+2015-10-08 09:16:38.833999
+1,A,3,D,4,A,6,A,1,D,2,A,4,A,3,A,A
+2015-10-08 09:17:02.698647
+Gone back to start: Alignment!
+2015-10-08 09:17:11.438488
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+2015-10-08 09:17:11.453759
+04000000000007003800003800100000000402080010fe300400000000c10100200040008000
+2015-10-08 09:17:11.456231
+Gone back to start, for real!
+
+
+2015-10-08 09:17:19.083554
+ShortestPath started!
+2015-10-08 09:17:19.409882
+1,7,D,3,A,1,D,4,7,A,3,D,3
+2015-10-08 09:17:39.762774
+ShortestPath done: Alignment!
+2015-10-08 09:17:42.269273
+ShortestPath done, for real!
