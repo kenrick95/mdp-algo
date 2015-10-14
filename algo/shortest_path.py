@@ -130,7 +130,7 @@ class ShortestPath(object):
             if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
                 add_cost += 30
                 
-        return len(action) * len(action) + add_cost
+        return 1 + (len(action) - 1) * (len(action) - 1) * 5 + add_cost
 
     def shortest_path(self, mark_value = 9):
         dist = [] # for each cell, how far is it from the start?
