@@ -223,9 +223,9 @@ class Robot(object):
                 elif ((sensorValue >=  20) and (sensorValue <  30)):
                     return [1, 1, 2, None]
                 elif ((sensorValue >=  30) and (sensorValue <  40)):
-                    return [1, 1, 1, None] #changed
+                    return [1, 1, 1, 2]
                 elif (sensorValue >=  40):
-                    return [1, 1, 1, None] #changed 
+                    return [1, 1, 1, 1]
 
         sensors = []
         #for i in range(6):

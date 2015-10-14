@@ -480,9 +480,9 @@ def btCommListen():
                    profiles = [ SERIAL_PORT_PROFILE ], 
                    )
 
-    print "Waiting for connection on RFCOMM channel %d" % port
+    print("[Bluetooth] Waiting for connection on RFCOMM channel %d" % port)
     client_sock, client_info = server_sock.accept()
-    print "Accepted connection from ", client_info
+    print("[Bluetooth] Accepted connection from ", client_info)
     return client_sock
 
 def btWrite(threadName, delay):
