@@ -368,8 +368,8 @@ def done_sp_to_start():
 
 def start_sp_to_goal():  
     global robot
-    global started
-    global started
+    ## Don't "started" so the map won't update
+    #global started
     global sp_to_goal_started
     if sp_to_goal_started:
         return
@@ -390,7 +390,7 @@ def start_sp_to_goal():
 
     if not exp_done:
         return False
-    started = True
+    #started = True
     inform("ShortestPath started!")
 
     sp = ShortestPath(robot.explored_map, robot.direction, robot.current, robot.goal)
@@ -424,13 +424,13 @@ def sp_to_goal(sequence):
     ])
 
 def done_sp_to_goal():
-    global started
+    #global started
     inform("ShortestPath done: Alignment!")
     evt.wait()
     send_cmd("W")
     evt.wait()
     inform("ShortestPath done, for real!")
-    started = False
+    #started = False
     global sp_to_goal_started
     sp_to_goal_started = False
 

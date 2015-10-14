@@ -245,7 +245,7 @@ class Robot(object):
         for i in range(6):
             sensors.append(convert_short_sensor_distance(sensorList[i]))
 
-        if abs((sensorList[3] + sensorList[5]) / 2.0 - 5.5) >= 2.0:
+        if abs((sensorList[3] + sensorList[5]) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
         else:
             self.try_left = False
@@ -350,7 +350,7 @@ class Robot(object):
                 if [5, 8, 9].count(self.explored_map[i][j]) > 0:
                     directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
                     for direction in directions:
-                        if 0 <= j + direction[1] < self.MAX_COL and 0 <= i + direction[0] < self.MAX_ROW:
+                        if 0 <= i + direction[0] < self.MAX_ROW and 0 <= j + direction[1] < self.MAX_COL:
                             self.__map_state_changed[i + direction[0]][j + direction[1]] = "F"
 
 
@@ -380,10 +380,10 @@ class Robot(object):
             for j in range(self.MAX_COL):
 
                 if self.__map_state_changed[i][j] == "F":
-                    if self.map_state[i][j] == 2 or self.map_state[i][j] == 1:
-                        self.map_state[i][j] = 1
-                        self.explored_map[i][j] = 1
-
+                    #if self.map_state[i][j] == 2 or self.map_state[i][j] == 1:
+                    self.map_state[i][j] = 1
+                    self.explored_map[i][j] = 1
+                    ### cause we will only put "F" is we ever been there, i.e. Forever explored
                 elif self.__map_state_changed[i][j] == "C":
                     if self.explored_map[i][j] == 2 and self.__old_map[i][j] == 0:
                         self.map_state[i][j] = 3 #assign new state
