@@ -16,6 +16,7 @@ import random
 
 import time
 import bluetooth
+from bluetooth import *
 import gevent
 import serial
 from gevent import socket
@@ -42,6 +43,11 @@ exp_done = False
 io_loop = False
 exploration_started = False
 sp_to_goal_started = False
+
+
+#global btsock
+btsock = None
+
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -461,19 +467,34 @@ def btComm():
     return btsock
 
 def btCommListen():
-    print ("Listening for incoming BT")
-    btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    btsock.bind(("", 4))
-    btsock.listen(1) #listen for a device
-    client_sock, address = btsock.accept()
-    print ("Accepted BT connection from %s" %address)    
-    return btsock
+    server_sock=BluetoothSocket( RFCOMM )
+    # server_sock.bind(("",PORT_ANY))
+    server_sock.bind(("",4))
+    server_sock.listen(1)
+
+    port = server_sock.getsockname()[1]
+    uuid = "00001101-0000-1000-8000-00805f9b34fb"
+    advertise_service( server_sock, "RPIServer",
+                   service_id = uuid,
+                   service_classes = [ uuid, SERIAL_PORT_CLASS ],
+                   profiles = [ SERIAL_PORT_PROFILE ], 
+                   )
+
+    print "Waiting for connection on RFCOMM channel %d" % port
+    client_sock, client_info = server_sock.accept()
+    print "Accepted connection from ", client_info
+    return client_sock
 
 def btWrite(threadName, delay):
-    if len(btq) > 0:
-        msg = btq.popleft()
-        btsock.send(msg)
-        print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
+    global btsock
+    if not btsock:
+        btsock = btCommListen()
+        btsock.setblocking(0)
+    else:
+        if len(btq) > 0:
+            msg = btq.popleft()
+            btsock.send(msg)
+            print ("[Android] btWrite > %s send msg: %s @ %s" %(threadName, msg, time.ctime(time.time())))
     real_delay_call(btWrite, delay, threadName, delay)
 
 def btRead(threadName, delay):
@@ -551,7 +572,7 @@ if __name__ == '__main__':
     zope.event.subscribers.append(tick)
     io_loop = tornado.ioloop.IOLoop.instance()
 
-    btsock = btComm()
+    btsock = btCommListen()
     btsock.setblocking(0)
     serial = setSerComm()
 

@@ -223,9 +223,9 @@ class Robot(object):
                 elif ((sensorValue >=  20) and (sensorValue <  30)):
                     return [1, 1, 2, None]
                 elif ((sensorValue >=  30) and (sensorValue <  40)):
-                    return [1, 1, 1, 2] 
+                    return [1, 1, 1, None] #changed
                 elif (sensorValue >=  40):
-                    return [1, 1, 1, 1] 
+                    return [1, 1, 1, None] #changed 
 
         sensors = []
         #for i in range(6):
@@ -245,7 +245,7 @@ class Robot(object):
         for i in range(6):
             sensors.append(convert_short_sensor_distance(sensorList[i]))
 
-        if abs((sensorList[3] + sensorList[5]) / 2.0 - 5.5) >= 1.5:
+        if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
         else:
             self.try_left = False
