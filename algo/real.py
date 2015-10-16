@@ -223,22 +223,9 @@ class Robot(object):
                 elif ((sensorValue >=  20) and (sensorValue <  30)):
                     return [1, 1, 2, None]
                 elif ((sensorValue >=  30) and (sensorValue <  40)):
-                    return [1, 1, 1, 2]
+                    return [1, 1, 1, None]
                 elif (sensorValue >=  40):
-                    return [1, 1, 1, 1]
-            def convert_shorter_sensor_distance(sensorValueStr):
-                if represent_float(sensorValueStr):
-                    sensorValue = float(sensorValueStr)
-                    if ((sensorValue >=  0) and (sensorValue <  10)):
-                        return [2, None, None, None]
-                    elif ((sensorValue >=  10) and (sensorValue <  20)):
-                        return [1, 2, None, None]
-                    elif ((sensorValue >=  20) and (sensorValue <  30)):
-                        return [1, 1, 2, None]
-                    elif ((sensorValue >=  30) and (sensorValue <  40)):
-                        return [1, 1, 1, None]
-                    elif (sensorValue >=  40):
-                        return [1, 1, 1, None]
+                    return [1, 1, 1, None]
 
         sensors = []
         #for i in range(6):
@@ -250,17 +237,13 @@ class Robot(object):
         print("[Tornado] real.py > sensorString > %s " %(sensorString))
 
         # FL
-        sensors.append(convert_shorter_sensor_distance(sensorList[0]))
         # FM
-        sensors.append(convert_shorter_sensor_distance(sensorList[1]))
         # FR
-        sensors.append(convert_shorter_sensor_distance(sensorList[2]))
         # LT
-        sensors.append(convert_short_sensor_distance(sensorList[3]))
         # RT
-        sensors.append(convert_short_sensor_distance(sensorList[4]))
         # LB
-        sensors.append(convert_shorter_sensor_distance(sensorList[5]))
+        for i in range(6):
+            sensors.append(convert_short_sensor_distance(sensorList[i]))
 
         if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
