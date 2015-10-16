@@ -129,7 +129,7 @@ class ShortestPath(object):
         for direction in directions:
             if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
                 add_cost += 30
-                
+
         return 1 + (len(action) - 1) * (len(action) - 1) * 5 + add_cost
 
     def shortest_path(self, mark_value = 9):
@@ -147,7 +147,7 @@ class ShortestPath(object):
         # note that it will be (y, x)
 
         # do Dijkstra/UCS or A*
-        pq = PriorityQueue() 
+        pq = PriorityQueue()
         pq.put(PqNode({"position": self.start, "direction": self.direction, "weight": 0}))
         dist[self.start[0]][self.start[1]] = 0
 
@@ -165,7 +165,7 @@ class ShortestPath(object):
             for neighbor in neighbors:
                 cost = self.cost(head["position"], neighbor, head["direction"])
                 if dist[head["position"][0]][head["position"][1]] + cost < dist[neighbor[0]][neighbor[1]]:
-                    
+
                     dist[neighbor[0]][neighbor[1]] = dist[head["position"][0]][head["position"][1]] + cost
                     prev[neighbor[0]][neighbor[1]] = head["position"]
                     pq.put(PqNode({"position": neighbor, "direction": self.direction(head["position"], neighbor), "weight": dist[neighbor[0]][neighbor[1]]}))
@@ -181,7 +181,7 @@ class ShortestPath(object):
             cur = prev_post
             if cur[0] == -1 and cur[1] == -1:
                 break # no path possible
-        
+
         # consruct direction from start
         cur = self.start
         cur_dir = self.directon
@@ -200,7 +200,7 @@ class ShortestPath(object):
         for ch in seq:
             if ch == '1':
                 ch_cnt += 1
-                if ch_cnt == 7:
+                if ch_cnt == 15:
                     trim_seq.append(str(hex(ch_cnt))[2:])
                     ch_cnt = 0
             else:

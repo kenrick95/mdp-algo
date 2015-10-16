@@ -49,11 +49,11 @@ class Exploration(object):
         robotBreak = False
         exploredArea = 0
         exploredPercentage = _exploredPercentage
-        
+
         # realTimeMap[0] = bottom row
         # realTimeMap[19] = top row
         realTimeMap = []
-        
+
         # sensorList[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
         # sensorList[1] = frontleft
         # sensorList[2] = frontcenter
@@ -63,11 +63,11 @@ class Exploration(object):
         # sensorList[6] = bottomleft
         sensorList = []
         pathTaken = []
-        
+
         repeatedArea = 0
         robotPrevMovement = "O"
         robotCurMovement = "O"
-        
+
         robotCenterX = 1
         robotCenterY = 18
         robotDirectionX = 1
@@ -76,7 +76,7 @@ class Exploration(object):
         for i in range (0,20):
             Row = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             realTimeMap.append(Row)
-        
+
         # set robot initial position as explored
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
@@ -110,7 +110,7 @@ class Exploration(object):
             for direction in directions:
                 if realTimeMap[i + direction[0]][j + direction[1]] == 2:
                     return -INF
-            
+
 
             directions = [[0, 2], [1, 2], [-1, 2], [0, -2], [1, -2], [-1, -2], [-2, 0], [-2, 1], [-2, -1], [2, 0], [2, -1], [2, 1]]
             dist = manhattan([robotCenterY, robotCenterX], [i, j])
@@ -141,9 +141,9 @@ class Exploration(object):
         global spList
         global spCounter
         global repeatedTreshold
-        
 
-        
+
+
         for i in range(20):
             for j in range(15):
                 if explored_map[i][j] == 4:
@@ -160,12 +160,12 @@ class Exploration(object):
                     val = 1
 
                 realTimeMap[i][j] = val
-        
+
         #set robot starting position
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
         # print(robotCenterY, robotCenterX, ": ", robotDirectionY, robotDirectionX)
-        
+
         if repeatedArea <= repeatedTreshold and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
             exploredArea = 0
 
@@ -186,12 +186,13 @@ class Exploration(object):
             # print(repeatedArea, " ", exploredArea)
         else:
             robotCurMovement = None
+            #### JUST GIVE UP AND GO BACK HOME :')
+            robotBreak = True
+
             if exploredArea >= exploredPercentage * 3 or spCounter > 5:
                 # good enough, break
                 robotBreak = True
-            else:
-                #### JUST GIVE UP AND GO BACK HOME :')
-                #robotBreak = True
+            elif False:
 
                 # don't give up!
                 rcurrent = [robotCenterY, robotCenterX]
@@ -248,7 +249,7 @@ class Exploration(object):
         #   if realTimeMap[tup[0]][tup[1]] != 4 and realTimeMap[tup[0]][tup[1]] != 5:
         #       realTimeMap[tup[0]][tup[1]] = 8
 
-    
+
 
     def callAllMethods(self, sensors, explored_map):
         global realTimeMap
@@ -261,7 +262,7 @@ class Exploration(object):
         global robotCenterY
         global robotDirectionX
         global robotDirectionY
-        
+
         sensorList = self.getSensor(robotCenterX, robotCenterY, robotDirectionX, robotDirectionY)
         sensors.insert(0, sensorList[0])
         sensorList = sensors
@@ -279,14 +280,14 @@ class Exploration(object):
         realTimeMap[robotCenterY][robotCenterX] = 5
         realTimeMap[robotDirectionY][robotDirectionX] = 4
         # realTimeMap = self.updateRealTimeMap(realTimeMap, sensorList, robotCenterX, robotCenterY)
-        
+
         robotCurMovement = self.robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
         robotPrevMovement = robotCurMovement
         if robotCurMovement == FORWARD:
             pathTaken.append((robotCenterY, robotCenterX))
         #print (robotCurMovement)
         # realTimeMap = self.executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
-        
+
         if sensorList[0][0] == NORTH:
             if robotCurMovement == RIGHT:
                 robotDirectionX = robotDirectionX + 1
@@ -328,7 +329,7 @@ class Exploration(object):
                 robotDirectionX = robotDirectionX - 1
                 robotDirectionY = robotDirectionY - 1
 
-            
+
     def getSensor(self, centerX, centerY, directionX, directionY):
         # returnValue[0] = direction of robot (W-Facing up, S-Facing down, A-facing left, D-facing right)
         # returnValue[1] = frontleft
@@ -398,7 +399,7 @@ class Exploration(object):
             else:
                 resultMovement = LEFT
         return resultMovement
-        
+
     def executeRobotMovement(self, realTimeMap, CenterX, CenterY, direction, movement):
         if direction == NORTH:
             if movement == RIGHT:
@@ -445,7 +446,7 @@ class Exploration(object):
                 realTimeMap[CenterY-1][CenterX] = 4
                 realTimeMap[CenterY][CenterX+1] = 1
         return realTimeMap
-    
+
 
     def getRealTimeMap(self, sensors, explored_map):
         global cnt

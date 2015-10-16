@@ -45,7 +45,7 @@ class Robot(object):
         self.__mark_surroundings(self.goal, 7)
 
         self.current = [18, 1] # find_centre(start)
-        
+
         self.direction = NORTH # ODO: need to face NORTH in order to work!
         self.__mark_robot()
 
@@ -63,7 +63,7 @@ class Robot(object):
                 })
 
             self.explored_map[_center[0] + direction[0]][_center[1] + direction[1]] = _value
-    
+
     def __mark_robot(self):
         self.__mark_surroundings(self.current, 3)
         self.explored_map[self.current[0]][self.current[1]] = 5
@@ -208,7 +208,7 @@ class Robot(object):
 
     def parse_sensors(self, sensorString):
         def represent_float(s):
-            try: 
+            try:
                 float(s)
                 return True
             except ValueError:
@@ -226,6 +226,19 @@ class Robot(object):
                     return [1, 1, 1, 2]
                 elif (sensorValue >=  40):
                     return [1, 1, 1, 1]
+            def convert_shorter_sensor_distance(sensorValueStr):
+                if represent_float(sensorValueStr):
+                    sensorValue = float(sensorValueStr)
+                    if ((sensorValue >=  0) and (sensorValue <  10)):
+                        return [2, None, None, None]
+                    elif ((sensorValue >=  10) and (sensorValue <  20)):
+                        return [1, 2, None, None]
+                    elif ((sensorValue >=  20) and (sensorValue <  30)):
+                        return [1, 1, 2, None]
+                    elif ((sensorValue >=  30) and (sensorValue <  40)):
+                        return [1, 1, 1, None]
+                    elif (sensorValue >=  40):
+                        return [1, 1, 1, None]
 
         sensors = []
         #for i in range(6):
@@ -237,13 +250,17 @@ class Robot(object):
         print("[Tornado] real.py > sensorString > %s " %(sensorString))
 
         # FL
+        sensors.append(convert_shorter_sensor_distance(sensorList[0]))
         # FM
+        sensors.append(convert_shorter_sensor_distance(sensorList[1]))
         # FR
+        sensors.append(convert_shorter_sensor_distance(sensorList[2]))
         # LT
+        sensors.append(convert_short_sensor_distance(sensorList[3]))
         # RT
+        sensors.append(convert_short_sensor_distance(sensorList[4]))
         # LB
-        for i in range(6):
-            sensors.append(convert_short_sensor_distance(sensorList[i]))
+        sensors.append(convert_shorter_sensor_distance(sensorList[5]))
 
         if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
@@ -306,7 +323,7 @@ class Robot(object):
             else: # self.direction == SOUTH:
                 upd(self.current[0] + i + 2, self.current[1] - 1, self.sensors[2][i])
 
-        
+
         # LT
         for i in range(4):
             if self.direction == NORTH:
@@ -331,7 +348,7 @@ class Robot(object):
                 upd(self.current[0] + 1, self.current[1] - i - 2, self.sensors[4][i])
 
 
-        
+
         # LB
         for i in range(4):
             if self.direction == NORTH:
@@ -370,7 +387,7 @@ class Robot(object):
 
 
         print("[Tornado] real.py > update_map > %s " %(self.current))
-        
+
         zope.event.notify("SENSOR")
         return self.explored_map
 
@@ -492,7 +509,7 @@ class Robot(object):
         if len(temp) > 0:
             temp_str = ''.join([str(b) for b in temp])
             hex_ret.append(str(hex(int(temp_str, 2)))[2:])
-        
+
         # print(hex_ret)
         # print(len(hex_ret))
 
@@ -504,13 +521,13 @@ class Robot(object):
         # 0: otherwise
         # return in hex
         # in JSON
-        # 
+        #
         # robot coordinate
         # X, Y;
         # in Android, map is 15x20 (row x col); (0, 0) is top left;
         # robot is placed according to robot body's top-left corner (i.e. (0, 0) is meant to be on top-left)
-        # 
-        
+        #
+
         ret = {"grid": "", "coordinate": dict(), "direction": ""}
 
 
@@ -540,7 +557,7 @@ class Robot(object):
         while cnt % 8 != 0:
             grid_seq.append(0)
             cnt += 1
-        
+
         hex_val = []
         temp = []
         for bit in grid_seq:
@@ -553,7 +570,7 @@ class Robot(object):
         if len(temp) > 0:
             temp_str = ''.join([str(b) for b in temp])
             hex_val.append(str(hex(int(temp_str, 2)))[2:])
-        
+
         ret['grid'] = ''.join([h for h in hex_val])
 
         coord = [0, 0]
