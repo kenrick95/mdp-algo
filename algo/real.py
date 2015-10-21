@@ -227,6 +227,42 @@ class Robot(object):
                 elif (sensorValue >=  40):
                     return [1, 1, 1, None]
 
+        def convert_front_sensor(sensorValueStr):
+            if represent_float(sensorValueStr):
+                sensorValue = float(sensorValueStr)
+                if ((sensorValue >=  0) and (sensorValue <  10)):
+                    return [2, None, None, None]
+                elif ((sensorValue >=  10) and (sensorValue <  20)):
+                    return [1, 2, None, None]
+                elif ((sensorValue >=  20) and (sensorValue <  25)):
+                    return [1, 1, 2, None] # TODO Try out
+                else:
+                    return [1, 1, None, None] # TODO Try out
+        def convert_left_sensor(sensorValueStr):
+            if represent_float(sensorValueStr):
+                sensorValue = float(sensorValueStr)
+                if ((sensorValue >=  0) and (sensorValue <  10)):
+                    return [2, None, None, None]
+                elif ((sensorValue >=  10) and (sensorValue <  20)):
+                    return [1, 2, None, None]
+                elif ((sensorValue >=  20) and (sensorValue <  30)):
+                    return [1, 1, 2, None]
+                elif ((sensorValue >=  30) and (sensorValue <  35)):
+                    return [1, 1, 1, 2] # TODO Try out
+                else:
+                    return [1, 1, 1, None] # TODO Try out
+        def convert_right_sensor(sensorValueStr):
+            if represent_float(sensorValueStr):
+                sensorValue = float(sensorValueStr)
+                if ((sensorValue >=  0) and (sensorValue <  10)):
+                    return [2, None, None, None]
+                elif ((sensorValue >=  10) and (sensorValue <  20)):
+                    return [1, 2, None, None]
+                elif ((sensorValue >=  20) and (sensorValue <  30)):
+                    return [1, 1, 2, None]
+                else:
+                    return [1, 1, 1, None] # TODO Try out
+
         sensors = []
         #for i in range(6):
         #    sensors.append([])
@@ -236,14 +272,21 @@ class Robot(object):
         sensorList = sensorString.split(",")
         print("[Tornado] real.py > sensorString > %s " %(sensorString))
 
-        # FL
-        # FM
-        # FR
-        # LT
-        # RT
-        # LB
-        for i in range(6):
-            sensors.append(convert_short_sensor_distance(sensorList[i]))
+        # FL: max 25
+        # FM: max 25
+        # FR: max 25
+        # LT: max 35
+        # RT: max 30
+        # LB: max 35
+        #for i in range(6):
+        #    sensors.append(convert_short_sensor_distance(sensorList[i]))
+        # TODO TEST THIS OUT!
+        sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
+        sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
+        sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25
+        sensors.append(convert_left_sensor( sensorList[3]))  # LT: max 35
+        sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
+        sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
 
         if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
