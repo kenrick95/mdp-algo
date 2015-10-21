@@ -123,14 +123,15 @@ class ShortestPath(object):
         # if going to turn left or right, cost = 4
         # else cost = 1
         action = self.action(_from, _to, _current_direction)
-        add_cost = self.manhattan(_to, self.goal)
+        add_cost = 0
 
         directions = [[0, 0], [0, 1], [0, -1], [-1, 0], [-1, 1], [-1, -1], [1, 0], [1, 1], [1, -1]]
         for direction in directions:
             if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
                 add_cost += 30
 
-        return 1 + (len(action) - 1) * (len(action) - 1) * 5 + add_cost
+        ret_cost = 1 + max(0, (len(action) - 1) * (len(action) - 1) * 6) + add_cost
+        return ret_cost
 
     def shortest_path(self, mark_value = 9):
         dist = [] # for each cell, how far is it from the start?
@@ -163,12 +164,17 @@ class ShortestPath(object):
 
             # if not yet visited OR can be visited with lower cost, put in pq
             for neighbor in neighbors:
-                cost = self.cost(head["position"], neighbor, head["direction"])
+                gn = self.cost(head["position"], neighbor, head["direction"])
+                hn = self.manhattan(neighbor, self.goal)
+                cost = gn + hn
                 if dist[head["position"][0]][head["position"][1]] + cost < dist[neighbor[0]][neighbor[1]]:
 
-                    dist[neighbor[0]][neighbor[1]] = dist[head["position"][0]][head["position"][1]] + cost
+                    dist[neighbor[0]][neighbor[1]] = dist[head["position"][0]][head["position"][1]] + gn
                     prev[neighbor[0]][neighbor[1]] = head["position"]
-                    pq.put(PqNode({"position": neighbor, "direction": self.direction(head["position"], neighbor), "weight": dist[neighbor[0]][neighbor[1]]}))
+                    #print(neighbor, " from ", head["position"], " so far: ", dist[neighbor[0]][neighbor[1]])
+                    pq.put(PqNode({"position": neighbor,
+                        "direction": self.direction(head["position"], neighbor),
+                        "weight": cost}))
 
         # construct path from goal
         cur = self.goal
