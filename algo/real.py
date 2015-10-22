@@ -278,15 +278,15 @@ class Robot(object):
         # LT: max 35
         # RT: max 30
         # LB: max 35
-        #for i in range(6):
-        #    sensors.append(convert_short_sensor_distance(sensorList[i]))
+        for i in range(6):
+            sensors.append(convert_short_sensor_distance(sensorList[i]))
         # TODO TEST THIS OUT!
-        sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
-        sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
-        sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25
-        sensors.append(convert_left_sensor( sensorList[3]))  # LT: max 35
-        sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
-        sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
+        # sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
+        # sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
+        # sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25
+        # sensors.append(convert_left_sensor( sensorList[3]))  # LT: max 35
+        # sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
+        # sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
 
         if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
