@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>MDPGrp5 Map Display</title>
         <meta charset="utf-8">
         <style>
@@ -11,7 +11,7 @@
 }
 .info {
     display: block;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid #ccc;
     position: relative;
     width: inherit;
     overflow: auto;
@@ -49,6 +49,32 @@
 #canvas {
     background: #eee;
 }
+button {
+    display: inline-block;
+    margin-bottom: 0px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    color: #333;
+    background-color: #FFF;
+    border-color: #CCC;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 0px;
+}
+button:hover {
+    color: #333;
+    background-color: #E6E6E6;
+    border-color: #ADADAD;
+}
+input {
+    border: 1px solid #ccc;
+}
         </style>
     </head>
     <body>
@@ -68,7 +94,7 @@
         </div>
         <div style="width: 100%"><div id="canvas-container">
         <canvas id="canvas" width="450" height="600">
-            
+
         </canvas>
         </div></div>
     <script type="text/javascript">
@@ -154,10 +180,10 @@
                 // console.log(map);
 
                 context.save();
-                context.strokeStyle = "#333";
+                context.strokeStyle = "#666";
+                context.lineWidth = .5;
                 for (var y = 0; y < ROW_COUNT; y++) {
                     for (var x = 0; x < COL_COUNT; x++) {
-
                         context.beginPath();
                         context.fillStyle = getStyle(map[y][x]);
                         context.rect(30 * x, 30 * y, 30, 30);
@@ -166,13 +192,21 @@
                     }
                 }
                 context.restore();
+
+                context.save();
+                context.beginPath();
+                context.strokeStyle = "#666";
+                context.lineWidth = 3;
+                context.rect(0, 0, 30 * COL_COUNT, 30 * ROW_COUNT);
+                context.stroke();
+                context.restore();
             }
 
             document.getElementById("timeLimit").addEventListener("change", function(e) {
                 var timeString = this.value;
                 var len = this.value.length;
                 // convert sting (mm:ss) to seconds value
-                
+
                 // enforce mm:ss
                 timeLimit = parseInt(timeString[0], 10) * 600 +
                     parseInt(timeString[1], 10) * 60 +
@@ -210,7 +244,7 @@
                 var timeString = timeLimitElem.value;
                 var len = timeLimitElem.value.length;
                 // convert sting (mm:ss) to seconds value
-                
+
                 // enforce mm:ss
                 timeLimit = parseInt(timeString[0], 10) * 600 +
                     parseInt(timeString[1], 10) * 60 +
@@ -241,7 +275,7 @@
                 };
                 r.send();
             });
-            
+
             document.getElementById("stop").addEventListener('click', function(e) {
                 if (!wsOk) {
                     wsConnect();
@@ -274,7 +308,7 @@
                     });
                     wsOk = true;
                 };
-                ws.onmessage = function (evt) { 
+                ws.onmessage = function (evt) {
                     var received_msg = evt.data;
                     //messageContainer.innerHTML += "<br>Message is received: " + received_msg;
                     var data = JSON.parse(evt.data);
@@ -289,7 +323,7 @@
                         });
                     }
                 };
-                ws.onclose = function() { 
+                ws.onclose = function() {
                     //messageContainer.innerHTML += "<br>Connection is closed...";
                     logInfo({
                         time: (new Date()).toISOString(),
@@ -298,7 +332,7 @@
                     wsOk = false;
                 };
             }
-            
+
             var timer = new Timer();
             draw(map);
             messageContainer.innerHTML = "";
