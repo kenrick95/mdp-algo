@@ -23,6 +23,7 @@ class Exploration(object):
 
     def __init__(self, _exploredPercentage):
         # TODO how to L, R, L, R, L, R --> mark as an obstacle at front-left of robot
+        # TODO continue exploration until reach start and then stop instead of using ShortestPath
         super(Exploration, self).__init__()
         global cnt
         cnt = 0
