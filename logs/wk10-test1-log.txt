@@ -1,0 +1,36 @@
+
+Per step:
+Time limit:
+% limit:
+2015-10-23T02:18:32.204Z
+Connection opened.
+2015-10-11 20:15:44.722535
+Exploration started: Alignment!
+2015-10-11 20:15:57.144943
+Exploration started, for real!
+2015-10-11 20:18:58.560879
+Exploration done!
+2015-10-11 20:18:58.574117
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+2015-10-11 20:18:58.587890
+0c00080030008200040008000e0020004100c0000000000023f0001000300041008001001200
+2015-10-11 20:18:58.700854
+4,A,4,A,1,D,2,A,3,D,4,D,3,A,A
+2015-10-11 20:19:13.911718
+Gone back to start: Alignment!
+2015-10-11 20:19:21.938242
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+2015-10-11 20:19:21.954297
+0c00080030008200040008000e0020004100c0000000000023f0001000300041008001001200
+2015-10-11 20:19:21.957593
+Gone back to start, for real!
+2015-10-11 20:19:23.719930
+ShortestPath started!
+2015-10-11 20:19:23.832832
+1,D,7,A,5,D,4,A,6,D,6
+2015-10-11 20:19:37.770127
+ShortestPath done: Alignment!
+2015-10-11 20:19:39.281801
+ShortestPath done, for real!
+2015-10-23T02:26:18.490Z
+Connection closed.

@@ -33,6 +33,12 @@ from algo.shortest_path import ShortestPath
 from gevent import monkey
 monkey.patch_all()
 
+import sys
+
+orig_stdout = sys.stdout
+f = file('log.txt', 'w')
+
+
 clients = dict()
 started = False
 delay_time = 0
@@ -55,7 +61,7 @@ def delay_call(f, *args, **kwargs):
     evt.wait()
     # ignore delay_time, don't spawn new thread
     f(*args, **kwargs)
-    
+
     # global delay_time
     # t = threading.Timer(delay_time, f, args=args, kwargs=kwargs)
     # t.start()
@@ -69,7 +75,7 @@ class FuncThread(threading.Thread):
         self._target = target
         self._args = args
         threading.Thread.__init__(self)
- 
+
     def run(self):
         self._target(*self._args)
 
@@ -97,20 +103,20 @@ class StartHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, percentage, delay):
         self.write("Starting...")
-        
+
         t = FuncThread(start_exploration, 100, 0.0)
         t.start()
-        
+
         self.flush()
 
 class StartSpHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         self.write("Starting...")
-        
+
         t = FuncThread(start_sp_to_goal)
         t.start()
-        
+
         self.flush()
 
 
@@ -120,6 +126,12 @@ class StopHandler(tornado.web.RequestHandler):
         global started
         inform("Halted!")
         started = False
+
+
+        global f
+        sys.stdout = orig_stdout
+        f.close()
+
         self.flush()
 
 app = tornado.web.Application([
@@ -180,13 +192,17 @@ def start_exploration(percentage, delay):
     global delay_time
     global exploration_started
 
+
     if exploration_started:
         return
     exploration_started = True
 
     if started:
         return
-    
+    global f
+
+    sys.stdout = f
+
 
     inform("Exploration started: Alignment!")
     robot = algo.real.Robot()
@@ -234,25 +250,25 @@ def start_exploration(percentage, delay):
     # sp_sequence = sp_list['trim_seq']
     # sp_sequence.reverse()
     # inform(sp_sequence)
-    
+
     # gevent.joinall([
     #     gevent.spawn(sp_to_goal, sp_sequence)
     # ])
     ### END TESTING
-    
-    
+
+
     exp = Exploration(int(percentage))
 
     inform("Exploration started, for real!")
     t1 = FuncThread(exploration, exp)
     t1.start()
     t1.join()
-    
+
 def exploration(exp):
     global started
     if not started:
         return False
-    
+
     evt.wait()
     do_alignment(robot.alignment())
 
@@ -278,7 +294,7 @@ def done_exploration():
     inform("Exploration done!")
 
     started = False
-    
+
     inform(robot.descriptor_one())
     inform(robot.descriptor_two())
     # inform(robot.msg_for_android())
@@ -288,7 +304,7 @@ def done_exploration():
     sp_sequence = sp_list['trim_seq']
     sp_sequence.reverse()
     inform(sp_sequence)
-    
+
     # call sp to start
     # delay_call(sp_to_start, sp_sequence)
     gevent.joinall([
@@ -306,7 +322,7 @@ def sp_to_start(sequence):
     if len(sequence) == 0:
         done_sp_to_start()
         return False
-    
+
     evt.wait()
     do_alignment(robot.alignment())
 
@@ -372,7 +388,7 @@ def done_sp_to_start():
 ###    sp_to_goal
 #####################
 
-def start_sp_to_goal():  
+def start_sp_to_goal():
     global robot
     ## Don't "started" so the map won't update
     #global started
@@ -391,7 +407,7 @@ def start_sp_to_goal():
     #     robot.explored_map[13][i] = 2
     # robot.explored_map[0][8] = 2
     # robot.direction = NORTH
-    # send_cmd(REQ_SENSOR) 
+    # send_cmd(REQ_SENSOR)
     # # END TESTING
 
     if not exp_done:
@@ -414,7 +430,7 @@ def sp_to_goal(sequence):
     if len(sequence) == 0:
         done_sp_to_goal()
         return False
-    
+
     evt.wait()
     # DON'T DO ALIGNMENT WHILE DOING FASTEST PATH RACE
     # do_alignment(robot.alignment())
@@ -422,7 +438,7 @@ def sp_to_goal(sequence):
     choice = sequence.pop()
     robot.action(choice, 9)
     send_cmd(choice)
-    
+
     print("[Tornado] sp_to_goal > %s : %s" %(choice, robot.direction))
     # delay_call(sp_to_goal, sequence)
     gevent.joinall([
@@ -439,6 +455,10 @@ def done_sp_to_goal():
     #started = False
     global sp_to_goal_started
     sp_to_goal_started = False
+
+    global f
+    sys.stdout = orig_stdout
+    f.close()
 
 
 #####################
@@ -458,7 +478,7 @@ def btComm():
         first_match = service_matches[0]
         port = first_match["port"]
         name = first_match["name"]
-        host = first_match["host"]    
+        host = first_match["host"]
         #port = 4
         btsock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         btsock.connect((host, port))
@@ -477,7 +497,7 @@ def btCommListen():
     advertise_service( server_sock, "RPIServer",
                    service_id = uuid,
                    service_classes = [ uuid, SERIAL_PORT_CLASS ],
-                   profiles = [ SERIAL_PORT_PROFILE ], 
+                   profiles = [ SERIAL_PORT_PROFILE ],
                    )
 
     print("[Bluetooth] Waiting for connection on RFCOMM channel %d" % port)
@@ -516,6 +536,10 @@ def btRead(threadName, delay):
             started = False
             sp_to_goal_started = False
             exploration_started = False
+
+            global f
+            sys.stdout = orig_stdout
+            f.close()
     except:
         None
     real_delay_call(btRead, delay, threadName, delay)
@@ -579,7 +603,7 @@ if __name__ == '__main__':
     btq = deque([])
     serialq = deque([])
     print("[Tornado] > Listening to http://localhost:" + str(options.port) + "...")
-    
+
 
     t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.1)
     t2 = FuncThread(serRead, "Thread 2-serRead", 0.1)
@@ -591,9 +615,9 @@ if __name__ == '__main__':
     t2.start()
     t4.start()
     t5.start()
-    
+
     t3.start()
-    
+
     #t1.join()
     #t2.join()
     t3.join()

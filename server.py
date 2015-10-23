@@ -16,6 +16,11 @@ import algo.sim
 from algo.exploration import Exploration
 from algo.shortest_path import ShortestPath
 
+import sys
+
+orig_stdout = sys.stdout
+f = file('log.txt', 'w')
+
 clients = dict()
 started = False
 delay_time = 0.1
@@ -33,7 +38,7 @@ class FuncThread(threading.Thread):
         self._target = target
         self._args = args
         threading.Thread.__init__(self)
- 
+
     def run(self):
         self._target(*self._args)
 
@@ -46,7 +51,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         clients[self.id] = {"id": self.id, "object": self}
         tick("INIT")
 
-    def on_message(self, message):        
+    def on_message(self, message):
         """
         when we receive some message we want some message handler..
         for this example i will just print message to console
@@ -75,6 +80,11 @@ def start_exploration(percentage, delay):
     if started:
         return
     started = True
+
+    global f
+
+    sys.stdout = f
+
     robot = algo.sim.Robot()
     delay_time = float(delay)
 
@@ -97,7 +107,7 @@ def start_exploration(percentage, delay):
 
     inform("Exploration started!")
 
-def start_sp_to_goal():  
+def start_sp_to_goal():
     global robot
     if not exp_done:
         return False
@@ -134,6 +144,11 @@ class StopHandler(tornado.web.RequestHandler):
         started = False
         self.flush()
 
+
+        global f
+        sys.stdout = orig_stdout
+        f.close()
+
 app = tornado.web.Application([
     (r'/', IndexHandler),
     (r'/ws', WebSocketHandler),
@@ -169,7 +184,7 @@ def exploration(exp):
     global started
     if not started:
         return False
-    
+
     global sensors
     cur = exp.getRealTimeMap(sensors, robot.explored_map)
     if not cur[1]:
@@ -179,7 +194,7 @@ def exploration(exp):
         delay_call(exploration, exp)
     else:
         inform("Exploration done!")
-        
+
         inform(robot.descriptor_one())
         inform(robot.descriptor_two())
 
@@ -189,7 +204,7 @@ def exploration(exp):
         sp_sequence = sp_list['trim_seq']
         sp_sequence.reverse() # will pop from the back
         inform(sp_sequence)
-        
+
         # call sp to start
         delay_call(sp_to_start, sp_sequence)
 
