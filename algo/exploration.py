@@ -22,6 +22,7 @@ class Exploration(object):
     robotBreak = False
 
     def __init__(self, _exploredPercentage):
+        # TODO how to L, R, L, R, L, R --> mark as an obstacle at front-left of robot
         super(Exploration, self).__init__()
         global cnt
         cnt = 0
@@ -42,7 +43,7 @@ class Exploration(object):
         global spCounter
         global spList
         global repeatedTreshold
-        repeatedTreshold = 15#10# 30
+        repeatedTreshold = 20#15#10# 30
 
         spList = []
         spCounter = 0

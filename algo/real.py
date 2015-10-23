@@ -148,6 +148,9 @@ class Robot(object):
         self.__mark_robot()
 
     def alignment(self):
+        # TODO how to do alignment and only after that trust the sensor?
+
+
         # return []
         def is_okay(y, x):
             if 0 <= x < self.MAX_COL and 0 <= y < self.MAX_ROW:
@@ -235,9 +238,9 @@ class Robot(object):
                 elif ((sensorValue >=  10) and (sensorValue <  20)):
                     return [1, 2, None, None]
                 elif ((sensorValue >=  20) and (sensorValue <  25)):
-                    return [1, 1, 2, None] # TODO Try out
+                    return [1, 1, 2, None]
                 else:
-                    return [1, 1, None, None] # TODO Try out
+                    return [1, 1, None, None]
         def convert_left_sensor(sensorValueStr):
             if represent_float(sensorValueStr):
                 sensorValue = float(sensorValueStr)
@@ -248,9 +251,9 @@ class Robot(object):
                 elif ((sensorValue >=  20) and (sensorValue <  30)):
                     return [1, 1, 2, None]
                 elif ((sensorValue >=  30) and (sensorValue <  35)):
-                    return [1, 1, 1, 2] # TODO Try out
+                    return [1, 1, 1, 2]
                 else:
-                    return [1, 1, 1, None] # TODO Try out
+                    return [1, 1, 1, None]
         def convert_right_sensor(sensorValueStr):
             if represent_float(sensorValueStr):
                 sensorValue = float(sensorValueStr)
@@ -261,7 +264,7 @@ class Robot(object):
                 elif ((sensorValue >=  20) and (sensorValue <  30)):
                     return [1, 1, 2, None]
                 else:
-                    return [1, 1, 1, None] # TODO Try out
+                    return [1, 1, 1, None]
 
         sensors = []
         #for i in range(6):
@@ -278,15 +281,15 @@ class Robot(object):
         # LT: max 35
         # RT: max 30
         # LB: max 35
-        for i in range(6):
-            sensors.append(convert_short_sensor_distance(sensorList[i]))
+        # for i in range(6):
+        #     sensors.append(convert_short_sensor_distance(sensorList[i]))
         # TODO TEST THIS OUT!
-        # sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
-        # sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
-        # sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25
-        # sensors.append(convert_left_sensor( sensorList[3]))  # LT: max 35
-        # sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
-        # sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
+        sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
+        sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
+        sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25
+        sensors.append(convert_left_sensor( sensorList[3]))  # LT: max 35
+        sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
+        sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
 
         if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
             self.try_left = True
