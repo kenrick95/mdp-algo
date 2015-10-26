@@ -82,7 +82,8 @@ def start_exploration(percentage, delay):
     started = True
 
     global f
-
+    if f.closed:
+        f = file('log.txt', 'w')
     sys.stdout = f
 
     robot = algo.sim.Robot()

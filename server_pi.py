@@ -200,7 +200,8 @@ def start_exploration(percentage, delay):
     if started:
         return
     global f
-
+    if f.closed:
+        f = file('log.txt', 'w')
     sys.stdout = f
 
 

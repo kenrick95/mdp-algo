@@ -26,345 +26,242 @@ Exploration started!
 [Tornado] exploration.py > 9 - 1 : (9, 1)
 [Tornado] sim.py > action > 1 
 [9, 1]
-[Tornado] exploration.py > 10 - D : (9, 1)
-[9, 1]
-[Tornado] exploration.py > 11 - 1 : (9, 2)
+[Tornado] exploration.py > 10 - 1 : (8, 1)
 [Tornado] sim.py > action > 1 
-[9, 2]
-[Tornado] exploration.py > 12 - 1 : (9, 3)
+[8, 1]
+[Tornado] exploration.py > 11 - 1 : (7, 1)
 [Tornado] sim.py > action > 1 
-[9, 3]
-[Tornado] exploration.py > 13 - 1 : (9, 4)
+[7, 1]
+[Tornado] exploration.py > 12 - 1 : (6, 1)
 [Tornado] sim.py > action > 1 
-[9, 4]
-[Tornado] exploration.py > 14 - D : (9, 4)
-[9, 4]
-[Tornado] exploration.py > 15 - 1 : (10, 4)
+[6, 1]
+[Tornado] exploration.py > 13 - 1 : (5, 1)
 [Tornado] sim.py > action > 1 
-[10, 4]
-[Tornado] exploration.py > 16 - 1 : (11, 4)
+[5, 1]
+[Tornado] exploration.py > 14 - 1 : (4, 1)
 [Tornado] sim.py > action > 1 
-[11, 4]
-[Tornado] exploration.py > 17 - 1 : (12, 4)
+[4, 1]
+[Tornado] exploration.py > 15 - 1 : (3, 1)
 [Tornado] sim.py > action > 1 
-[12, 4]
-[Tornado] exploration.py > 18 - 1 : (13, 4)
-[Tornado] sim.py > action > 1 
-[13, 4]
-[Tornado] exploration.py > 19 - 1 : (14, 4)
-[Tornado] sim.py > action > 1 
-[14, 4]
-[Tornado] exploration.py > 20 - 1 : (15, 4)
-[Tornado] sim.py > action > 1 
-[15, 4]
-[Tornado] exploration.py > 21 - A : (15, 4)
-[15, 4]
-[Tornado] exploration.py > 22 - 1 : (15, 5)
-[Tornado] sim.py > action > 1 
-[15, 5]
-[Tornado] exploration.py > 23 - 1 : (15, 6)
-[Tornado] sim.py > action > 1 
-[15, 6]
-[Tornado] exploration.py > 24 - 1 : (15, 7)
-[Tornado] sim.py > action > 1 
-[15, 7]
-[Tornado] exploration.py > 25 - 1 : (15, 8)
-[Tornado] sim.py > action > 1 
-[15, 8]
-[Tornado] exploration.py > 26 - A : (15, 8)
-[15, 8]
-[Tornado] exploration.py > 27 - 1 : (14, 8)
-[Tornado] sim.py > action > 1 
-[14, 8]
-[Tornado] exploration.py > 28 - 1 : (13, 8)
-[Tornado] sim.py > action > 1 
-[13, 8]
-[Tornado] exploration.py > 29 - 1 : (12, 8)
-[Tornado] sim.py > action > 1 
-[12, 8]
-[Tornado] exploration.py > 30 - 1 : (11, 8)
-[Tornado] sim.py > action > 1 
-[11, 8]
-[Tornado] exploration.py > 31 - 1 : (10, 8)
-[Tornado] sim.py > action > 1 
-[10, 8]
-[Tornado] exploration.py > 32 - 1 : (9, 8)
-[Tornado] sim.py > action > 1 
-[9, 8]
-[Tornado] exploration.py > 33 - 1 : (8, 8)
-[Tornado] sim.py > action > 1 
-[8, 8]
-[Tornado] exploration.py > 34 - 1 : (7, 8)
-[Tornado] sim.py > action > 1 
-[7, 8]
-[Tornado] exploration.py > 35 - 1 : (6, 8)
-[Tornado] sim.py > action > 1 
-[6, 8]
-[Tornado] exploration.py > 36 - A : (6, 8)
-[6, 8]
-[Tornado] exploration.py > 37 - 1 : (6, 7)
-[Tornado] sim.py > action > 1 
-[6, 7]
-[Tornado] exploration.py > 38 - D : (6, 7)
-[6, 7]
-[Tornado] exploration.py > 39 - 1 : (5, 7)
-[Tornado] sim.py > action > 1 
-[5, 7]
-[Tornado] exploration.py > 40 - A : (5, 7)
-[5, 7]
-[Tornado] exploration.py > 41 - 1 : (5, 6)
-[Tornado] sim.py > action > 1 
-[5, 6]
-[Tornado] exploration.py > 42 - 1 : (5, 5)
-[Tornado] sim.py > action > 1 
-[5, 5]
-[Tornado] exploration.py > 43 - 1 : (5, 4)
-[Tornado] sim.py > action > 1 
-[5, 4]
-[Tornado] exploration.py > 44 - 1 : (5, 3)
-[Tornado] sim.py > action > 1 
-[5, 3]
-[Tornado] exploration.py > 45 - D : (5, 3)
-[5, 3]
-[Tornado] exploration.py > 46 - 1 : (4, 3)
-[Tornado] sim.py > action > 1 
-[4, 3]
-[Tornado] exploration.py > 47 - 1 : (3, 3)
-[Tornado] sim.py > action > 1 
-[3, 3]
-[Tornado] exploration.py > 48 - 1 : (2, 3)
-[Tornado] sim.py > action > 1 
-[2, 3]
-[Tornado] exploration.py > 49 - A : (2, 3)
-[2, 3]
-[Tornado] exploration.py > 50 - 1 : (2, 2)
-[Tornado] sim.py > action > 1 
-[2, 2]
-[Tornado] exploration.py > 51 - 1 : (2, 1)
+[3, 1]
+[Tornado] exploration.py > 16 - 1 : (2, 1)
 [Tornado] sim.py > action > 1 
 [2, 1]
-[Tornado] exploration.py > 52 - D : (2, 1)
-[2, 1]
-[Tornado] exploration.py > 53 - 1 : (1, 1)
+[Tornado] exploration.py > 17 - 1 : (1, 1)
 [Tornado] sim.py > action > 1 
 [1, 1]
-[Tornado] exploration.py > 54 - D : (1, 1)
+[Tornado] exploration.py > 18 - D : (1, 1)
 [1, 1]
-[Tornado] exploration.py > 55 - 1 : (1, 2)
+[Tornado] exploration.py > 19 - 1 : (1, 2)
 [Tornado] sim.py > action > 1 
 [1, 2]
-[Tornado] exploration.py > 56 - 1 : (1, 3)
+[Tornado] exploration.py > 20 - 1 : (1, 3)
 [Tornado] sim.py > action > 1 
 [1, 3]
-[Tornado] exploration.py > 57 - 1 : (1, 4)
+[Tornado] exploration.py > 21 - 1 : (1, 4)
 [Tornado] sim.py > action > 1 
 [1, 4]
-[Tornado] exploration.py > 58 - D : (1, 4)
-[1, 4]
-[Tornado] exploration.py > 59 - 1 : (2, 4)
+[Tornado] exploration.py > 22 - 1 : (1, 5)
 [Tornado] sim.py > action > 1 
-[2, 4]
-[Tornado] exploration.py > 60 - 1 : (3, 4)
+[1, 5]
+[Tornado] exploration.py > 23 - 1 : (1, 6)
 [Tornado] sim.py > action > 1 
-[3, 4]
-[Tornado] exploration.py > 61 - A : (3, 4)
-[3, 4]
-[Tornado] exploration.py > 62 - 1 : (3, 5)
+[1, 6]
+[Tornado] exploration.py > 24 - 1 : (1, 7)
 [Tornado] sim.py > action > 1 
-[3, 5]
-[Tornado] exploration.py > 63 - 1 : (3, 6)
+[1, 7]
+[Tornado] exploration.py > 25 - 1 : (1, 8)
 [Tornado] sim.py > action > 1 
-[3, 6]
-[Tornado] exploration.py > 64 - 1 : (3, 7)
+[1, 8]
+[Tornado] exploration.py > 26 - 1 : (1, 9)
 [Tornado] sim.py > action > 1 
-[3, 7]
-[Tornado] exploration.py > 65 - 1 : (3, 8)
+[1, 9]
+[Tornado] exploration.py > 27 - 1 : (1, 10)
 [Tornado] sim.py > action > 1 
-[3, 8]
-[Tornado] exploration.py > 66 - A : (3, 8)
-[3, 8]
-[Tornado] exploration.py > 67 - 1 : (2, 8)
-[Tornado] sim.py > action > 1 
-[2, 8]
-[Tornado] exploration.py > 68 - D : (2, 8)
-[2, 8]
-[Tornado] exploration.py > 69 - 1 : (2, 9)
-[Tornado] sim.py > action > 1 
-[2, 9]
-[Tornado] exploration.py > 70 - 1 : (2, 10)
-[Tornado] sim.py > action > 1 
-[2, 10]
-[Tornado] exploration.py > 71 - 1 : (2, 11)
-[Tornado] sim.py > action > 1 
-[2, 11]
-[Tornado] exploration.py > 72 - A : (2, 11)
-[2, 11]
-[Tornado] exploration.py > 73 - 1 : (1, 11)
+[1, 10]
+[Tornado] exploration.py > 28 - 1 : (1, 11)
 [Tornado] sim.py > action > 1 
 [1, 11]
-[Tornado] exploration.py > 74 - D : (1, 11)
-[1, 11]
-[Tornado] exploration.py > 75 - 1 : (1, 12)
+[Tornado] exploration.py > 29 - 1 : (1, 12)
 [Tornado] sim.py > action > 1 
 [1, 12]
-[Tornado] exploration.py > 76 - 1 : (1, 13)
+[Tornado] exploration.py > 30 - 1 : (1, 13)
 [Tornado] sim.py > action > 1 
 [1, 13]
-[Tornado] exploration.py > 77 - D : (1, 13)
+[Tornado] exploration.py > 31 - D : (1, 13)
 [1, 13]
-[Tornado] exploration.py > 78 - 1 : (2, 13)
+[Tornado] exploration.py > 32 - 1 : (2, 13)
 [Tornado] sim.py > action > 1 
 [2, 13]
-[Tornado] exploration.py > 79 - D : (2, 13)
-[2, 13]
-[Tornado] exploration.py > 80 - 1 : (2, 12)
+[Tornado] exploration.py > 33 - 1 : (3, 13)
 [Tornado] sim.py > action > 1 
-[2, 12]
-[Tornado] exploration.py > 81 - A : (2, 12)
-[2, 12]
-[Tornado] exploration.py > 82 - 1 : (3, 12)
+[3, 13]
+[Tornado] exploration.py > 34 - 1 : (4, 13)
 [Tornado] sim.py > action > 1 
-[3, 12]
-[Tornado] exploration.py > 83 - 1 : (4, 12)
+[4, 13]
+[Tornado] exploration.py > 35 - 1 : (5, 13)
 [Tornado] sim.py > action > 1 
-[4, 12]
-[Tornado] exploration.py > 84 - 1 : (5, 12)
-[Tornado] sim.py > action > 1 
-[5, 12]
-[Tornado] exploration.py > 85 - 1 : (6, 12)
-[Tornado] sim.py > action > 1 
-[6, 12]
-[Tornado] exploration.py > 86 - A : (6, 12)
-[6, 12]
-[Tornado] exploration.py > 87 - 1 : (6, 13)
+[5, 13]
+[Tornado] exploration.py > 36 - 1 : (6, 13)
 [Tornado] sim.py > action > 1 
 [6, 13]
-[Tornado] exploration.py > 88 - D : (6, 13)
-[6, 13]
-[Tornado] exploration.py > 89 - 1 : (7, 13)
+[Tornado] exploration.py > 37 - 1 : (7, 13)
 [Tornado] sim.py > action > 1 
 [7, 13]
-[Tornado] exploration.py > 90 - 1 : (8, 13)
+[Tornado] exploration.py > 38 - 1 : (8, 13)
 [Tornado] sim.py > action > 1 
 [8, 13]
-[Tornado] exploration.py > 91 - 1 : (9, 13)
+[Tornado] exploration.py > 39 - 1 : (9, 13)
 [Tornado] sim.py > action > 1 
 [9, 13]
-[Tornado] exploration.py > 92 - 1 : (10, 13)
+[Tornado] exploration.py > 40 - 1 : (10, 13)
 [Tornado] sim.py > action > 1 
 [10, 13]
-[Tornado] exploration.py > 93 - D : (10, 13)
-[10, 13]
-[Tornado] exploration.py > 94 - 1 : (10, 12)
+[Tornado] exploration.py > 41 - 1 : (11, 13)
 [Tornado] sim.py > action > 1 
-[10, 12]
-[Tornado] exploration.py > 95 - 1 : (10, 11)
+[11, 13]
+[Tornado] exploration.py > 42 - 1 : (12, 13)
 [Tornado] sim.py > action > 1 
-[10, 11]
-[Tornado] exploration.py > 96 - 1 : (10, 10)
+[12, 13]
+[Tornado] exploration.py > 43 - 1 : (13, 13)
 [Tornado] sim.py > action > 1 
-[10, 10]
-[Tornado] exploration.py > 97 - 1 : (10, 9)
+[13, 13]
+[Tornado] exploration.py > 44 - 1 : (14, 13)
 [Tornado] sim.py > action > 1 
-[10, 9]
-[Tornado] exploration.py > 98 - 1 : (10, 8)
-[Tornado] sim.py > action > 1 
-[10, 8]
-[Tornado] exploration.py > 99 - A : (10, 8)
-[10, 8]
-[Tornado] exploration.py > 100 - 1 : (11, 8)
-[Tornado] sim.py > action > 1 
-[11, 8]
-[Tornado] exploration.py > 101 - 1 : (12, 8)
-[Tornado] sim.py > action > 1 
-[12, 8]
-[Tornado] exploration.py > 102 - 1 : (13, 8)
-[Tornado] sim.py > action > 1 
-[13, 8]
-[Tornado] exploration.py > 103 - 1 : (14, 8)
-[Tornado] sim.py > action > 1 
-[14, 8]
-[Tornado] exploration.py > 104 - A : (14, 8)
-[14, 8]
-[Tornado] exploration.py > 105 - 1 : (14, 9)
-[Tornado] sim.py > action > 1 
-[14, 9]
-[Tornado] exploration.py > 106 - 1 : (14, 10)
-[Tornado] sim.py > action > 1 
-[14, 10]
-[Tornado] exploration.py > 107 - D : (14, 10)
-[14, 10]
-[Tornado] exploration.py > 108 - 1 : (15, 10)
-[Tornado] sim.py > action > 1 
-[15, 10]
-[Tornado] exploration.py > 109 - A : (15, 10)
-[15, 10]
-[Tornado] exploration.py > 110 - 1 : (15, 11)
-[Tornado] sim.py > action > 1 
-[15, 11]
-[Tornado] exploration.py > 111 - 1 : (15, 12)
-[Tornado] sim.py > action > 1 
-[15, 12]
-[Tornado] exploration.py > 112 - 1 : (15, 13)
+[14, 13]
+[Tornado] exploration.py > 45 - 1 : (15, 13)
 [Tornado] sim.py > action > 1 
 [15, 13]
-[Tornado] exploration.py > 113 - D : (15, 13)
-[15, 13]
-[Tornado] exploration.py > 114 - 1 : (16, 13)
+[Tornado] exploration.py > 46 - 1 : (16, 13)
 [Tornado] sim.py > action > 1 
 [16, 13]
-[Tornado] exploration.py > 115 - 1 : (17, 13)
+[Tornado] exploration.py > 47 - 1 : (17, 13)
 [Tornado] sim.py > action > 1 
 [17, 13]
-[Tornado] exploration.py > 116 - 1 : (18, 13)
+[Tornado] exploration.py > 48 - 1 : (18, 13)
 [Tornado] sim.py > action > 1 
 [18, 13]
-[Tornado] exploration.py > 117 - D : (18, 13)
+[Tornado] exploration.py > 49 - D : (18, 13)
 [18, 13]
-[Tornado] exploration.py > 118 - 1 : (18, 12)
+[Tornado] exploration.py > 50 - 1 : (18, 12)
 [Tornado] sim.py > action > 1 
 [18, 12]
-[Tornado] exploration.py > 119 - 1 : (18, 11)
+[Tornado] exploration.py > 51 - 1 : (18, 11)
 [Tornado] sim.py > action > 1 
 [18, 11]
-[Tornado] exploration.py > 120 - None : (18, 11)
+[Tornado] exploration.py > 52 - 1 : (18, 10)
+[Tornado] sim.py > action > 1 
+[18, 10]
+[Tornado] exploration.py > 53 - 1 : (18, 9)
+[Tornado] sim.py > action > 1 
+[18, 9]
+[Tornado] exploration.py > 54 - 1 : (18, 8)
+[Tornado] sim.py > action > 1 
+[18, 8]
+[Tornado] exploration.py > 55 - 1 : (18, 7)
+[Tornado] sim.py > action > 1 
+[18, 7]
+[Tornado] exploration.py > 56 - 1 : (18, 6)
+[Tornado] sim.py > action > 1 
+[18, 6]
+[Tornado] exploration.py > 57 - 1 : (18, 5)
+[Tornado] sim.py > action > 1 
+[18, 5]
+[Tornado] exploration.py > 58 - 1 : (18, 4)
+[Tornado] sim.py > action > 1 
+[18, 4]
+[Tornado] exploration.py > 59 - 1 : (18, 3)
+[Tornado] sim.py > action > 1 
+[18, 3]
+[Tornado] exploration.py > 60 - 1 : (18, 2)
+[Tornado] sim.py > action > 1 
+[18, 2]
+[Tornado] exploration.py > 61 - 1 : (18, 1)
+[Tornado] sim.py > action > 1 
+[18, 1]
+[Tornado] exploration.py > 62 - D : (18, 1)
+[18, 1]
+[Tornado] exploration.py > 63 - 1 : (17, 1)
+[Tornado] sim.py > action > 1 
+[17, 1]
+[Tornado] exploration.py > 64 - 1 : (16, 1)
+[Tornado] sim.py > action > 1 
+[16, 1]
+[Tornado] exploration.py > 65 - 1 : (15, 1)
+[Tornado] sim.py > action > 1 
+[15, 1]
+[Tornado] exploration.py > 66 - 1 : (14, 1)
+[Tornado] sim.py > action > 1 
+[14, 1]
+[Tornado] exploration.py > 67 - 1 : (13, 1)
+[Tornado] sim.py > action > 1 
+[13, 1]
+[Tornado] exploration.py > 68 - 1 : (12, 1)
+[Tornado] sim.py > action > 1 
+[12, 1]
+[Tornado] exploration.py > 69 - 1 : (11, 1)
+[Tornado] sim.py > action > 1 
+[11, 1]
+[Tornado] exploration.py > 70 - 1 : (10, 1)
+[Tornado] sim.py > action > 1 
+[10, 1]
+[Tornado] exploration.py > 71 - 1 : (9, 1)
+[Tornado] sim.py > action > 1 
+[9, 1]
+[Tornado] exploration.py > 72 - 1 : (8, 1)
+[Tornado] sim.py > action > 1 
+[8, 1]
+[Tornado] exploration.py > 73 - 1 : (7, 1)
+[Tornado] sim.py > action > 1 
+[7, 1]
+[Tornado] exploration.py > 74 - 1 : (6, 1)
+[Tornado] sim.py > action > 1 
+[6, 1]
+[Tornado] exploration.py > 75 - 1 : (5, 1)
+[Tornado] sim.py > action > 1 
+[5, 1]
+[Tornado] exploration.py > 76 - 1 : (4, 1)
+[Tornado] sim.py > action > 1 
+[4, 1]
+[Tornado] exploration.py > 77 - 1 : (3, 1)
+[Tornado] sim.py > action > 1 
+[3, 1]
+[Tornado] exploration.py > 78 - 1 : (2, 1)
+[Tornado] sim.py > action > 1 
+[2, 1]
+[Tornado] exploration.py > 79 - 1 : (1, 1)
+[Tornado] sim.py > action > 1 
+[1, 1]
+[Tornado] exploration.py > 80 - D : (1, 1)
+[1, 1]
+[Tornado] exploration.py > 81 - 1 : (1, 2)
+[Tornado] sim.py > action > 1 
+[1, 2]
+[Tornado] exploration.py > 82 - None : (1, 2)
 Exploration done!
-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-01000200060000000000000082011c020004000800100fc00004000860110000000008001200
-['3', 'A', 'a', 'A', '3', 'D']
-('D', ': ', 'N')
-[Tornado] sim.py > action > 3 
-('3', ': ', 'N')
-('A', ': ', 'W')
-[Tornado] sim.py > action > 10 
-('a', ': ', 'W')
+fffffffffffffffff87ff0ffe1fe03fc07f80ff01fe03fc07f80ff01fe03ffffffffffffffff
+0000000000007f0010020040c0c0c0c0c0c0c0c0c07f00000000000000
+['1', 'f', 'A', '1', 'D', '1', 'D']
+('D', ': ', 'S')
+[Tornado] sim.py > action > 1 
+('1', ': ', 'S')
+('D', ': ', 'W')
+[Tornado] sim.py > action > 1 
+('1', ': ', 'W')
 ('A', ': ', 'S')
-[Tornado] sim.py > action > 3 
-('3', ': ', 'S')
+[Tornado] sim.py > action > 15 
+('f', ': ', 'S')
+[Tornado] sim.py > action > 1 
+('1', ': ', 'S')
 Gone back to start!
-['1', 'A', '5', 'D', 'd', 'A', '4', 'A', '6', 'D', '3', 'D', '9', 'A', 'A']
+['2', 'f', 'A', 'c', 'A']
 ShortestPath started!
 ('A', ': ', 'E')
+[Tornado] sim.py > action > 12 
+('c', ': ', 'E')
 ('A', ': ', 'N')
-[Tornado] sim.py > action > 9 
-('9', ': ', 'N')
-('D', ': ', 'E')
-[Tornado] sim.py > action > 3 
-('3', ': ', 'E')
-('D', ': ', 'S')
-[Tornado] sim.py > action > 6 
-('6', ': ', 'S')
-('A', ': ', 'E')
-[Tornado] sim.py > action > 4 
-('4', ': ', 'E')
-('A', ': ', 'N')
-[Tornado] sim.py > action > 13 
-('d', ': ', 'N')
-('D', ': ', 'E')
-[Tornado] sim.py > action > 5 
-('5', ': ', 'E')
-('A', ': ', 'N')
-[Tornado] sim.py > action > 1 
-('1', ': ', 'N')
+[Tornado] sim.py > action > 15 
+('f', ': ', 'N')
+[Tornado] sim.py > action > 2 
+('2', ': ', 'N')
 ShortestPath done!
-Exploration stopped!

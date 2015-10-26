@@ -194,7 +194,7 @@ class Exploration(object):
             if exploredArea >= exploredPercentage * 3 or spCounter > 5:
                 # good enough, break
                 robotBreak = True
-            elif False:
+            elif not robotBreak:
 
                 # don't give up!
                 rcurrent = [robotCenterY, robotCenterX]
