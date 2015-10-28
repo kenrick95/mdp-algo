@@ -45,8 +45,7 @@ class Exploration(object):
         global spList
         global repeatedTreshold
         global isFirstStart
-        repeatedTreshold = 5#20#15#10# 30
-
+        repeatedTreshold = 6#5#20#15#10# 30
         isFirstStart = True
         spList = []
         spCounter = 0
@@ -174,12 +173,12 @@ class Exploration(object):
         encounteredStart = False
 
         if (robotCenterY, robotCenterX) == (18, 1):
-            if isFirstStart:
-                isFirstStart = False
-            else:
+            if not isFirstStart: #TODO TEST obstacle in front
                 encounteredStart = True
                 robotBreak = True
                 robotCurMovement = None
+        else:
+            isFirstStart = False
 
         if not encounteredStart:
             exploredArea = 0
@@ -194,7 +193,7 @@ class Exploration(object):
                 for j in range(0,15):
                     if realTimeMap[i][j] != 0:
                         exploredArea = exploredArea + 1
-        if repeatedArea >= repeatedTreshold or exploredArea >= exploredPercentage * 3:
+        if repeatedArea >= repeatedTreshold: #or exploredArea >= exploredPercentage * 3:
             robotCurMovement = None
             #### JUST GIVE UP AND GO BACK HOME :')
 

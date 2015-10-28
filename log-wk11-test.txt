@@ -1,0 +1,1207 @@
+[Tornado] inform > Exploration started: Alignment! 
+[Arduino] serWrite > Thread 1-serWrite send msg: W @ Mon Oct 12 06:49:56 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.23,5.08,5.37,3.60,150.00,3.65
+ @ Mon Oct 12 06:50:03 2015
+[Arduino-Ser] parse_msg > 5.23,5.08,5.37,3.60,150.00,3.65
+
+[Arduino] serWrite > Thread 1-serWrite send msg: Q @ Mon Oct 12 06:50:03 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.54,5.51,5.93,5.04,90.12,4.99
+ @ Mon Oct 12 06:50:06 2015
+[Arduino-Ser] parse_msg > 5.54,5.51,5.93,5.04,90.12,4.99
+
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:06 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,59.27,66.25,5.18,14.17,5.39
+ @ Mon Oct 12 06:50:07 2015
+[Arduino-Ser] parse_msg > 80.00,59.27,66.25,5.18,14.17,5.39
+
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:07 2015
+[Arduino] serRead > Thread 2-serRead received msg: 54.79,48.82,48.86,5.50,14.09,5.51
+ @ Mon Oct 12 06:50:07 2015
+[Arduino-Ser] parse_msg > 54.79,48.82,48.86,5.50,14.09,5.51
+
+[Arduino] serWrite > Thread 1-serWrite send msg: E @ Mon Oct 12 06:50:07 2015
+[Arduino] serRead > Thread 2-serRead received msg: 67.90,41.89,48.49,5.50,13.93,5.54
+ @ Mon Oct 12 06:50:08 2015
+[Arduino-Ser] parse_msg > 67.90,41.89,48.49,5.50,13.93,5.54
+
+[Tornado] real.py > sensorString > 67.90,41.89,48.49,5.50,13.93,5.54
+ 
+[Tornado] real.py > update_map > [18, 1] 
+[Tornado] real.py > action > D 
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:08 2015
+[Arduino] serRead > Thread 2-serRead received msg: 14.25,15.31,15.44,58.75,6.96,75.36
+ @ Mon Oct 12 06:50:08 2015
+[Arduino-Ser] parse_msg > 14.25,15.31,15.44,58.75,6.96,75.36
+
+[Tornado] real.py > sensorString > 14.25,15.31,15.44,58.75,6.96,75.36
+ 
+[Tornado] real.py > update_map > [18, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: E @ Mon Oct 12 06:50:08 2015
+[Arduino] serRead > Thread 2-serRead received msg: 13.26,15.24,16.08,50.10,6.85,60.29
+ @ Mon Oct 12 06:50:09 2015
+[Arduino-Ser] parse_msg > 13.26,15.24,16.08,50.10,6.85,60.29
+
+[Tornado] real.py > sensorString > 13.26,15.24,16.08,50.10,6.85,60.29
+ 
+[Tornado] real.py > update_map > [18, 1] 
+[Tornado] real.py > action > A 
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:09 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,60.83,61.58,5.84,13.44,4.32
+ @ Mon Oct 12 06:50:09 2015
+[Arduino-Ser] parse_msg > 80.00,60.83,61.58,5.84,13.44,4.32
+
+[Tornado] real.py > sensorString > 80.00,60.83,61.58,5.84,13.44,4.32
+ 
+[Tornado] real.py > update_map > [18, 1] 
+[Tornado] inform > Exploration started, for real! 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:09 2015
+[Arduino] serRead > Thread 2-serRead received msg: 33.22,56.81,50.40,5.06,14.09,5.09
+ @ Mon Oct 12 06:50:10 2015
+[Arduino-Ser] parse_msg > 33.22,56.81,50.40,5.06,14.09,5.09
+
+[Tornado] real.py > sensorString > 33.22,56.81,50.40,5.06,14.09,5.09
+ 
+[Tornado] real.py > update_map > [18, 1] 
+[Tornado] exploration.py > 1 - 1 : (17, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [17, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:10 2015
+[Arduino] serRead > Thread 2-serRead received msg: 64.84,51.13,45.99,5.40,14.01,5.54
+ @ Mon Oct 12 06:50:11 2015
+[Arduino-Ser] parse_msg > 64.84,51.13,45.99,5.40,14.01,5.54
+
+[Tornado] real.py > sensorString > 64.84,51.13,45.99,5.40,14.01,5.54
+ 
+[Tornado] real.py > update_map > [17, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:11 2015
+[Arduino] serRead > Thread 2-serRead received msg: 41.42,80.00,50.01,5.38,13.93,5.46
+ @ Mon Oct 12 06:50:11 2015
+[Arduino-Ser] parse_msg > 41.42,80.00,50.01,5.38,13.93,5.46
+
+[Tornado] real.py > sensorString > 41.42,80.00,50.01,5.38,13.93,5.46
+ 
+[Tornado] real.py > update_map > [17, 1] 
+[Tornado] exploration.py > 2 - 1 : (16, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [16, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:11 2015
+[Arduino] serRead > Thread 2-serRead received msg: 33.52,44.34,40.42,5.95,14.01,5.73
+ @ Mon Oct 12 06:50:12 2015
+[Arduino-Ser] parse_msg > 33.52,44.34,40.42,5.95,14.01,5.73
+
+[Tornado] real.py > sensorString > 33.52,44.34,40.42,5.95,14.01,5.73
+ 
+[Tornado] real.py > update_map > [16, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:12 2015
+[Arduino] serRead > Thread 2-serRead received msg: 38.20,69.81,40.42,5.84,14.01,5.76
+ @ Mon Oct 12 06:50:12 2015
+[Arduino-Ser] parse_msg > 38.20,69.81,40.42,5.84,14.01,5.76
+
+[Tornado] real.py > sensorString > 38.20,69.81,40.42,5.84,14.01,5.76
+ 
+[Tornado] real.py > update_map > [16, 1] 
+[Tornado] exploration.py > 3 - 1 : (15, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [15, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:12 2015
+[Arduino] serRead > Thread 2-serRead received msg: 35.40,52.78,32.76,6.04,13.44,6.06
+ @ Mon Oct 12 06:50:13 2015
+[Arduino-Ser] parse_msg > 35.40,52.78,32.76,6.04,13.44,6.06
+
+[Tornado] real.py > sensorString > 35.40,52.78,32.76,6.04,13.44,6.06
+ 
+[Tornado] real.py > update_map > [15, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:13 2015
+[Arduino] serRead > Thread 2-serRead received msg: 49.55,52.78,35.59,6.06,13.76,6.15
+ @ Mon Oct 12 06:50:13 2015
+[Arduino-Ser] parse_msg > 49.55,52.78,35.59,6.06,13.76,6.15
+
+[Tornado] real.py > sensorString > 49.55,52.78,35.59,6.06,13.76,6.15
+ 
+[Tornado] real.py > update_map > [15, 1] 
+[Tornado] exploration.py > 4 - 1 : (14, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [14, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:13 2015
+[Arduino] serRead > Thread 2-serRead received msg: 30.25,56.81,25.39,6.38,150.00,6.33
+ @ Mon Oct 12 06:50:14 2015
+[Arduino-Ser] parse_msg > 30.25,56.81,25.39,6.38,150.00,6.33
+
+[Tornado] real.py > sensorString > 30.25,56.81,25.39,6.38,150.00,6.33
+ 
+[Tornado] real.py > update_map > [14, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:14 2015
+[Arduino] serRead > Thread 2-serRead received msg: 33.52,51.53,24.68,6.50,150.00,6.33
+ @ Mon Oct 12 06:50:15 2015
+[Arduino-Ser] parse_msg > 33.52,51.53,24.68,6.50,150.00,6.33
+
+[Tornado] real.py > sensorString > 33.52,51.53,24.68,6.50,150.00,6.33
+ 
+[Tornado] real.py > update_map > [14, 1] 
+[Tornado] exploration.py > 5 - 1 : (13, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [13, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:16 2015
+[Arduino] serRead > Thread 2-serRead received msg: 36.75,47.01,15.13,6.78,150.00,6.64
+ @ Mon Oct 12 06:50:16 2015
+[Arduino-Ser] parse_msg > 36.75,47.01,15.13,6.78,150.00,6.64
+
+[Tornado] real.py > sensorString > 36.75,47.01,15.13,6.78,150.00,6.64
+ 
+[Tornado] real.py > update_map > [13, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:16 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,49.95,15.06,6.81,150.00,6.83
+ @ Mon Oct 12 06:50:17 2015
+[Arduino-Ser] parse_msg > 29.51,49.95,15.06,6.81,150.00,6.83
+
+[Tornado] real.py > sensorString > 29.51,49.95,15.06,6.81,150.00,6.83
+ 
+[Tornado] real.py > update_map > [13, 1] 
+[Tornado] exploration.py > 6 - 1 : (12, 1)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:17 2015
+[Arduino] serRead > Thread 2-serRead received msg: 28.58,44.34,3.14,7.17,150.00,6.96
+ @ Mon Oct 12 06:50:18 2015
+[Arduino-Ser] parse_msg > 28.58,44.34,3.14,7.17,150.00,6.96
+
+[Tornado] real.py > sensorString > 28.58,44.34,3.14,7.17,150.00,6.96
+ 
+[Tornado] real.py > update_map > [12, 1] 
+[Arduino] serWrite > Thread 1-serWrite send msg: Q @ Mon Oct 12 06:50:18 2015
+[Arduino] serRead > Thread 2-serRead received msg: 34.44,36.38,3.59,5.28,150.00,5.26
+ @ Mon Oct 12 06:50:21 2015
+[Arduino-Ser] parse_msg > 34.44,36.38,3.59,5.28,150.00,5.26
+
+[Tornado] real.py > sensorString > 34.44,36.38,3.59,5.28,150.00,5.26
+ 
+[Tornado] real.py > update_map > [12, 1] 
+[Tornado] exploration.py > 7 - D : (12, 1)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [12, 1]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:21 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,80.00,68.16,3.82,57.39,53.94
+ @ Mon Oct 12 06:50:21 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,68.16,3.82,57.39,53.94
+
+[Tornado] real.py > sensorString > 80.00,80.00,68.16,3.82,57.39,53.94
+ 
+[Tornado] real.py > update_map > [12, 1] 
+[Tornado] exploration.py > 8 - 1 : (12, 2)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 2]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:21 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,58.76,74.47,24.44,62.76,69.25
+ @ Mon Oct 12 06:50:22 2015
+[Arduino-Ser] parse_msg > 80.00,58.76,74.47,24.44,62.76,69.25
+
+[Tornado] real.py > sensorString > 80.00,58.76,74.47,24.44,62.76,69.25
+ 
+[Tornado] real.py > update_map > [12, 2] 
+[Tornado] exploration.py > 9 - 1 : (12, 3)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 3]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:22 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,60.83,68.81,33.45,7.23,4.78
+ @ Mon Oct 12 06:50:23 2015
+[Arduino-Ser] parse_msg > 80.00,60.83,68.81,33.45,7.23,4.78
+
+[Tornado] real.py > sensorString > 80.00,60.83,68.81,33.45,7.23,4.78
+ 
+[Tornado] real.py > update_map > [12, 3] 
+[Tornado] exploration.py > 10 - 1 : (12, 4)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:23 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,61.37,66.25,50.10,64.11,32.08
+ @ Mon Oct 12 06:50:24 2015
+[Arduino-Ser] parse_msg > 80.00,61.37,66.25,50.10,64.11,32.08
+
+[Tornado] real.py > sensorString > 80.00,61.37,66.25,50.10,64.11,32.08
+ 
+[Tornado] real.py > update_map > [12, 4] 
+[Tornado] exploration.py > 11 - A : (12, 4)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [12, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:24 2015
+[Arduino] serRead > Thread 2-serRead received msg: 46.72,26.15,47.03,27.45,93.28,23.21
+ @ Mon Oct 12 06:50:25 2015
+[Arduino-Ser] parse_msg > 46.72,26.15,47.03,27.45,93.28,23.21
+
+[Tornado] real.py > sensorString > 46.72,26.15,47.03,27.45,93.28,23.21
+ 
+[Tornado] real.py > update_map > [12, 4] 
+[Tornado] exploration.py > 12 - 1 : (11, 4)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [11, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:25 2015
+[Arduino] serRead > Thread 2-serRead received msg: 23.24,30.21,41.86,5.84,24.57,26.21
+ @ Mon Oct 12 06:50:26 2015
+[Arduino-Ser] parse_msg > 23.24,30.21,41.86,5.84,24.57,26.21
+
+[Tornado] real.py > sensorString > 23.24,30.21,41.86,5.84,24.57,26.21
+ 
+[Tornado] real.py > update_map > [11, 4] 
+[Tornado] exploration.py > 13 - 1 : (10, 4)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [10, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:26 2015
+[Arduino] serRead > Thread 2-serRead received msg: 14.25,22.20,33.59,6.59,23.13,30.42
+ @ Mon Oct 12 06:50:27 2015
+[Arduino-Ser] parse_msg > 14.25,22.20,33.59,6.59,23.13,30.42
+
+[Tornado] real.py > sensorString > 14.25,22.20,33.59,6.59,23.13,30.42
+ 
+[Tornado] real.py > update_map > [10, 4] 
+[Tornado] exploration.py > 14 - 1 : (9, 4)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [9, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:27 2015
+[Arduino] serRead > Thread 2-serRead received msg: 4.96,15.46,27.04,7.58,22.87,6.67
+ @ Mon Oct 12 06:50:28 2015
+[Arduino-Ser] parse_msg > 4.96,15.46,27.04,7.58,22.87,6.67
+
+[Tornado] real.py > sensorString > 4.96,15.46,27.04,7.58,22.87,6.67
+ 
+[Tornado] real.py > update_map > [9, 4] 
+[Arduino] serWrite > Thread 1-serWrite send msg: Q @ Mon Oct 12 06:50:28 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.58,16.99,27.67,5.23,25.69,5.16
+ @ Mon Oct 12 06:50:32 2015
+[Arduino-Ser] parse_msg > 5.58,16.99,27.67,5.23,25.69,5.16
+
+[Tornado] real.py > sensorString > 5.58,16.99,27.67,5.23,25.69,5.16
+ 
+[Tornado] real.py > update_map > [9, 4] 
+[Tornado] exploration.py > 15 - D : (9, 4)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [9, 4]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:32 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,28.16,24.68,18.80,150.00,6.09
+ @ Mon Oct 12 06:50:32 2015
+[Arduino-Ser] parse_msg > 29.51,28.16,24.68,18.80,150.00,6.09
+
+[Tornado] real.py > sensorString > 29.51,28.16,24.68,18.80,150.00,6.09
+ 
+[Tornado] real.py > update_map > [9, 4] 
+[Tornado] exploration.py > 16 - 1 : (9, 5)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [9, 5]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:32 2015
+[Arduino] serRead > Thread 2-serRead received msg: 13.39,15.77,17.27,24.81,74.28,14.51
+ @ Mon Oct 12 06:50:33 2015
+[Arduino-Ser] parse_msg > 13.39,15.77,17.27,24.81,74.28,14.51
+
+[Tornado] real.py > sensorString > 13.39,15.77,17.27,24.81,74.28,14.51
+ 
+[Tornado] real.py > update_map > [9, 5] 
+[Tornado] exploration.py > 17 - A : (9, 5)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [9, 5]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:33 2015
+[Arduino] serRead > Thread 2-serRead received msg: 15.11,25.72,35.59,14.03,14.59,13.25
+ @ Mon Oct 12 06:50:34 2015
+[Arduino-Ser] parse_msg > 15.11,25.72,35.59,14.03,14.59,13.25
+
+[Tornado] real.py > sensorString > 15.11,25.72,35.59,14.03,14.59,13.25
+ 
+[Tornado] real.py > update_map > [9, 5] 
+[Tornado] exploration.py > 18 - 1 : (8, 5)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [8, 5]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:34 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.34,16.33,26.88,5.35,98.36,14.10
+ @ Mon Oct 12 06:50:35 2015
+[Arduino-Ser] parse_msg > 5.34,16.33,26.88,5.35,98.36,14.10
+
+[Tornado] real.py > sensorString > 5.34,16.33,26.88,5.35,98.36,14.10
+ 
+[Tornado] real.py > update_map > [8, 5] 
+[Tornado] exploration.py > 19 - D : (8, 5)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [8, 5]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:35 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,16.49,15.84,20.34,101.07,5.59
+ @ Mon Oct 12 06:50:36 2015
+[Arduino-Ser] parse_msg > 80.00,16.49,15.84,20.34,101.07,5.59
+
+[Tornado] real.py > sensorString > 80.00,16.49,15.84,20.34,101.07,5.59
+ 
+[Tornado] real.py > update_map > [8, 5] 
+[Tornado] exploration.py > 20 - 1 : (8, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [8, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:36 2015
+[Arduino] serRead > Thread 2-serRead received msg: 44.17,4.76,5.89,48.28,58.57,14.59
+ @ Mon Oct 12 06:50:37 2015
+[Arduino-Ser] parse_msg > 44.17,4.76,5.89,48.28,58.57,14.59
+
+[Tornado] real.py > sensorString > 44.17,4.76,5.89,48.28,58.57,14.59
+ 
+[Tornado] real.py > update_map > [8, 6] 
+[Tornado] exploration.py > 21 - A : (8, 6)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [8, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:37 2015
+[Arduino] serRead > Thread 2-serRead received msg: 17.59,35.01,40.42,14.60,37.31,21.01
+ @ Mon Oct 12 06:50:38 2015
+[Arduino-Ser] parse_msg > 17.59,35.01,40.42,14.60,37.31,21.01
+
+[Tornado] real.py > sensorString > 17.59,35.01,40.42,14.60,37.31,21.01
+ 
+[Tornado] real.py > update_map > [8, 6] 
+[Tornado] exploration.py > 22 - 1 : (7, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [7, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:38 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.82,16.83,38.02,5.79,82.26,22.07
+ @ Mon Oct 12 06:50:39 2015
+[Arduino-Ser] parse_msg > 5.82,16.83,38.02,5.79,82.26,22.07
+
+[Tornado] real.py > sensorString > 5.82,16.83,38.02,5.79,82.26,22.07
+ 
+[Tornado] real.py > update_map > [7, 6] 
+[Tornado] exploration.py > 23 - A : (7, 6)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [7, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:39 2015
+[Arduino] serRead > Thread 2-serRead received msg: 18.55,15.85,7.35,56.34,7.45,20.31
+ @ Mon Oct 12 06:50:39 2015
+[Arduino-Ser] parse_msg > 18.55,15.85,7.35,56.34,7.45,20.31
+
+[Tornado] real.py > sensorString > 18.55,15.85,7.35,56.34,7.45,20.31
+ 
+[Tornado] real.py > update_map > [7, 6] 
+[Tornado] exploration.py > 24 - A : (7, 6)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [7, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:39 2015
+[Arduino] serRead > Thread 2-serRead received msg: 9.95,44.02,43.07,4.95,25.54,69.25
+ @ Mon Oct 12 06:50:40 2015
+[Arduino-Ser] parse_msg > 9.95,44.02,43.07,4.95,25.54,69.25
+
+[Tornado] real.py > sensorString > 9.95,44.02,43.07,4.95,25.54,69.25
+ 
+[Tornado] real.py > update_map > [7, 6] 
+[Tornado] exploration.py > 25 - A : (7, 6)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [7, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:40 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,63.60,6.06,45.51,70.98,6.06
+ @ Mon Oct 12 06:50:41 2015
+[Arduino-Ser] parse_msg > 80.00,63.60,6.06,45.51,70.98,6.06
+
+[Tornado] real.py > sensorString > 80.00,63.60,6.06,45.51,70.98,6.06
+ 
+[Tornado] real.py > update_map > [7, 6] 
+[Tornado] exploration.py > 26 - D : (7, 6)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [7, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:50:41 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,54.95,80.00,4.55,26.70,50.56
+ @ Mon Oct 12 06:50:42 2015
+[Arduino-Ser] parse_msg > 80.00,54.95,80.00,4.55,26.70,50.56
+
+[Tornado] real.py > sensorString > 80.00,54.95,80.00,4.55,26.70,50.56
+ 
+[Tornado] real.py > update_map > [7, 6] 
+[Tornado] exploration.py > 27 - 1 : (8, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [8, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:42 2015
+[Arduino] serRead > Thread 2-serRead received msg: 68.98,59.78,44.98,5.61,24.98,80.00
+ @ Mon Oct 12 06:50:43 2015
+[Arduino-Ser] parse_msg > 68.98,59.78,44.98,5.61,24.98,80.00
+
+[Tornado] real.py > sensorString > 68.98,59.78,44.98,5.61,24.98,80.00
+ 
+[Tornado] real.py > update_map > [8, 6] 
+[Tornado] exploration.py > 28 - 1 : (9, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [9, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:43 2015
+[Arduino] serRead > Thread 2-serRead received msg: 62.02,54.95,40.70,6.47,24.30,5.87
+ @ Mon Oct 12 06:50:44 2015
+[Arduino-Ser] parse_msg > 62.02,54.95,40.70,6.47,24.30,5.87
+
+[Tornado] real.py > sensorString > 62.02,54.95,40.70,6.47,24.30,5.87
+ 
+[Tornado] real.py > update_map > [9, 6] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:44 2015
+[Arduino] serRead > Thread 2-serRead received msg: 43.69,60.30,80.00,6.29,24.57,6.30
+ @ Mon Oct 12 06:50:44 2015
+[Arduino-Ser] parse_msg > 43.69,60.30,80.00,6.29,24.57,6.30
+
+[Tornado] real.py > sensorString > 43.69,60.30,80.00,6.29,24.57,6.30
+ 
+[Tornado] real.py > update_map > [9, 6] 
+[Tornado] exploration.py > 29 - 1 : (10, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [10, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:44 2015
+[Arduino] serRead > Thread 2-serRead received msg: 31.27,51.53,44.01,50.73,54.40,6.58
+ @ Mon Oct 12 06:50:45 2015
+[Arduino-Ser] parse_msg > 31.27,51.53,44.01,50.73,54.40,6.58
+
+[Tornado] real.py > sensorString > 31.27,51.53,44.01,50.73,54.40,6.58
+ 
+[Tornado] real.py > update_map > [10, 6] 
+[Tornado] exploration.py > 30 - 1 : (11, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [11, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:45 2015
+[Arduino] serRead > Thread 2-serRead received msg: 21.44,55.41,44.65,36.78,51.96,6.64
+ @ Mon Oct 12 06:50:46 2015
+[Arduino-Ser] parse_msg > 21.44,55.41,44.65,36.78,51.96,6.64
+
+[Tornado] real.py > sensorString > 21.44,55.41,44.65,36.78,51.96,6.64
+ 
+[Tornado] real.py > update_map > [11, 6] 
+[Tornado] exploration.py > 31 - 1 : (12, 6)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:46 2015
+[Arduino] serRead > Thread 2-serRead received msg: 12.74,54.51,39.59,42.08,51.96,29.15
+ @ Mon Oct 12 06:50:47 2015
+[Arduino-Ser] parse_msg > 12.74,54.51,39.59,42.08,51.96,29.15
+
+[Tornado] real.py > sensorString > 12.74,54.51,39.59,42.08,51.96,29.15
+ 
+[Tornado] real.py > update_map > [12, 6] 
+[Tornado] exploration.py > 32 - A : (12, 6)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [12, 6]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:47 2015
+[Arduino] serRead > Thread 2-serRead received msg: 31.27,80.00,64.43,80.00,13.13,58.58
+ @ Mon Oct 12 06:50:48 2015
+[Arduino-Ser] parse_msg > 31.27,80.00,64.43,80.00,13.13,58.58
+
+[Tornado] real.py > sensorString > 31.27,80.00,64.43,80.00,13.13,58.58
+ 
+[Tornado] real.py > update_map > [12, 6] 
+[Tornado] exploration.py > 33 - 1 : (12, 7)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 7]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:48 2015
+[Arduino] serRead > Thread 2-serRead received msg: 22.31,33.50,55.54,8.22,13.52,59.42
+ @ Mon Oct 12 06:50:49 2015
+[Arduino-Ser] parse_msg > 22.31,33.50,55.54,8.22,13.52,59.42
+
+[Tornado] real.py > sensorString > 22.31,33.50,55.54,8.22,13.52,59.42
+ 
+[Tornado] real.py > update_map > [12, 7] 
+[Tornado] exploration.py > 34 - 1 : (12, 8)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:49 2015
+[Arduino] serRead > Thread 2-serRead received msg: 20.23,29.51,44.01,4.93,13.68,80.00
+ @ Mon Oct 12 06:50:50 2015
+[Arduino-Ser] parse_msg > 20.23,29.51,44.01,4.93,13.68,80.00
+
+[Tornado] real.py > sensorString > 20.23,29.51,44.01,4.93,13.68,80.00
+ 
+[Tornado] real.py > update_map > [12, 8] 
+[Tornado] exploration.py > 35 - 1 : (12, 9)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 9]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:50 2015
+[Arduino] serRead > Thread 2-serRead received msg: 26.06,26.90,41.27,80.00,12.89,6.77
+ @ Mon Oct 12 06:50:51 2015
+[Arduino-Ser] parse_msg > 26.06,26.90,41.27,80.00,12.89,6.77
+
+[Tornado] real.py > sensorString > 26.06,26.90,41.27,80.00,12.89,6.77
+ 
+[Tornado] real.py > update_map > [12, 9] 
+[Tornado] exploration.py > 36 - 1 : (12, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [12, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:51 2015
+[Arduino] serRead > Thread 2-serRead received msg: 23.40,17.43,35.36,80.00,12.89,80.00
+ @ Mon Oct 12 06:50:52 2015
+[Arduino-Ser] parse_msg > 23.40,17.43,35.36,80.00,12.89,80.00
+
+[Tornado] real.py > sensorString > 23.40,17.43,35.36,80.00,12.89,80.00
+ 
+[Tornado] real.py > update_map > [12, 10] 
+[Tornado] exploration.py > 37 - A : (12, 10)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [12, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:50:52 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,54.95,80.00,51.37,24.98,45.87
+ @ Mon Oct 12 06:50:53 2015
+[Arduino-Ser] parse_msg > 80.00,54.95,80.00,51.37,24.98,45.87
+
+[Tornado] real.py > sensorString > 80.00,54.95,80.00,51.37,24.98,45.87
+ 
+[Tornado] real.py > update_map > [12, 10] 
+[Tornado] exploration.py > 38 - 1 : (11, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [11, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:53 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,35.23,64.43,4.68,38.88,40.57
+ @ Mon Oct 12 06:50:54 2015
+[Arduino-Ser] parse_msg > 80.00,35.23,64.43,4.68,38.88,40.57
+
+[Tornado] real.py > sensorString > 80.00,35.23,64.43,4.68,38.88,40.57
+ 
+[Tornado] real.py > update_map > [11, 10] 
+[Tornado] exploration.py > 39 - 1 : (10, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [10, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:54 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,28.99,66.25,4.02,7.62,40.14
+ @ Mon Oct 12 06:50:55 2015
+[Arduino-Ser] parse_msg > 80.00,28.99,66.25,4.02,7.62,40.14
+
+[Tornado] real.py > sensorString > 80.00,28.99,66.25,4.02,7.62,40.14
+ 
+[Tornado] real.py > update_map > [10, 10] 
+[Tornado] exploration.py > 40 - 1 : (9, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [9, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:55 2015
+[Arduino] serRead > Thread 2-serRead received msg: 16.14,56.33,58.43,4.44,26.12,4.17
+ @ Mon Oct 12 06:50:55 2015
+[Arduino-Ser] parse_msg > 16.14,56.33,58.43,4.44,26.12,4.17
+
+[Tornado] real.py > sensorString > 16.14,56.33,58.43,4.44,26.12,4.17
+ 
+[Tornado] real.py > update_map > [9, 10] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:55 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,49.57,47.03,4.28,26.70,4.27
+ @ Mon Oct 12 06:50:56 2015
+[Arduino-Ser] parse_msg > 80.00,49.57,47.03,4.28,26.70,4.27
+
+[Tornado] real.py > sensorString > 80.00,49.57,47.03,4.28,26.70,4.27
+ 
+[Tornado] real.py > update_map > [9, 10] 
+[Tornado] exploration.py > 41 - 1 : (8, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [8, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:50:56 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,35.23,57.44,3.64,37.53,4.53
+ @ Mon Oct 12 06:50:57 2015
+[Arduino-Ser] parse_msg > 80.00,35.23,57.44,3.64,37.53,4.53
+
+[Tornado] real.py > sensorString > 80.00,35.23,57.44,3.64,37.53,4.53
+ 
+[Tornado] real.py > update_map > [8, 10] 
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:50:57 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,39.12,65.03,10.03,38.88,4.30
+ @ Mon Oct 12 06:51:00 2015
+[Arduino-Ser] parse_msg > 80.00,39.12,65.03,10.03,38.88,4.30
+
+[Tornado] real.py > sensorString > 80.00,39.12,65.03,10.03,38.88,4.30
+ 
+[Tornado] real.py > update_map > [8, 10] 
+[Tornado] exploration.py > 42 - 1 : (7, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [7, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:00 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,30.21,53.74,36.78,37.98,4.76
+ @ Mon Oct 12 06:51:01 2015
+[Arduino-Ser] parse_msg > 80.00,30.21,53.74,36.78,37.98,4.76
+
+[Tornado] real.py > sensorString > 80.00,30.21,53.74,36.78,37.98,4.76
+ 
+[Tornado] real.py > update_map > [7, 10] 
+[Tornado] exploration.py > 43 - 1 : (6, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [6, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:01 2015
+[Arduino] serRead > Thread 2-serRead received msg: 60.27,24.60,45.65,35.72,36.24,38.50
+ @ Mon Oct 12 06:51:02 2015
+[Arduino-Ser] parse_msg > 60.27,24.60,45.65,35.72,36.24,38.50
+
+[Tornado] real.py > sensorString > 60.27,24.60,45.65,35.72,36.24,38.50
+ 
+[Tornado] real.py > update_map > [6, 10] 
+[Tornado] exploration.py > 44 - A : (6, 10)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [6, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:02 2015
+[Arduino] serRead > Thread 2-serRead received msg: 46.19,28.16,34.68,34.07,39.11,63.99
+ @ Mon Oct 12 06:51:03 2015
+[Arduino-Ser] parse_msg > 46.19,28.16,34.68,34.07,39.11,63.99
+
+[Tornado] real.py > sensorString > 46.19,28.16,34.68,34.07,39.11,63.99
+ 
+[Tornado] real.py > update_map > [6, 10] 
+[Tornado] exploration.py > 45 - 1 : (6, 9)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [6, 9]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:03 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,31.13,25.97,4.61,65.03,66.00
+ @ Mon Oct 12 06:51:04 2015
+[Arduino-Ser] parse_msg > 29.51,31.13,25.97,4.61,65.03,66.00
+
+[Tornado] real.py > sensorString > 29.51,31.13,25.97,4.61,65.03,66.00
+ 
+[Tornado] real.py > update_map > [6, 9] 
+[Tornado] exploration.py > 46 - 1 : (6, 8)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [6, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:04 2015
+[Arduino] serRead > Thread 2-serRead received msg: 25.87,24.88,16.66,52.71,61.03,69.25
+ @ Mon Oct 12 06:51:05 2015
+[Arduino-Ser] parse_msg > 25.87,24.88,16.66,52.71,61.03,69.25
+
+[Tornado] real.py > sensorString > 25.87,24.88,16.66,52.71,61.03,69.25
+ 
+[Tornado] real.py > update_map > [6, 8] 
+[Tornado] exploration.py > 47 - 1 : (6, 7)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [6, 7]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:05 2015
+[Arduino] serRead > Thread 2-serRead received msg: 21.44,15.70,5.37,59.59,6.80,5.23
+ @ Mon Oct 12 06:51:06 2015
+[Arduino-Ser] parse_msg > 21.44,15.70,5.37,59.59,6.80,5.23
+
+[Tornado] real.py > sensorString > 21.44,15.70,5.37,59.59,6.80,5.23
+ 
+[Tornado] real.py > update_map > [6, 7] 
+[Tornado] exploration.py > 48 - A : (6, 7)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [6, 7]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:06 2015
+[Arduino] serRead > Thread 2-serRead received msg: 4.61,36.38,80.00,43.49,25.26,80.00
+ @ Mon Oct 12 06:51:06 2015
+[Arduino-Ser] parse_msg > 4.61,36.38,80.00,43.49,25.26,80.00
+
+[Tornado] real.py > sensorString > 4.61,36.38,80.00,43.49,25.26,80.00
+ 
+[Tornado] real.py > update_map > [6, 7] 
+[Tornado] exploration.py > 49 - A : (6, 7)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [6, 7]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:07 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.27,48.45,34.24,54.84,7.18,3.85
+ @ Mon Oct 12 06:51:07 2015
+[Arduino-Ser] parse_msg > 29.27,48.45,34.24,54.84,7.18,3.85
+
+[Tornado] real.py > sensorString > 29.27,48.45,34.24,54.84,7.18,3.85
+ 
+[Tornado] real.py > update_map > [6, 7] 
+[Tornado] exploration.py > 50 - 1 : (6, 8)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [6, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:07 2015
+[Arduino] serRead > Thread 2-serRead received msg: 38.96,47.72,27.83,43.98,64.57,74.06
+ @ Mon Oct 12 06:51:08 2015
+[Arduino-Ser] parse_msg > 38.96,47.72,27.83,43.98,64.57,74.06
+
+[Tornado] real.py > sensorString > 38.96,47.72,27.83,43.98,64.57,74.06
+ 
+[Tornado] real.py > update_map > [6, 8] 
+[Tornado] exploration.py > 51 - A : (6, 8)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [6, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:08 2015
+[Arduino] serRead > Thread 2-serRead received msg: 74.91,80.00,44.98,13.50,54.76,29.90
+ @ Mon Oct 12 06:51:09 2015
+[Arduino-Ser] parse_msg > 74.91,80.00,44.98,13.50,54.76,29.90
+
+[Tornado] real.py > sensorString > 74.91,80.00,44.98,13.50,54.76,29.90
+ 
+[Tornado] real.py > update_map > [6, 8] 
+[Tornado] exploration.py > 52 - 1 : (5, 8)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [5, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:09 2015
+[Arduino] serRead > Thread 2-serRead received msg: 46.72,34.14,39.87,5.11,52.99,23.21
+ @ Mon Oct 12 06:51:10 2015
+[Arduino-Ser] parse_msg > 46.72,34.14,39.87,5.11,52.99,23.21
+
+[Tornado] real.py > sensorString > 46.72,34.14,39.87,5.11,52.99,23.21
+ 
+[Tornado] real.py > update_map > [5, 8] 
+[Tornado] exploration.py > 53 - 1 : (4, 8)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:10 2015
+[Arduino] serRead > Thread 2-serRead received msg: 37.83,5.45,35.59,63.20,55.13,14.34
+ @ Mon Oct 12 06:51:11 2015
+[Arduino-Ser] parse_msg > 37.83,5.45,35.59,63.20,55.13,14.34
+
+[Tornado] real.py > sensorString > 37.83,5.45,35.59,63.20,55.13,14.34
+ 
+[Tornado] real.py > update_map > [4, 8] 
+[Tornado] exploration.py > 54 - D : (4, 8)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [4, 8]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:11 2015
+[Arduino] serRead > Thread 2-serRead received msg: 39.35,41.89,27.51,28.36,150.00,34.88
+ @ Mon Oct 12 06:51:12 2015
+[Arduino-Ser] parse_msg > 39.35,41.89,27.51,28.36,150.00,34.88
+
+[Tornado] real.py > sensorString > 39.35,41.89,27.51,28.36,150.00,34.88
+ 
+[Tornado] real.py > update_map > [4, 8] 
+[Tornado] exploration.py > 55 - 1 : (4, 9)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 9]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:12 2015
+[Arduino] serRead > Thread 2-serRead received msg: 17.59,40.47,29.70,6.65,109.98,5.78
+ @ Mon Oct 12 06:51:13 2015
+[Arduino-Ser] parse_msg > 17.59,40.47,29.70,6.65,109.98,5.78
+
+[Tornado] real.py > sensorString > 17.59,40.47,29.70,6.65,109.98,5.78
+ 
+[Tornado] real.py > update_map > [4, 9] 
+[Tornado] exploration.py > 56 - 1 : (4, 10)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 10]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:13 2015
+[Arduino] serRead > Thread 2-serRead received msg: 25.68,34.79,25.97,28.13,105.87,36.25
+ @ Mon Oct 12 06:51:14 2015
+[Arduino-Ser] parse_msg > 25.68,34.79,25.97,28.13,105.87,36.25
+
+[Tornado] real.py > sensorString > 25.68,34.79,25.97,28.13,105.87,36.25
+ 
+[Tornado] real.py > update_map > [4, 10] 
+[Tornado] exploration.py > 57 - 1 : (4, 11)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:14 2015
+[Arduino] serRead > Thread 2-serRead received msg: 21.44,27.68,22.48,30.33,32.49,7.48
+ @ Mon Oct 12 06:51:15 2015
+[Arduino-Ser] parse_msg > 21.44,27.68,22.48,30.33,32.49,7.48
+
+[Tornado] real.py > sensorString > 21.44,27.68,22.48,30.33,32.49,7.48
+ 
+[Tornado] real.py > update_map > [4, 11] 
+[Tornado] exploration.py > 58 - 1 : (4, 12)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:15 2015
+[Arduino] serRead > Thread 2-serRead received msg: 12.55,15.46,16.66,32.84,87.13,36.98
+ @ Mon Oct 12 06:51:16 2015
+[Arduino-Ser] parse_msg > 12.55,15.46,16.66,32.84,87.13,36.98
+
+[Tornado] real.py > sensorString > 12.55,15.46,16.66,32.84,87.13,36.98
+ 
+[Tornado] real.py > update_map > [4, 12] 
+[Tornado] exploration.py > 59 - A : (4, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [4, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:16 2015
+[Arduino] serRead > Thread 2-serRead received msg: 42.76,34.79,38.27,25.19,13.28,44.82
+ @ Mon Oct 12 06:51:16 2015
+[Arduino-Ser] parse_msg > 42.76,34.79,38.27,25.19,13.28,44.82
+
+[Tornado] real.py > sensorString > 42.76,34.79,38.27,25.19,13.28,44.82
+ 
+[Tornado] real.py > update_map > [4, 12] 
+[Tornado] exploration.py > 60 - 1 : (3, 12)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:16 2015
+[Arduino] serRead > Thread 2-serRead received msg: 28.58,25.43,31.37,25.00,12.66,38.90
+ @ Mon Oct 12 06:51:17 2015
+[Arduino-Ser] parse_msg > 28.58,25.43,31.37,25.00,12.66,38.90
+
+[Tornado] real.py > sensorString > 28.58,25.43,31.37,25.00,12.66,38.90
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 61 - A : (3, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:17 2015
+[Arduino] serRead > Thread 2-serRead received msg: 64.84,54.51,8.52,47.14,30.53,25.61
+ @ Mon Oct 12 06:51:18 2015
+[Arduino-Ser] parse_msg > 64.84,54.51,8.52,47.14,30.53,25.61
+
+[Tornado] real.py > sensorString > 64.84,54.51,8.52,47.14,30.53,25.61
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 62 - D : (3, 12)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:18 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,28.16,28.83,41.62,13.93,48.11
+ @ Mon Oct 12 06:51:19 2015
+[Arduino-Ser] parse_msg > 29.51,28.16,28.83,41.62,13.93,48.11
+
+[Tornado] real.py > sensorString > 29.51,28.16,28.83,41.62,13.93,48.11
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 63 - A : (3, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:19 2015
+[Arduino] serRead > Thread 2-serRead received msg: 60.27,58.26,8.43,62.26,30.36,24.83
+ @ Mon Oct 12 06:51:19 2015
+[Arduino-Ser] parse_msg > 60.27,58.26,8.43,62.26,30.36,24.83
+
+[Tornado] real.py > sensorString > 60.27,58.26,8.43,62.26,30.36,24.83
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 64 - D : (3, 12)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:20 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.27,30.94,30.99,80.00,12.82,48.11
+ @ Mon Oct 12 06:51:20 2015
+[Arduino-Ser] parse_msg > 29.27,30.94,30.99,80.00,12.82,48.11
+
+[Tornado] real.py > sensorString > 29.27,30.94,30.99,80.00,12.82,48.11
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 65 - A : (3, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:20 2015
+[Arduino] serRead > Thread 2-serRead received msg: 35.40,60.83,8.97,63.20,31.05,22.71
+ @ Mon Oct 12 06:51:21 2015
+[Arduino-Ser] parse_msg > 35.40,60.83,8.97,63.20,31.05,22.71
+
+[Tornado] real.py > sensorString > 35.40,60.83,8.97,63.20,31.05,22.71
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 66 - D : (3, 12)
+[Tornado] real.py > action > D 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:21 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,28.82,31.18,39.89,13.44,44.31
+ @ Mon Oct 12 06:51:22 2015
+[Arduino-Ser] parse_msg > 29.51,28.82,31.18,39.89,13.44,44.31
+
+[Tornado] real.py > sensorString > 29.51,28.82,31.18,39.89,13.44,44.31
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 67 - A : (3, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:22 2015
+[Arduino] serRead > Thread 2-serRead received msg: 50.16,58.26,11.32,72.97,31.23,29.15
+ @ Mon Oct 12 06:51:23 2015
+[Arduino-Ser] parse_msg > 50.16,58.26,11.32,72.97,31.23,29.15
+
+[Tornado] real.py > sensorString > 50.16,58.26,11.32,72.97,31.23,29.15
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 68 - 1 : (3, 11)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [3, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:23 2015
+[Arduino] serRead > Thread 2-serRead received msg: 31.27,49.57,13.90,40.31,8.13,34.22
+ @ Mon Oct 12 06:51:23 2015
+[Arduino-Ser] parse_msg > 31.27,49.57,13.90,40.31,8.13,34.22
+
+[Tornado] real.py > sensorString > 31.27,49.57,13.90,40.31,8.13,34.22
+ 
+[Tornado] real.py > update_map > [3, 11] 
+[Tornado] exploration.py > 69 - A : (3, 11)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:24 2015
+[Arduino] serRead > Thread 2-serRead received msg: 19.85,80.00,18.09,20.62,37.98,20.45
+ @ Mon Oct 12 06:51:24 2015
+[Arduino-Ser] parse_msg > 19.85,80.00,18.09,20.62,37.98,20.45
+
+[Tornado] real.py > sensorString > 19.85,80.00,18.09,20.62,37.98,20.45
+ 
+[Tornado] real.py > update_map > [3, 11] 
+[Tornado] exploration.py > 70 - 1 : (4, 11)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:24 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.51,53.20,52.87,21.48,49.67,22.88
+ @ Mon Oct 12 06:51:25 2015
+[Arduino-Ser] parse_msg > 29.51,53.20,52.87,21.48,49.67,22.88
+
+[Tornado] real.py > sensorString > 29.51,53.20,52.87,21.48,49.67,22.88
+ 
+[Tornado] real.py > update_map > [4, 11] 
+[Tornado] exploration.py > 71 - A : (4, 11)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [4, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:25 2015
+[Arduino] serRead > Thread 2-serRead received msg: 21.30,21.28,26.88,35.05,37.10,7.59
+ @ Mon Oct 12 06:51:26 2015
+[Arduino-Ser] parse_msg > 21.30,21.28,26.88,35.05,37.10,7.59
+
+[Tornado] real.py > sensorString > 21.30,21.28,26.88,35.05,37.10,7.59
+ 
+[Tornado] real.py > update_map > [4, 11] 
+[Tornado] exploration.py > 72 - 1 : (4, 12)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:26 2015
+[Arduino] serRead > Thread 2-serRead received msg: 12.80,14.23,16.16,30.33,68.41,39.31
+ @ Mon Oct 12 06:51:27 2015
+[Arduino-Ser] parse_msg > 12.80,14.23,16.16,30.33,68.41,39.31
+
+[Tornado] real.py > sensorString > 12.80,14.23,16.16,30.33,68.41,39.31
+ 
+[Tornado] real.py > update_map > [4, 12] 
+[Tornado] exploration.py > 73 - A : (4, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [4, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:27 2015
+[Arduino] serRead > Thread 2-serRead received msg: 40.16,25.86,38.27,80.00,13.44,46.97
+ @ Mon Oct 12 06:51:28 2015
+[Arduino-Ser] parse_msg > 40.16,25.86,38.27,80.00,13.44,46.97
+
+[Tornado] real.py > sensorString > 40.16,25.86,38.27,80.00,13.44,46.97
+ 
+[Tornado] real.py > update_map > [4, 12] 
+[Tornado] exploration.py > 74 - 1 : (3, 12)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:28 2015
+[Arduino] serRead > Thread 2-serRead received msg: 28.35,26.75,30.25,72.97,13.21,41.01
+ @ Mon Oct 12 06:51:29 2015
+[Arduino-Ser] parse_msg > 28.35,26.75,30.25,72.97,13.21,41.01
+
+[Tornado] real.py > sensorString > 28.35,26.75,30.25,72.97,13.21,41.01
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 75 - A : (3, 12)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 12]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:29 2015
+[Arduino] serRead > Thread 2-serRead received msg: 54.08,58.76,14.76,40.74,31.05,19.25
+ @ Mon Oct 12 06:51:29 2015
+[Arduino-Ser] parse_msg > 54.08,58.76,14.76,40.74,31.05,19.25
+
+[Tornado] real.py > sensorString > 54.08,58.76,14.76,40.74,31.05,19.25
+ 
+[Tornado] real.py > update_map > [3, 12] 
+[Tornado] exploration.py > 76 - 1 : (3, 11)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [3, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:30 2015
+[Arduino] serRead > Thread 2-serRead received msg: 33.82,39.39,50.01,62.26,7.40,37.73
+ @ Mon Oct 12 06:51:30 2015
+[Arduino-Ser] parse_msg > 33.82,39.39,50.01,62.26,7.40,37.73
+
+[Tornado] real.py > sensorString > 33.82,39.39,50.01,62.26,7.40,37.73
+ 
+[Tornado] real.py > update_map > [3, 11] 
+[Tornado] exploration.py > 77 - A : (3, 11)
+[Tornado] real.py > action > A 
+[Tornado] exploration > [3, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:30 2015
+[Arduino] serRead > Thread 2-serRead received msg: 42.76,47.01,14.39,21.04,39.11,22.88
+ @ Mon Oct 12 06:51:31 2015
+[Arduino-Ser] parse_msg > 42.76,47.01,14.39,21.04,39.11,22.88
+
+[Tornado] real.py > sensorString > 42.76,47.01,14.39,21.04,39.11,22.88
+ 
+[Tornado] real.py > update_map > [3, 11] 
+[Tornado] exploration.py > 78 - 1 : (4, 11)
+[Tornado] real.py > action > 1 
+[Tornado] exploration > [4, 11]
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:31 2015
+[Arduino] serRead > Thread 2-serRead received msg: 30.50,65.36,62.14,21.48,55.13,22.71
+ @ Mon Oct 12 06:51:32 2015
+[Arduino-Ser] parse_msg > 30.50,65.36,62.14,21.48,55.13,22.71
+
+[Tornado] real.py > sensorString > 30.50,65.36,62.14,21.48,55.13,22.71
+ 
+[Tornado] real.py > update_map > [4, 11] 
+[Tornado] exploration.py > 79 - None : (4, 11)
+[Tornado] inform > Exploration done! 
+[Tornado] inform > fe007c00f801f803ffc7ff8fffdfffbffffffffff9fffc7ff87ff07fe07fc3ff80ff017e02bf 
+[Tornado] inform > 0842104f840000000080012080411208300100a0080000002000 
+[Tornado] inform > ['6', 'A', '5', 'A', '1', 'D', '4', 'D', '6', 'A', '1', 'D', '3'] 
+[Tornado] real.py > action > 3 
+[Tornado] sp_to_start > 3 : S
+[Arduino] serWrite > Thread 1-serWrite send msg: 3 @ Mon Oct 12 06:51:32 2015
+[Arduino] serRead > Thread 2-serRead received msg: 3.99,53.20,40.70,13.65,15.20,22.88
+ @ Mon Oct 12 06:51:34 2015
+[Arduino-Ser] parse_msg > 3.99,53.20,40.70,13.65,15.20,22.88
+
+[Tornado] real.py > action > D 
+[Tornado] sp_to_start > D : W
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:34 2015
+[Arduino] serRead > Thread 2-serRead received msg: 15.03,16.91,40.70,67.22,41.02,4.64
+ @ Mon Oct 12 06:51:35 2015
+[Arduino-Ser] parse_msg > 15.03,16.91,40.70,67.22,41.02,4.64
+
+[Tornado] real.py > action > 1 
+[Tornado] sp_to_start > 1 : W
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:35 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.04,44.98,43.07,36.07,72.60,51.86
+ @ Mon Oct 12 06:51:36 2015
+[Arduino-Ser] parse_msg > 5.04,44.98,43.07,36.07,72.60,51.86
+
+[Tornado] real.py > action > A 
+[Tornado] sp_to_start > A : S
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:36 2015
+[Arduino] serRead > Thread 2-serRead received msg: 12.24,44.66,27.67,21.63,7.23,30.96
+ @ Mon Oct 12 06:51:37 2015
+[Arduino-Ser] parse_msg > 12.24,44.66,27.67,21.63,7.23,30.96
+
+[Tornado] real.py > action > 6 
+[Tornado] sp_to_start > 6 : S
+[Arduino] serWrite > Thread 1-serWrite send msg: 6 @ Mon Oct 12 06:51:37 2015
+[Arduino] serRead > Thread 2-serRead received msg: 4.20,3.84,4.37,29.32,45.21,16.53
+ @ Mon Oct 12 06:51:39 2015
+[Arduino-Ser] parse_msg > 4.20,3.84,4.37,29.32,45.21,16.53
+
+[Tornado] real.py > action > D 
+[Tornado] sp_to_start > D : W
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:39 2015
+[Arduino] serRead > Thread 2-serRead received msg: 39.35,49.57,80.00,4.42,150.00,4.92
+ @ Mon Oct 12 06:51:39 2015
+[Arduino-Ser] parse_msg > 39.35,49.57,80.00,4.42,150.00,4.92
+
+[Tornado] real.py > action > 4 
+[Tornado] sp_to_start > 4 : W
+[Arduino] serWrite > Thread 1-serWrite send msg: 4 @ Mon Oct 12 06:51:39 2015
+[Arduino] serRead > Thread 2-serRead received msg: 21.30,45.98,66.25,23.05,66.45,20.45
+ @ Mon Oct 12 06:51:41 2015
+[Arduino-Ser] parse_msg > 21.30,45.98,66.25,23.05,66.45,20.45
+
+[Tornado] real.py > action > D 
+[Tornado] sp_to_start > D : N
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:41 2015
+[Arduino] serRead > Thread 2-serRead received msg: 53.39,39.12,80.00,45.51,59.78,2.63
+ @ Mon Oct 12 06:51:42 2015
+[Arduino-Ser] parse_msg > 53.39,39.12,80.00,45.51,59.78,2.63
+
+[Tornado] real.py > action > 1 
+[Tornado] sp_to_start > 1 : N
+[Arduino] serWrite > Thread 1-serWrite send msg: 1 @ Mon Oct 12 06:51:42 2015
+[Arduino] serRead > Thread 2-serRead received msg: 56.26,24.20,80.00,27.67,54.40,33.28
+ @ Mon Oct 12 06:51:43 2015
+[Arduino-Ser] parse_msg > 56.26,24.20,80.00,27.67,54.40,33.28
+
+[Tornado] real.py > action > A 
+[Tornado] sp_to_start > A : W
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:43 2015
+[Arduino] serRead > Thread 2-serRead received msg: 42.30,44.34,32.15,14.03,67.91,18.63
+ @ Mon Oct 12 06:51:43 2015
+[Arduino-Ser] parse_msg > 42.30,44.34,32.15,14.03,67.91,18.63
+
+[Tornado] real.py > action > 5 
+[Tornado] sp_to_start > 5 : W
+[Arduino] serWrite > Thread 1-serWrite send msg: 5 @ Mon Oct 12 06:51:43 2015
+[Arduino] serRead > Thread 2-serRead received msg: 2.83,2.17,3.61,22.88,57.78,41.91
+ @ Mon Oct 12 06:51:45 2015
+[Arduino-Ser] parse_msg > 2.83,2.17,3.61,22.88,57.78,41.91
+
+[Tornado] real.py > action > A 
+[Tornado] sp_to_start > A : S
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:51:45 2015
+[Arduino] serRead > Thread 2-serRead received msg: 10.86,49.57,28.83,80.00,5.92,46.42
+ @ Mon Oct 12 06:51:46 2015
+[Arduino-Ser] parse_msg > 10.86,49.57,28.83,80.00,5.92,46.42
+
+[Tornado] real.py > action > 6 
+[Tornado] sp_to_start > 6 : S
+[Tornado] inform > Gone back to start: Alignment! 
+[Arduino] serWrite > Thread 1-serWrite send msg: 6 @ Mon Oct 12 06:51:46 2015
+[Arduino] serRead > Thread 2-serRead received msg: 29.75,46.32,3.51,18.68,7.90,40.14
+ @ Mon Oct 12 06:51:47 2015
+[Arduino-Ser] parse_msg > 29.75,46.32,3.51,18.68,7.90,40.14
+
+[Arduino] serWrite > Thread 1-serWrite send msg: W @ Mon Oct 12 06:51:47 2015
+[Arduino] serRead > Thread 2-serRead received msg: 32.93,25.86,3.46,18.80,7.85,44.82
+ @ Mon Oct 12 06:51:47 2015
+[Arduino-Ser] parse_msg > 32.93,25.86,3.46,18.80,7.85,44.82
+
+[Tornado] real.py > action > D 
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:47 2015
+[Arduino] serRead > Thread 2-serRead received msg: 2.69,1.41,1.28,17.01,56.62,80.00
+ @ Mon Oct 12 06:51:48 2015
+[Arduino-Ser] parse_msg > 2.69,1.41,1.28,17.01,56.62,80.00
+
+[Arduino] serWrite > Thread 1-serWrite send msg: W @ Mon Oct 12 06:51:48 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.38,5.26,5.30,34.07,84.99,21.92
+ @ Mon Oct 12 06:51:54 2015
+[Arduino-Ser] parse_msg > 5.38,5.26,5.30,34.07,84.99,21.92
+
+[Arduino] serWrite > Thread 1-serWrite send msg: Q @ Mon Oct 12 06:51:54 2015
+[Arduino] serRead > Thread 2-serRead received msg: 5.29,5.05,5.37,45.51,70.46,20.73
+ @ Mon Oct 12 06:51:54 2015
+[Arduino-Ser] parse_msg > 5.29,5.05,5.37,45.51,70.46,20.73
+
+[Tornado] real.py > action > D 
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:51:54 2015
+[Arduino] serRead > Thread 2-serRead received msg: 48.96,56.33,25.53,5.30,111.05,5.31
+ @ Mon Oct 12 06:51:55 2015
+[Arduino-Ser] parse_msg > 48.96,56.33,25.53,5.30,111.05,5.31
+
+[Arduino] serWrite > Thread 1-serWrite send msg: L @ Mon Oct 12 06:51:55 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,80.00,26.57,5.11,94.10,5.09
+ @ Mon Oct 12 06:51:56 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,26.57,5.11,94.10,5.09
+
+[Tornado] inform > fe007c00f801f803ffc7ff8fffdfffbffffffffff9fffc7ff87ff07fe07fc3ff80ff017e02bf 
+[Tornado] inform > 0842104f840000000080012080411208300100a0080000002000 
+[Tornado] inform > Gone back to start, for real! 
+[Android] btRead > Thread 5-btRead received msg: beginFastest @ Mon Oct 12 06:52:14 2015
+[Tornado] inform > ShortestPath started! 
+[Tornado] inform > ['2', 'A', '3', 'D', '9', 'A', '9', 'D', '6'] 
+[Tornado] real.py > action > 6 
+[Tornado] sp_to_goal > 6 : N
+[Arduino] serWrite > Thread 1-serWrite send msg: 6 @ Mon Oct 12 06:52:14 2015
+[Arduino] serRead > Thread 2-serRead received msg: 54.08,63.60,5.40,5.74,101.07,6.09
+ @ Mon Oct 12 06:52:16 2015
+[Arduino-Ser] parse_msg > 54.08,63.60,5.40,5.74,101.07,6.09
+
+[Tornado] real.py > action > D 
+[Tornado] sp_to_goal > D : E
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:52:16 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,54.51,40.42,4.93,62.32,44.82
+ @ Mon Oct 12 06:52:17 2015
+[Arduino-Ser] parse_msg > 80.00,54.51,40.42,4.93,62.32,44.82
+
+[Tornado] real.py > action > 9 
+[Tornado] sp_to_goal > 9 : E
+[Arduino] serWrite > Thread 1-serWrite send msg: 9 @ Mon Oct 12 06:52:17 2015
+[Arduino] serRead > Thread 2-serRead received msg: 12.99,16.58,26.88,67.22,10.18,80.00
+ @ Mon Oct 12 06:52:20 2015
+[Arduino-Ser] parse_msg > 12.99,16.58,26.88,67.22,10.18,80.00
+
+[Tornado] real.py > action > A 
+[Tornado] sp_to_goal > A : N
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:52:20 2015
+[Arduino] serRead > Thread 2-serRead received msg: 80.00,80.00,70.15,78.26,12.97,41.01
+ @ Mon Oct 12 06:52:21 2015
+[Arduino-Ser] parse_msg > 80.00,80.00,70.15,78.26,12.97,41.01
+
+[Tornado] real.py > action > 9 
+[Tornado] sp_to_goal > 9 : N
+[Arduino] serWrite > Thread 1-serWrite send msg: 9 @ Mon Oct 12 06:52:21 2015
+[Arduino] serRead > Thread 2-serRead received msg: 2.90,1.88,32.76,80.00,31.59,54.67
+ @ Mon Oct 12 06:52:24 2015
+[Arduino-Ser] parse_msg > 2.90,1.88,32.76,80.00,31.59,54.67
+
+[Tornado] real.py > action > D 
+[Tornado] sp_to_goal > D : E
+[Arduino] serWrite > Thread 1-serWrite send msg: D @ Mon Oct 12 06:52:24 2015
+[Arduino] serRead > Thread 2-serRead received msg: 31.54,38.35,25.39,26.80,38.20,2.56
+ @ Mon Oct 12 06:52:24 2015
+[Arduino-Ser] parse_msg > 31.54,38.35,25.39,26.80,38.20,2.56
+
+[Tornado] real.py > action > 3 
+[Tornado] sp_to_goal > 3 : E
+[Arduino] serWrite > Thread 1-serWrite send msg: 3 @ Mon Oct 12 06:52:24 2015
+[Arduino] serRead > Thread 2-serRead received msg: 3.66,3.32,4.57,29.07,24.30,30.96
+ @ Mon Oct 12 06:52:26 2015
+[Arduino-Ser] parse_msg > 3.66,3.32,4.57,29.07,24.30,30.96
+
+[Tornado] real.py > action > A 
+[Tornado] sp_to_goal > A : N
+[Arduino] serWrite > Thread 1-serWrite send msg: A @ Mon Oct 12 06:52:26 2015
+[Arduino] serRead > Thread 2-serRead received msg: 33.22,38.35,34.24,48.87,6.33,72.80
+ @ Mon Oct 12 06:52:27 2015
+[Arduino-Ser] parse_msg > 33.22,38.35,34.24,48.87,6.33,72.80
+
+[Tornado] real.py > action > 2 
+[Tornado] sp_to_goal > 2 : N
+[Tornado] inform > ShortestPath done: Alignment! 
+[Arduino] serWrite > Thread 1-serWrite send msg: 2 @ Mon Oct 12 06:52:27 2015
+[Arduino] serRead > Thread 2-serRead received msg: 13.53,15.46,17.01,15.74,6.02,80.00
+ @ Mon Oct 12 06:52:28 2015
+[Arduino-Ser] parse_msg > 13.53,15.46,17.01,15.74,6.02,80.00
+
+[Arduino] serWrite > Thread 1-serWrite send msg: W @ Mon Oct 12 06:52:28 2015
+[Arduino] serRead > Thread 2-serRead received msg: 13.60,15.54,17.18,16.31,6.12,80.00
+ @ Mon Oct 12 06:52:28 2015
+[Arduino-Ser] parse_msg > 13.60,15.54,17.18,16.31,6.12,80.00
+
+[Tornado] inform > ShortestPath done, for real! 

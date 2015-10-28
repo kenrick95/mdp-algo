@@ -20,6 +20,7 @@ class Robot(object):
         self.try_left = False
 
         self.path_taken = []
+        self.action_taken = []
 
         for i in range(self.MAX_ROW):
             self.explored_map.append([])
@@ -98,10 +99,29 @@ class Robot(object):
                 times = int(action, 16)
                 print("[Tornado] real.py > action > %d " % (times))
                 for i in range(times):
+                    self.action_taken.append(FORWARD)
                     self.forward(mark_value)
             elif action == LEFT or action == RIGHT:
                 print("[Tornado] real.py > action > %s " % (action))
+                self.action_taken.append(action)
                 self.rotate(action)
+
+            # TODO: if last four action is LEFT RIGHT LEFT RIGHT, mark sth as obstacle forever
+            if self.action_taken[-4:] == [LEFT, RIGHT, LEFT, RIGHT]:
+                print("[Tornado] real.py > action > Something")
+                if self.direction == NORTH:
+                    self.explored_map[self.current[0] - 1][self.current[1] - 2] = 2
+                    self.map_state[self.current[0] - 1][self.current[1] - 2] = 4
+                elif self.direction == EAST:
+                    self.explored_map[self.current[0] - 2][self.current[1] + 1] = 2
+                    self.map_state[self.current[0] - 2][self.current[1] + 1] = 4
+                elif self.direction == SOUTH:
+                    self.explored_map[self.current[0] + 1][self.current[1] + 2] = 2
+                    self.map_state[self.current[0] + 1][self.current[1] + 2] = 4
+                elif self.direction == WEST:
+                    self.explored_map[self.current[0] + 2][self.current[1] - 1] = 2
+                    self.map_state[self.current[0] + 2][self.current[1] - 1] = 4
+
         zope.event.notify(action)
 
     def forward(self, mark_value = 8):
@@ -275,15 +295,8 @@ class Robot(object):
         sensorList = sensorString.split(",")
         print("[Tornado] real.py > sensorString > %s " %(sensorString))
 
-        # FL: max 25
-        # FM: max 25
-        # FR: max 25
-        # LT: max 35
-        # RT: max 30
-        # LB: max 35
         # for i in range(6):
         #     sensors.append(convert_short_sensor_distance(sensorList[i]))
-        # TODO TEST THIS OUT!
         sensors.append(convert_front_sensor(sensorList[0]))  # FL: max 25
         sensors.append(convert_front_sensor(sensorList[1]))  # FM: max 25
         sensors.append(convert_front_sensor(sensorList[2]))  # FR: max 25

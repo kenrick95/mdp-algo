@@ -213,11 +213,12 @@ def start_exploration(percentage, delay):
     evt.wait()
     send_cmd(LD_ALIGN) # Q
     evt.wait()
+    send_cmd(FD_ALIGN) # W
+    evt.wait()
     send_cmd(RIGHT) # D
     evt.wait()
     send_cmd(LA_ALIGN) # L
     evt.wait()
-
 
     started = True
     send_cmd(REQ_SENSOR) # E
@@ -233,6 +234,13 @@ def start_exploration(percentage, delay):
     send_cmd(LEFT)
     robot.action(LEFT)
     evt.wait()
+
+    started = False
+    send_cmd(LD_ALIGN) # Q
+    evt.wait()
+    send_cmd(LA_ALIGN) # L
+    evt.wait()
+    started = True
 
 
     ### TESTING
