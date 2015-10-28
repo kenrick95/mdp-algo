@@ -1,6 +1,7 @@
 from shortest_path import ShortestPath
 from constants import *
 import random
+import time
 
 class Exploration(object):
     """docstring for Exploration"""
@@ -22,8 +23,6 @@ class Exploration(object):
     robotBreak = False
 
     def __init__(self, _exploredPercentage):
-        # TODO how to L, R, L, R, L, R --> mark as an obstacle at front-left of robot
-        # TODO continue exploration until reach start and then stop instead of using ShortestPath
         super(Exploration, self).__init__()
         global cnt
         cnt = 0
@@ -232,7 +231,7 @@ class Exploration(object):
                         best_candidate = cand[0]
                 #print(dest_candidate)
 
-                print("[Tornado] exploration.py > dest_candidate > %s" % (dest_candidate))
+                print("[Tornado | %s] exploration.py > dest_candidate > %s" % (time.ctime(time.time()), dest_candidate))
                 dest = best_candidate
 
                 sp = ShortestPath(realTimeMap, rdirection, rcurrent, dest)
@@ -249,7 +248,7 @@ class Exploration(object):
                 print("--------------")
                 """
                 #print(spList)
-                print("[Tornado] exploration.py > spList > %s" % (spList))
+                print("[Tornado | %s] exploration.py > spList > %s" % (time.ctime(time.time()), spList))
                 spCounter += 1
                 repeatedArea = 0
                 repeatedTreshold = 3
@@ -467,6 +466,6 @@ class Exploration(object):
         global robotCenterY
         #print(cnt + 1, "before: ",  robotCurMovement)
         self.main(sensors, explored_map)
-        print("[Tornado] exploration.py > %d - %s : (%d, %d)" %(cnt + 1, robotCurMovement, robotCenterY, robotCenterX))
+        print("[Tornado | %s] exploration.py > %d - %s : (%d, %d)" %(time.ctime(time.time()), cnt + 1, robotCurMovement, robotCenterY, robotCenterX))
         cnt += 1
         return (robotCurMovement, robotBreak)

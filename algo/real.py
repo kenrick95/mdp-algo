@@ -97,18 +97,18 @@ class Robot(object):
         if action:
             if action == FORWARD or action.isdigit() or action.islower():
                 times = int(action, 16)
-                print("[Tornado] real.py > action > %d " % (times))
+                print("[Tornado | %s] real.py > action > %d " % (time.ctime(time.time()), times))
                 for i in range(times):
                     self.action_taken.append(FORWARD)
                     self.forward(mark_value)
             elif action == LEFT or action == RIGHT:
-                print("[Tornado] real.py > action > %s " % (action))
+                print("[Tornado | %s] real.py > action > %s " % (time.ctime(time.time()), action))
                 self.action_taken.append(action)
                 self.rotate(action)
 
-            # TODO: if last four action is LEFT RIGHT LEFT RIGHT, mark sth as obstacle forever
+            # TODO: if last four action is LEFT RIGHT LEFT RIGHT, mark sth as obstacle; at exploration.py DO NOT SET repeatedTreshold lower than 5!!!
             if self.action_taken[-4:] == [LEFT, RIGHT, LEFT, RIGHT]:
-                print("[Tornado] real.py > action > Something")
+                print("[Tornado | %s] real.py > action > Something" %(time.ctime(time.time())))
                 if self.direction == NORTH:
                     self.explored_map[self.current[0] - 1][self.current[1] - 2] = 2
                     self.map_state[self.current[0] - 1][self.current[1] - 2] = 4
@@ -293,7 +293,7 @@ class Robot(object):
         #       sensors[i].append(None)
 
         sensorList = sensorString.split(",")
-        print("[Tornado] real.py > sensorString > %s " %(sensorString))
+        print("[Tornado | %s] real.py > sensorString > %s " %(time.ctime(time.time()), sensorString))
 
         # for i in range(6):
         #     sensors.append(convert_short_sensor_distance(sensorList[i]))
@@ -428,7 +428,10 @@ class Robot(object):
 
 
 
-        print("[Tornado] real.py > update_map > %s " %(self.current))
+        print("[Tornado | %s] real.py > update_map > loc: %s, dir: %s " %(time.ctime(time.time()), self.current, self.direction))
+
+        for i in range(self.MAX_COL):
+            print("[Tornado] real.py > update_map > explored_map: " %(self.explored_map[i]))
 
         zope.event.notify("SENSOR")
         return self.explored_map

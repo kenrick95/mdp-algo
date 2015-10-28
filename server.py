@@ -68,10 +68,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
-        #self.write("This is your response")
         self.render("display.html")
-        #we don't need self.finish() because self.render() is fallowed by self.finish() inside tornado
-        #self.finish()
 
 def start_exploration(percentage, delay):
     global robot
