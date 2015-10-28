@@ -44,8 +44,10 @@ class Exploration(object):
         global spCounter
         global spList
         global repeatedTreshold
-        repeatedTreshold = 20#15#10# 30
+        global isFirstStart
+        repeatedTreshold = 5#20#15#10# 30
 
+        isFirstStart = True
         spList = []
         spCounter = 0
         robotBreak = False
@@ -139,6 +141,7 @@ class Exploration(object):
         global exploredPercentage
         global robotBreak
         global exploredArea
+        global isFirstStart
 
         global spList
         global spCounter
@@ -168,27 +171,33 @@ class Exploration(object):
         realTimeMap[robotDirectionY][robotDirectionX] = 4
         # print(robotCenterY, robotCenterX, ": ", robotDirectionY, robotDirectionX)
 
-        if repeatedArea <= repeatedTreshold and exploredArea < exploredPercentage * 3: # exploredArea / 300 * 100 < exploredPercentage
+        encounteredStart = False
+
+        if (robotCenterY, robotCenterX) == (18, 1):
+            if isFirstStart:
+                isFirstStart = False
+            else:
+                encounteredStart = True
+                robotBreak = True
+                robotCurMovement = None
+
+        if not encounteredStart:
             exploredArea = 0
 
             self.callAllMethods(sensors, explored_map)
             if len(spList) <= 0:
                 for tup in pathTaken:
-                    if tup == (robotCenterY, robotCenterX):
+                    if tup == (robotCenterY, robotCenterX, robotDirectionY, robotDirectionX):
                         repeatedArea = repeatedArea + 1
                         break
-            #x = []
             for i in range(0,20):
                 for j in range(0,15):
                     if realTimeMap[i][j] != 0:
                         exploredArea = exploredArea + 1
-                    #else:
-                    #    x.append([i,j])
-            #print(x)
-            # print(repeatedArea, " ", exploredArea)
-        else:
+        if repeatedArea >= repeatedTreshold or exploredArea >= exploredPercentage * 3:
             robotCurMovement = None
             #### JUST GIVE UP AND GO BACK HOME :')
+
             robotBreak = True
 
             if exploredArea >= exploredPercentage * 3 or spCounter > 5:
@@ -286,7 +295,7 @@ class Exploration(object):
         robotCurMovement = self.robotMovementAnalyses(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotPrevMovement, sensorList)
         robotPrevMovement = robotCurMovement
         if robotCurMovement == FORWARD:
-            pathTaken.append((robotCenterY, robotCenterX))
+            pathTaken.append((robotCenterY, robotCenterX, robotDirectionY, robotDirectionX))
         #print (robotCurMovement)
         # realTimeMap = self.executeRobotMovement(realTimeMap, robotCenterX, robotCenterY, sensorList[0][0], robotCurMovement)
 
