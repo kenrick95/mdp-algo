@@ -1,6 +1,7 @@
 from constants import *
 import json
 import zope.event
+import time
 
 class Robot(object):
     """docstring for Robot"""
@@ -107,6 +108,7 @@ class Robot(object):
                 self.rotate(action)
 
             # TODO: if last four action is LEFT RIGHT LEFT RIGHT, mark sth as obstacle; at exploration.py DO NOT SET repeatedTreshold lower than 5!!!
+            # TODO BUG!!!!: got two possibility of obstacle position!!!! one s seen by FL and LB; seen by FR and LT
             if self.action_taken[-4:] == [LEFT, RIGHT, LEFT, RIGHT]:
                 print("[Tornado | %s] real.py > action > Something" %(time.ctime(time.time())))
                 if self.direction == NORTH:
@@ -304,7 +306,7 @@ class Robot(object):
         sensors.append(convert_right_sensor(sensorList[4]))  # RT: max 30
         sensors.append(convert_left_sensor( sensorList[5]))  # LB: max 35
 
-        if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.5:
+        if abs((float(sensorList[3]) + float(sensorList[5])) / 2.0 - 5.5) >= 1.0:
             self.try_left = True
         else:
             self.try_left = False
@@ -430,8 +432,8 @@ class Robot(object):
 
         print("[Tornado | %s] real.py > update_map > loc: %s, dir: %s " %(time.ctime(time.time()), self.current, self.direction))
 
-        for i in range(self.MAX_COL):
-            print("[Tornado] real.py > update_map > explored_map: " %(self.explored_map[i]))
+        for i in range(self.MAX_ROW):
+            print (self.explored_map[i])
 
         zope.event.notify("SENSOR")
         return self.explored_map

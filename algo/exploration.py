@@ -172,14 +172,14 @@ class Exploration(object):
         encounteredStart = False
 
         if (robotCenterY, robotCenterX) == (18, 1):
-            if not isFirstStart: #TODO TEST obstacle in front
+            if not isFirstStart:
                 encounteredStart = True
                 robotBreak = True
                 robotCurMovement = None
         else:
             isFirstStart = False
 
-        if not encounteredStart:
+        if not encounteredStart or (exploredArea * 2 <= exploredPercentage * 3):
             exploredArea = 0
 
             self.callAllMethods(sensors, explored_map)
@@ -192,7 +192,7 @@ class Exploration(object):
                 for j in range(0,15):
                     if realTimeMap[i][j] != 0:
                         exploredArea = exploredArea + 1
-        if repeatedArea >= repeatedTreshold: #or exploredArea >= exploredPercentage * 3:
+        if repeatedArea >= repeatedTreshold: # and (exploredArea * 2 >= exploredPercentage * 3):
             robotCurMovement = None
             #### JUST GIVE UP AND GO BACK HOME :')
 
