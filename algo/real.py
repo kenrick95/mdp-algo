@@ -123,6 +123,19 @@ class Robot(object):
                 elif self.direction == WEST:
                     self.explored_map[self.current[0] + 2][self.current[1] - 1] = 2
                     self.map_state[self.current[0] + 2][self.current[1] - 1] = 4
+                ## OR THIS CASE! HOW TO DIFFERENTIATE???
+                # if self.direction == NORTH:
+                #     self.explored_map[self.current[0] + 1][self.current[1] - 2] = 2
+                #     self.map_state[self.current[0] + 1][self.current[1] - 2] = 4
+                # elif self.direction == EAST:
+                #     self.explored_map[self.current[0] - 2][self.current[1] - 1] = 2
+                #     self.map_state[self.current[0] - 2][self.current[1] - 1] = 4
+                # elif self.direction == SOUTH:
+                #     self.explored_map[self.current[0] - 1][self.current[1] + 2] = 2
+                #     self.map_state[self.current[0] - 1][self.current[1] + 2] = 4
+                # elif self.direction == WEST:
+                #     self.explored_map[self.current[0] + 2][self.current[1] + 1] = 2
+                #     self.map_state[self.current[0] + 2][self.current[1] + 1] = 4
 
         zope.event.notify(action)
 
