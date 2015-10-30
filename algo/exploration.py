@@ -44,7 +44,7 @@ class Exploration(object):
         global spList
         global repeatedTreshold
         global isFirstStart
-        repeatedTreshold = 6#5#20#15#10# 30
+        repeatedTreshold = 10#6#5#20#15#10# 30
         isFirstStart = True
         spList = []
         spCounter = 0

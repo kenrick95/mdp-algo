@@ -130,7 +130,7 @@ class ShortestPath(object):
             if self.map[_to[0] + direction[0]][_to[1] + direction[1]] == 0:
                 add_cost += 30
 
-        ret_cost = 1 + max(0, (len(action) - 1) * (len(action) - 1) * 6) + add_cost
+        ret_cost = 1 + max(0, (len(action) - 1) * (len(action) - 1) * 10) + add_cost
         return ret_cost
 
     def shortest_path(self, mark_value = 9):
@@ -166,7 +166,7 @@ class ShortestPath(object):
             for neighbor in neighbors:
                 gn = self.cost(head["position"], neighbor, head["direction"])
                 hn = self.manhattan(neighbor, self.goal)
-                cost = gn + hn
+                cost = gn# + hn
                 if dist[head["position"][0]][head["position"][1]] + cost < dist[neighbor[0]][neighbor[1]]:
 
                     dist[neighbor[0]][neighbor[1]] = dist[head["position"][0]][head["position"][1]] + gn

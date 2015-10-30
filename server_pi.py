@@ -289,6 +289,10 @@ def exploration(exp):
         return False
 
     if cur[0]:
+        if robot.try_left:
+            evt.wait()
+            do_alignment(robot.alignment())
+
         robot.action(cur[0])
         send_cmd(cur[0])
 
