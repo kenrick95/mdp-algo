@@ -72,12 +72,12 @@ def real_delay_call(f, delay_time, *args, **kwargs):
 
 class FuncThread(threading.Thread):
     def __init__(self, target, *args):
-        self._target = target
-        self._args = args
+        self.__target = target
+        self.__args = args
         threading.Thread.__init__(self)
 
     def run(self):
-        self._target(*self._args)
+        self.__target(*self.__args)
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -523,6 +523,7 @@ def btWrite(threadName, delay):
     real_delay_call(btWrite, delay, threadName, delay)
 
 def btRead(threadName, delay):
+    global started
     try:
         msg = btsock.recv(1024)
         print ("[Android | %s] btRead > %s" %(time.ctime(time.time()), msg))
@@ -533,7 +534,6 @@ def btRead(threadName, delay):
             t = FuncThread(start_sp_to_goal)
             t.start()
         elif msg == "beginManual":
-            global started
             global sp_to_goal_started
             global exploration_started
             inform("Halted!")
@@ -546,7 +546,6 @@ def btRead(threadName, delay):
             sys.stdout = orig_stdout
             f.close()
         elif msg == "f":
-            global started
             orig_started = started
             started = True
             send_cmd(FORWARD)
@@ -554,7 +553,6 @@ def btRead(threadName, delay):
             evt.wait()
             started = orig_started()
         elif msg == "tl":
-            global started
             orig_started = started
             started = True
             send_cmd(LEFT)
@@ -562,7 +560,6 @@ def btRead(threadName, delay):
             evt.wait()
             started = orig_started()
         elif msg == "tr":
-            global started
             orig_started = started
             started = True
             send_cmd(RIGHT)
@@ -626,6 +623,7 @@ if __name__ == '__main__':
     zope.event.subscribers.append(tick)
     io_loop = tornado.ioloop.IOLoop.instance()
 
+
     btsock = btCommListen()
     btsock.setblocking(0)
     serial = setSerComm()
@@ -634,7 +632,7 @@ if __name__ == '__main__':
     serialq = deque([])
     print("[Tornado | " + time.ctime(time.time()) + "] > Listening to http://localhost:" + str(options.port) + "...")
 
-
+    started = False
     t1 = FuncThread(serWrite, "Thread 1-serWrite", 0.1)
     t2 = FuncThread(serRead, "Thread 2-serRead", 0.1)
     t3 = FuncThread(io_loop.start)
