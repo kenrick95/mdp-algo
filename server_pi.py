@@ -236,7 +236,6 @@ def start_exploration(percentage, delay):
     robot.action(LEFT)
     evt.wait()
 
-    # TODO TEST THIS
     started = False
     send_cmd(LD_ALIGN) # Q
     evt.wait()
@@ -546,6 +545,31 @@ def btRead(threadName, delay):
             global f
             sys.stdout = orig_stdout
             f.close()
+        elif msg == "f":
+            global started
+            orig_started = started
+            started = True
+            send_cmd(FORWARD)
+            robot.action(FORWARD)
+            evt.wait()
+            started = orig_started()
+        elif msg == "tl":
+            global started
+            orig_started = started
+            started = True
+            send_cmd(LEFT)
+            robot.action(LEFT)
+            evt.wait()
+            started = orig_started()
+        elif msg == "tr":
+            global started
+            orig_started = started
+            started = True
+            send_cmd(RIGHT)
+            robot.action(RIGHT)
+            evt.wait()
+            started = orig_started
+
     except:
         None
     real_delay_call(btRead, delay, threadName, delay)
