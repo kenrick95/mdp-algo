@@ -4,7 +4,6 @@
 pip install tornado
 pip install zope.event
 pip install gevent
-pip install gevent.event
 ```
 - Raspberry Pi
 - Bluetooth (`bluetooth`)
