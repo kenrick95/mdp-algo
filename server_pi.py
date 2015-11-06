@@ -549,27 +549,27 @@ def btRead(threadName, delay):
             global f
             sys.stdout = orig_stdout
             f.close()
-        elif msg == "f":
-            orig_started = started
-            started = True
-            send_cmd(FORWARD)
-            robot.action(FORWARD)
-            evt.wait()
-            started = orig_started()
-        elif msg == "tl":
-            orig_started = started
-            started = True
-            send_cmd(LEFT)
-            robot.action(LEFT)
-            evt.wait()
-            started = orig_started()
-        elif msg == "tr":
-            orig_started = started
-            started = True
-            send_cmd(RIGHT)
-            robot.action(RIGHT)
-            evt.wait()
-            started = orig_started
+        # elif msg == "f":
+        #     orig_started = started
+        #     started = True
+        #     send_cmd(FORWARD)
+        #     robot.action(FORWARD)
+        #     evt.wait()
+        #     started = orig_started()
+        # elif msg == "tl":
+        #     orig_started = started
+        #     started = True
+        #     send_cmd(LEFT)
+        #     robot.action(LEFT)
+        #     evt.wait()
+        #     started = orig_started()
+        # elif msg == "tr":
+        #     orig_started = started
+        #     started = True
+        #     send_cmd(RIGHT)
+        #     robot.action(RIGHT)
+        #     evt.wait()
+        #     started = orig_started
 
     except:
         None
